@@ -12,8 +12,8 @@ target/
 *.iml
 *.ipr
 
-### Credentials
-credentials.json
+### MacOS
+.DS_Store/
 
 ### Generated files
 *.png
