@@ -36,7 +36,6 @@
     </licenses>
 
     <properties>
-        <log4j.version>2.19.0</log4j.version>
         <lombok.version>1.18.24</lombok.version>
     </properties>
 
