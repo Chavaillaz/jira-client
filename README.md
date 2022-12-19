@@ -14,7 +14,7 @@ using [Jackson][Jackson].
 
 Presently, it supports the two following HTTP clients:
 
-- Java HTTP client (including since Java 11)
+- Java HTTP client (included since Java 11)
 - Apache HTTP client 5.2
 
 ## Installation
@@ -202,9 +202,9 @@ public class CompanyIssue extends Issue {
 }
 ```
 
-Finally, specify it when getting the `IssueClient` with `JiraClient`: `client.getIssueClient(CompanyIssue.class)`. 
-Please be aware that both solutions cannot live together as when you have attributes in the class for your fields, 
-it will then not be in the `customFields` map (containing all the unmapped fields).
+Finally, specify it when getting the `IssueClient`: `client.getIssueClient(CompanyIssue.class)`. Please be aware that 
+both solutions cannot live together as when you have attributes in the class for your fields, it will then not be in 
+the `customFields` map (containing all the unmapped fields).
 
 ## Contributing
 
