@@ -1,15 +1,16 @@
 package com.chavaillaz.jira.client.java;
 
-import java.net.http.HttpClient;
-import java.util.concurrent.CompletableFuture;
-
 import com.chavaillaz.jira.client.SearchClient;
 import com.chavaillaz.jira.domain.Filter;
 import com.chavaillaz.jira.domain.Filters;
-import com.chavaillaz.jira.domain.Issues;
+import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Query;
 
-public class JavaHttpSearchClient<T extends Issues> extends AbstractJavaHttpClient implements SearchClient<T> {
+import java.net.http.HttpClient;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
+public class JavaHttpSearchClient<T extends List<? extends Issue>> extends AbstractJavaHttpClient implements SearchClient<T> {
 
     protected final Class<T> issueClass;
 

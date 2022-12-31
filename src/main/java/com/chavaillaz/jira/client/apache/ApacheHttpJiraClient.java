@@ -1,19 +1,13 @@
 package com.chavaillaz.jira.client.apache;
 
-import java.util.Optional;
-
+import com.chavaillaz.jira.client.*;
+import com.chavaillaz.jira.domain.Issue;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import org.apache.hc.core5.http.HttpHost;
 
-import com.chavaillaz.jira.client.AbstractJiraClient;
-import com.chavaillaz.jira.client.IssueClient;
-import com.chavaillaz.jira.client.JiraClient;
-import com.chavaillaz.jira.client.ProjectClient;
-import com.chavaillaz.jira.client.SearchClient;
-import com.chavaillaz.jira.client.UserClient;
-import com.chavaillaz.jira.domain.Issue;
-import com.chavaillaz.jira.domain.Issues;
+import java.util.List;
+import java.util.Optional;
 
 public class ApacheHttpJiraClient extends AbstractJiraClient<CloseableHttpAsyncClient> {
 
@@ -52,7 +46,7 @@ public class ApacheHttpJiraClient extends AbstractJiraClient<CloseableHttpAsyncC
     }
 
     @Override
-    public <T extends Issues> SearchClient<T> getSearchClient(Class<T> issuesClass) {
+    public <T extends List<? extends Issue>> SearchClient<T> getSearchClient(Class<T> issuesClass) {
         return new ApacheHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesClass);
     }
 

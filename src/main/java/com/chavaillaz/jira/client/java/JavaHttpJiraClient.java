@@ -1,18 +1,13 @@
 package com.chavaillaz.jira.client.java;
 
+import com.chavaillaz.jira.client.*;
+import com.chavaillaz.jira.domain.Issue;
+
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
+import java.util.List;
 import java.util.Optional;
-
-import com.chavaillaz.jira.client.AbstractJiraClient;
-import com.chavaillaz.jira.client.IssueClient;
-import com.chavaillaz.jira.client.JiraClient;
-import com.chavaillaz.jira.client.ProjectClient;
-import com.chavaillaz.jira.client.SearchClient;
-import com.chavaillaz.jira.client.UserClient;
-import com.chavaillaz.jira.domain.Issue;
-import com.chavaillaz.jira.domain.Issues;
 
 public class JavaHttpJiraClient extends AbstractJiraClient<HttpClient> {
 
@@ -50,7 +45,7 @@ public class JavaHttpJiraClient extends AbstractJiraClient<HttpClient> {
     }
 
     @Override
-    public <T extends Issues> SearchClient<T> getSearchClient(Class<T> issuesClass) {
+    public <T extends List<? extends Issue>> SearchClient<T> getSearchClient(Class<T> issuesClass) {
         return new JavaHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesClass);
     }
 

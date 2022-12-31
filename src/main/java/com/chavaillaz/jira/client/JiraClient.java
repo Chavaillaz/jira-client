@@ -3,6 +3,8 @@ package com.chavaillaz.jira.client;
 import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Issues;
 
+import java.util.List;
+
 public interface JiraClient {
 
     /**
@@ -41,7 +43,7 @@ public interface JiraClient {
      * @param <T>         The issue list type
      * @return The search client
      */
-    <T extends Issues> SearchClient<T> getSearchClient(Class<T> issuesClass);
+    <T extends List<? extends Issue>> SearchClient<T> getSearchClient(Class<T> issuesClass);
 
     /**
      * Gets the project client.
