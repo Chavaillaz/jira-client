@@ -1,23 +1,22 @@
 package com.chavaillaz.jira.client.apache;
 
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
-
+import com.chavaillaz.jira.client.AbstractHttpClient;
+import com.fasterxml.jackson.databind.JavaType;
+import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.core5.http.HttpEntity;
 
-import com.chavaillaz.jira.client.AbstractHttpClient;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
 
-import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 
 @Slf4j
 public class AbstractApacheHttpClient extends AbstractHttpClient {
@@ -70,6 +69,18 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder request, Class<T> type) {
+        return sendAsyncReturnDomain(request, objectMapper.constructType(type));
+    }
+
+    /**
+     * Sends a request and returns a domain object.
+     *
+     * @param request The request builder
+     * @param type    The domain object type class
+     * @param <T>     The domain object type
+     * @return A {@link CompletableFuture} with the deserialized domain object
+     */
+    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder request, JavaType type) {
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
         client.execute(request.build(), new CompletableFutureCallback(this, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyText)

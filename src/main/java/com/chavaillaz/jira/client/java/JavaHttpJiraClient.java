@@ -2,29 +2,32 @@ package com.chavaillaz.jira.client.java;
 
 import com.chavaillaz.jira.client.*;
 import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.Issues;
 
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
-import java.util.List;
 import java.util.Optional;
 
-public class JavaHttpJiraClient<I extends Issue, L extends List<? extends I>> extends AbstractJiraClient<HttpClient, I, L> {
-
-    private final Class<I> issueClass;
-    private final Class<L> issuesClass;
+public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<HttpClient, I> {
 
     /**
      * Creates a new {@link JiraClient} with Java HTTP client.
      *
-     * @param jiraUrl The Jira URL
-     * @param issueClass The issue class type
-     * @param issuesClass The issues list class type
+     * @param jiraUrl   The Jira URL
+     * @param issueType The issue class type
      */
-    public JavaHttpJiraClient(String jiraUrl, Class<I> issueClass, Class<L> issuesClass) {
-        super(jiraUrl);
-        this.issueClass = issueClass;
-        this.issuesClass = issuesClass;
+    public JavaHttpJiraClient(String jiraUrl, Class<I> issueType) {
+        super(jiraUrl, issueType);
+    }
+
+    /**
+     * Creates a default {@link JiraClient} with Java HTTP client.
+     *
+     * @param jiraUrl The Jira URL
+     */
+    public static JavaHttpJiraClient<Issue> jiraJavaClient(String jiraUrl) {
+        return new JavaHttpJiraClient<>(jiraUrl, Issue.class);
     }
 
     @Override
@@ -38,7 +41,7 @@ public class JavaHttpJiraClient<I extends Issue, L extends List<? extends I>> ex
 
     @Override
     public IssueClient<I> getIssueClient() {
-        return new JavaHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueClass);
+        return new JavaHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueType);
     }
 
     @Override
@@ -52,8 +55,8 @@ public class JavaHttpJiraClient<I extends Issue, L extends List<? extends I>> ex
     }
 
     @Override
-    public SearchClient<L> getSearchClient() {
-        return new JavaHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesClass);
+    public SearchClient<Issues<I>> getSearchClient() {
+        return new JavaHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesListType);
     }
 
 }

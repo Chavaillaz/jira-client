@@ -10,7 +10,7 @@
     <packaging>jar</packaging>
 
     <name>${project.groupId}.${project.artifactId}</name>
-    <description>Library to interact with Jira</description>
+    <description>Library to interact asynchronously with Jira using multiple HTTP clients</description>
     <url>https://github.com/chavaillaz/jira-client</url>
 
     <scm>

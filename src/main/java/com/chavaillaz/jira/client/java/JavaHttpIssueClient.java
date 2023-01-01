@@ -1,10 +1,8 @@
 package com.chavaillaz.jira.client.java;
 
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
-import static java.net.http.HttpRequest.BodyPublishers.noBody;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.domain.*;
+import lombok.SneakyThrows;
 
 import java.io.File;
 import java.io.InputStream;
@@ -14,29 +12,15 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.jira.client.IssueClient;
-import com.chavaillaz.jira.domain.Attachment;
-import com.chavaillaz.jira.domain.Attachments;
-import com.chavaillaz.jira.domain.Comment;
-import com.chavaillaz.jira.domain.Comments;
-import com.chavaillaz.jira.domain.Identity;
-import com.chavaillaz.jira.domain.Issue;
-import com.chavaillaz.jira.domain.IssueTransition;
-import com.chavaillaz.jira.domain.Link;
-import com.chavaillaz.jira.domain.RemoteLink;
-import com.chavaillaz.jira.domain.RemoteLinks;
-import com.chavaillaz.jira.domain.Transitions;
-import com.chavaillaz.jira.domain.User;
-import com.chavaillaz.jira.domain.Votes;
-import com.chavaillaz.jira.domain.Watchers;
-import com.chavaillaz.jira.domain.WorkLog;
-import com.chavaillaz.jira.domain.WorkLogs;
-
-import lombok.SneakyThrows;
+import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
+import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
+import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient implements IssueClient<T> {
 
-    protected final Class<T> issueClass;
+    protected final Class<T> issueType;
 
     /**
      * Creates a new {@link IssueClient} using Java HTTP client.
@@ -44,11 +28,11 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
      * @param client         The Java HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication header (nullable)
-     * @param issueClass     The issue class type in case of an extension
+     * @param issueType      The issue class type
      */
-    public JavaHttpIssueClient(HttpClient client, String baseUrl, String authentication, Class<T> issueClass) {
+    public JavaHttpIssueClient(HttpClient client, String baseUrl, String authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
-        this.issueClass = issueClass;
+        this.issueType = issueType;
     }
 
     @Override
@@ -58,7 +42,7 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<T> getIssue(String issueKey) {
-        return sendAsync(requestBuilder(URL_ISSUE_DETAILS, issueKey).GET(), issueClass);
+        return sendAsync(requestBuilder(URL_ISSUE_DETAILS, issueKey).GET(), issueType);
     }
 
     @Override

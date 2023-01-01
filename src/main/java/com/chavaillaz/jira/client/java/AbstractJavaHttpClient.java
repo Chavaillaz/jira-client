@@ -1,6 +1,9 @@
 package com.chavaillaz.jira.client.java;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import com.chavaillaz.jira.client.AbstractHttpClient;
+import com.chavaillaz.jira.domain.ErrorMessages;
+import com.chavaillaz.jira.exception.ResponseException;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,9 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.jira.client.AbstractHttpClient;
-import com.chavaillaz.jira.domain.ErrorMessages;
-import com.chavaillaz.jira.exception.ResponseException;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 public class AbstractJavaHttpClient extends AbstractHttpClient {
 
@@ -95,6 +96,18 @@ public class AbstractJavaHttpClient extends AbstractHttpClient {
      * @return A {@link CompletableFuture} with the deserialized response body
      */
     protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder request, Class<T> type) {
+        return sendAsync(request, objectMapper.constructType(type));
+    }
+
+    /**
+     * Sends the given request and deserializes the received content.
+     *
+     * @param request The request builder
+     * @param type    The content type of the content received
+     * @param <T>     The content type
+     * @return A {@link CompletableFuture} with the deserialized response body
+     */
+    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder request, JavaType type) {
         return client.sendAsync(request.build(), BodyHandlers.ofString())
                 .thenApply(this::checkResponse)
                 .thenApply(response -> deserialize(response.body(), type));

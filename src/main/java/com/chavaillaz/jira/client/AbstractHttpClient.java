@@ -1,9 +1,13 @@
 package com.chavaillaz.jira.client;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
+import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
+import com.chavaillaz.jira.exception.DeserializationException;
+import com.chavaillaz.jira.exception.SerializationException;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.Getter;
 
 import java.net.URI;
 import java.text.MessageFormat;
@@ -11,18 +15,12 @@ import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Map;
 
-import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
-import com.chavaillaz.jira.exception.DeserializationException;
-import com.chavaillaz.jira.exception.SerializationException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Getter
-@RequiredArgsConstructor
 public abstract class AbstractHttpClient {
 
     public static final String HEADER_AUTHORIZATION = "Authorization";
@@ -31,9 +29,20 @@ public abstract class AbstractHttpClient {
     public static final String HEADER_ATLASSIAN_TOKEN = "X-Atlassian-Token";
     public static final String HEADER_ATLASSIAN_TOKEN_DISABLED = "no-check";
 
-    protected final ObjectMapper objectMapper = buildObjectMapper();
-    protected final String baseUrl;
     protected final String authentication;
+    protected final String baseUrl;
+    protected final ObjectMapper objectMapper = buildObjectMapper();
+
+    /**
+     * Creates a new abstract client.
+     *
+     * @param baseUrl        The base URL of Jira endpoints
+     * @param authentication The authentication header (nullable)
+     */
+    protected AbstractHttpClient(String baseUrl, String authentication) {
+        this.baseUrl = baseUrl;
+        this.authentication = authentication;
+    }
 
     /**
      * Creates an object mapper that will be used to serialize and deserialize all objects.
@@ -111,7 +120,19 @@ public abstract class AbstractHttpClient {
      * @return The object instance of the given type
      */
     public <T> T deserialize(String content, Class<T> type) {
-        if (type == Void.class) {
+        return deserialize(content, objectMapper.constructType(type));
+    }
+
+    /**
+     * Deserializes a JSON content to the given type.
+     *
+     * @param content The object to deserialize
+     * @param type    The object class type
+     * @param <T>     The object type
+     * @return The object instance of the given type
+     */
+    public <T> T deserialize(String content, JavaType type) {
+        if (type.getRawClass() == Void.class) {
             return null;
         }
 

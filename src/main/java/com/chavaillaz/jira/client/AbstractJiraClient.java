@@ -1,25 +1,43 @@
 package com.chavaillaz.jira.client;
 
 import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.Issues;
 import com.chavaillaz.jira.utils.ProxyConfiguration;
-import lombok.RequiredArgsConstructor;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 
 import java.util.Base64;
-import java.util.List;
 
 /**
  * Abstract class implementing common parts of the {@link JiraClient}.
  *
- * @param <C> HTTP Client to use
+ * @param <C> HTTP client
+ * @param <I> Issue type
  */
-@RequiredArgsConstructor
-public abstract class AbstractJiraClient<C, I extends Issue, L extends List<? extends I>> implements JiraClient<I, L> {
+public abstract class AbstractJiraClient<C, I extends Issue> implements JiraClient<I> {
 
     public static final String BASE_API = "/rest/api/2/";
 
+    protected final Class<I> issueType;
+    protected final JavaType issuesListType;
     protected final String jiraUrl;
     protected String authentication;
     protected ProxyConfiguration proxy;
+
+    /**
+     * Creates a new abstract client.
+     *
+     * @param jiraUrl   The URL of Jira
+     * @param issueType The issue class type
+     */
+    protected AbstractJiraClient(String jiraUrl, Class<I> issueType) {
+        this.jiraUrl = jiraUrl;
+
+        TypeFactory typeFactory = new ObjectMapper().getTypeFactory();
+        this.issueType = issueType;
+        this.issuesListType = typeFactory.constructParametricType(Issues.class, issueType);
+    }
 
     /**
      * Creates a new HTTP client that will be used to communicate with Jira REST endpoints.
@@ -29,25 +47,25 @@ public abstract class AbstractJiraClient<C, I extends Issue, L extends List<? ex
     protected abstract C newHttpClient();
 
     @Override
-    public JiraClient<I, L> withProxy(String host, Integer port) {
+    public JiraClient<I> withProxy(String host, Integer port) {
         this.proxy = ProxyConfiguration.from(host, port);
         return this;
     }
 
     @Override
-    public JiraClient<I, L> withProxy(String url) {
+    public JiraClient<I> withProxy(String url) {
         this.proxy = ProxyConfiguration.from(url);
         return this;
     }
 
     @Override
-    public JiraClient<I, L> withAuthentication(String token) {
+    public JiraClient<I> withAuthentication(String token) {
         this.authentication = "Bearer " + token;
         return this;
     }
 
     @Override
-    public JiraClient<I, L> withAuthentication(String username, String password) {
+    public JiraClient<I> withAuthentication(String username, String password) {
         this.authentication = "Basic " + Base64.getEncoder().encodeToString((username + ":" + password).getBytes());
         return this;
     }

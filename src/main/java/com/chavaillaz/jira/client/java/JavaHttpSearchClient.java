@@ -5,6 +5,7 @@ import com.chavaillaz.jira.domain.Filter;
 import com.chavaillaz.jira.domain.Filters;
 import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Query;
+import com.fasterxml.jackson.databind.JavaType;
 
 import java.net.http.HttpClient;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class JavaHttpSearchClient<T extends List<? extends Issue>> extends AbstractJavaHttpClient implements SearchClient<T> {
 
-    protected final Class<T> issueClass;
+    protected final JavaType issuesListType;
 
     /**
      * Creates a new {@link SearchClient} using Java HTTP client.
@@ -20,16 +21,16 @@ public class JavaHttpSearchClient<T extends List<? extends Issue>> extends Abstr
      * @param client         The Java HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication header (nullable)
-     * @param issueClass     The issue list type in case of an extension
+     * @param issuesListType The issues list class type
      */
-    public JavaHttpSearchClient(HttpClient client, String baseUrl, String authentication, Class<T> issueClass) {
+    public JavaHttpSearchClient(HttpClient client, String baseUrl, String authentication, JavaType issuesListType) {
         super(client, baseUrl, authentication);
-        this.issueClass = issueClass;
+        this.issuesListType = issuesListType;
     }
 
     @Override
     public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand) {
-        return sendAsync(requestBuilder(URL_SEARCH).POST(body(Query.from(jql, startAt, maxResults, expand))), issueClass);
+        return sendAsync(requestBuilder(URL_SEARCH).POST(body(Query.from(jql, startAt, maxResults, expand))), issuesListType);
     }
 
     @Override
