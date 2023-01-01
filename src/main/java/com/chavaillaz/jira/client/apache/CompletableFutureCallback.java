@@ -6,15 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
-import org.apache.hc.core5.concurrent.FutureCallback;
-
 import com.chavaillaz.jira.client.AbstractHttpClient;
 import com.chavaillaz.jira.domain.ErrorMessages;
 import com.chavaillaz.jira.exception.ResponseException;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
+import org.apache.hc.core5.concurrent.FutureCallback;
 
 /**
  * Future callback for Apache HTTP Client in order to transfer state to a {@link CompletableFuture}.

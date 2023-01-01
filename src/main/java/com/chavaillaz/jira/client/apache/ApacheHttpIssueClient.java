@@ -1,17 +1,35 @@
 package com.chavaillaz.jira.client.apache;
 
-import com.chavaillaz.jira.client.IssueClient;
-import com.chavaillaz.jira.domain.*;
-import lombok.SneakyThrows;
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
+import static com.chavaillaz.jira.client.apache.ApacheHttpUtils.multipartWithFiles;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.delete;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.post;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.put;
+import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import static com.chavaillaz.jira.client.apache.ApacheHttpUtils.multipartWithFiles;
-import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.*;
-import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
+import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.domain.Attachment;
+import com.chavaillaz.jira.domain.Attachments;
+import com.chavaillaz.jira.domain.Comment;
+import com.chavaillaz.jira.domain.Comments;
+import com.chavaillaz.jira.domain.Identity;
+import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.IssueTransition;
+import com.chavaillaz.jira.domain.Link;
+import com.chavaillaz.jira.domain.RemoteLink;
+import com.chavaillaz.jira.domain.RemoteLinks;
+import com.chavaillaz.jira.domain.Transitions;
+import com.chavaillaz.jira.domain.User;
+import com.chavaillaz.jira.domain.Votes;
+import com.chavaillaz.jira.domain.Watchers;
+import com.chavaillaz.jira.domain.WorkLog;
+import com.chavaillaz.jira.domain.WorkLogs;
+import lombok.SneakyThrows;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
 public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpClient implements IssueClient<T> {
 

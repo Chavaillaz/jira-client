@@ -5,11 +5,10 @@ import static org.apache.hc.core5.http.ContentType.DEFAULT_BINARY;
 
 import java.io.File;
 
-import org.apache.hc.client5.http.entity.mime.ByteArrayBody;
-import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
-
 import lombok.SneakyThrows;
 import lombok.experimental.UtilityClass;
+import org.apache.hc.client5.http.entity.mime.ByteArrayBody;
+import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 
 /**
  * Utilities for Apache HTTP Client.

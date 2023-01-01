@@ -18,7 +18,6 @@ public class Utils {
      * @param inputStream The input stream to read
      * @param charset     The charset to use to read the input stream
      * @return The {@link String} representing the content of the input stream
-     *
      * @throws IOException If some I/O error occurs when reading the input stream
      */
     public static String readInputStream(InputStream inputStream, Charset charset) throws IOException {

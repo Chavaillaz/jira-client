@@ -1,8 +1,10 @@
 package com.chavaillaz.jira.client.java;
 
-import com.chavaillaz.jira.client.IssueClient;
-import com.chavaillaz.jira.domain.*;
-import lombok.SneakyThrows;
+import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
+import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
+import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 
 import java.io.File;
 import java.io.InputStream;
@@ -12,11 +14,24 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.concurrent.CompletableFuture;
 
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
-import static java.net.http.HttpRequest.BodyPublishers.noBody;
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.domain.Attachment;
+import com.chavaillaz.jira.domain.Attachments;
+import com.chavaillaz.jira.domain.Comment;
+import com.chavaillaz.jira.domain.Comments;
+import com.chavaillaz.jira.domain.Identity;
+import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.IssueTransition;
+import com.chavaillaz.jira.domain.Link;
+import com.chavaillaz.jira.domain.RemoteLink;
+import com.chavaillaz.jira.domain.RemoteLinks;
+import com.chavaillaz.jira.domain.Transitions;
+import com.chavaillaz.jira.domain.User;
+import com.chavaillaz.jira.domain.Votes;
+import com.chavaillaz.jira.domain.Watchers;
+import com.chavaillaz.jira.domain.WorkLog;
+import com.chavaillaz.jira.domain.WorkLogs;
+import lombok.SneakyThrows;
 
 public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient implements IssueClient<T> {
 

@@ -1,5 +1,13 @@
 package com.chavaillaz.jira.client.apache;
 
+import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.util.concurrent.CompletableFuture;
+
 import com.chavaillaz.jira.client.AbstractHttpClient;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
@@ -9,14 +17,6 @@ import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.core5.http.HttpEntity;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.InputStream;
-import java.util.concurrent.CompletableFuture;
-
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
-import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 
 @Slf4j
 public class AbstractApacheHttpClient extends AbstractHttpClient {

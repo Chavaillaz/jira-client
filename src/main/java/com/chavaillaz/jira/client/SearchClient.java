@@ -1,11 +1,11 @@
 package com.chavaillaz.jira.client;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import com.chavaillaz.jira.domain.Filter;
 import com.chavaillaz.jira.domain.Filters;
 import com.chavaillaz.jira.domain.Issue;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 public interface SearchClient<T extends List<? extends Issue>> extends AutoCloseable {
 

@@ -5,7 +5,6 @@ import static java.time.OffsetDateTime.now;
 import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
 
 @Data

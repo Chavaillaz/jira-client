@@ -1,13 +1,18 @@
 package com.chavaillaz.jira.client.java;
 
-import com.chavaillaz.jira.client.*;
-import com.chavaillaz.jira.domain.Issue;
-import com.chavaillaz.jira.domain.Issues;
-
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
 import java.util.Optional;
+
+import com.chavaillaz.jira.client.AbstractJiraClient;
+import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.client.JiraClient;
+import com.chavaillaz.jira.client.ProjectClient;
+import com.chavaillaz.jira.client.SearchClient;
+import com.chavaillaz.jira.client.UserClient;
+import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.Issues;
 
 public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<HttpClient, I> {
 

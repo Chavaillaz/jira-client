@@ -3,7 +3,6 @@ package com.chavaillaz.jira.domain;
 import java.time.OffsetDateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
 
 @Data

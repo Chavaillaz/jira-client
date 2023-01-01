@@ -17,6 +17,8 @@ Presently, it supports the two following HTTP clients:
 - Java HTTP client (included since Java 11)
 - Apache HTTP client 5.2
 
+This library has been tested with a Jira instance version 8.20.
+
 ## Installation
 
 The dependency is available in maven central (see badge for version):
@@ -202,9 +204,9 @@ public class CompanyIssue extends Issue {
 }
 ```
 
-Finally, specify it when getting the `IssueClient`: `client.getIssueClient(CompanyIssue.class)`. Please be aware that 
-both solutions cannot live together as when you have attributes in the class for your fields, it will then not be in 
-the `customFields` map (containing all the unmapped fields).
+Finally, specify it when getting the `JiraClient`. Please be aware that both solutions cannot live together as when you 
+have attributes in the class for your fields, it will then not be in  the `customFields` map (containing all the 
+unmapped fields).
 
 ## Contributing
 
@@ -213,7 +215,24 @@ If you have a feature request or found a bug, you can:
 - Write an issue
 - Create a pull request
 
-Please be aware the attributes of classes are ordered alphabetically.
+### Code style
+
+The code style is based on the default one from IntelliJ, except for the following cases:
+
+#### Imports
+
+Imports are ordered as follows:
+
+- All static imports in a block
+- Java non-static imports in a block
+- All non-static imports in a block
+
+A single blank line separates every block. Within each block the imported names appear in alphabetical sort order.
+Wildcard imports, static or otherwise, are not used.
+
+#### Arrangements
+
+The attributes of **domain classes** are ordered alphabetically. 
 
 ## License
 

@@ -1,5 +1,14 @@
 package com.chavaillaz.jira.client.apache;
 
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.delete;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.post;
+import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.put;
+import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
+
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+
 import com.chavaillaz.jira.client.SearchClient;
 import com.chavaillaz.jira.domain.Filter;
 import com.chavaillaz.jira.domain.Filters;
@@ -7,12 +16,6 @@ import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Query;
 import com.fasterxml.jackson.databind.JavaType;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
-import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.*;
-import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 public class ApacheHttpSearchClient<T extends List<? extends Issue>> extends AbstractApacheHttpClient implements SearchClient<T> {
 

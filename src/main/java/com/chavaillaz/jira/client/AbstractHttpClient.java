@@ -1,5 +1,16 @@
 package com.chavaillaz.jira.client;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
+import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+
+import java.net.URI;
+import java.text.MessageFormat;
+import java.time.OffsetDateTime;
+import java.util.Collection;
+import java.util.Map;
+
 import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
 import com.chavaillaz.jira.exception.DeserializationException;
 import com.chavaillaz.jira.exception.SerializationException;
@@ -8,17 +19,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
-
-import java.net.URI;
-import java.text.MessageFormat;
-import java.time.OffsetDateTime;
-import java.util.Collection;
-import java.util.Map;
-
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
-import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 @Getter
 public abstract class AbstractHttpClient {

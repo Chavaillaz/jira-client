@@ -8,8 +8,6 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-
 import com.chavaillaz.jira.client.ProjectClient;
 import com.chavaillaz.jira.domain.Components;
 import com.chavaillaz.jira.domain.Identity;
@@ -19,6 +17,7 @@ import com.chavaillaz.jira.domain.Projects;
 import com.chavaillaz.jira.domain.Roles;
 import com.chavaillaz.jira.domain.Statuses;
 import com.chavaillaz.jira.domain.Versions;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
 public class ApacheHttpProjectClient extends AbstractApacheHttpClient implements ProjectClient {
 

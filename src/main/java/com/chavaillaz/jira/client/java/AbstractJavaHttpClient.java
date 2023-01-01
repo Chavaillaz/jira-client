@@ -1,9 +1,6 @@
 package com.chavaillaz.jira.client.java;
 
-import com.chavaillaz.jira.client.AbstractHttpClient;
-import com.chavaillaz.jira.domain.ErrorMessages;
-import com.chavaillaz.jira.exception.ResponseException;
-import com.fasterxml.jackson.databind.JavaType;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,7 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
+import com.chavaillaz.jira.client.AbstractHttpClient;
+import com.chavaillaz.jira.domain.ErrorMessages;
+import com.chavaillaz.jira.exception.ResponseException;
+import com.fasterxml.jackson.databind.JavaType;
 
 public class AbstractJavaHttpClient extends AbstractHttpClient {
 

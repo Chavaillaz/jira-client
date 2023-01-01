@@ -1,10 +1,25 @@
 package com.chavaillaz.jira.client;
 
-import com.chavaillaz.jira.domain.*;
-
 import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
+
+import com.chavaillaz.jira.domain.Attachment;
+import com.chavaillaz.jira.domain.Attachments;
+import com.chavaillaz.jira.domain.Comment;
+import com.chavaillaz.jira.domain.Comments;
+import com.chavaillaz.jira.domain.Identity;
+import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.IssueTransition;
+import com.chavaillaz.jira.domain.Link;
+import com.chavaillaz.jira.domain.RemoteLink;
+import com.chavaillaz.jira.domain.RemoteLinks;
+import com.chavaillaz.jira.domain.Transitions;
+import com.chavaillaz.jira.domain.User;
+import com.chavaillaz.jira.domain.Votes;
+import com.chavaillaz.jira.domain.Watchers;
+import com.chavaillaz.jira.domain.WorkLog;
+import com.chavaillaz.jira.domain.WorkLogs;
 
 public interface IssueClient<T extends Issue> extends AutoCloseable {
 

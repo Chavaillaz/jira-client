@@ -26,7 +26,6 @@ public class JavaHttpUtils {
      * @param boundary The boundary to separate them
      * @param charset  The charset to use
      * @return The corresponding body publisher
-     *
      * @throws IOException if an error occurs when reading files if given in the data parameter
      */
     public static HttpRequest.BodyPublisher ofMimeMultipartData(Map<Object, Object> data, String boundary, Charset charset) throws IOException {

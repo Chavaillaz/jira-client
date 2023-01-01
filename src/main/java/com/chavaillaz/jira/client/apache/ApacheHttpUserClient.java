@@ -4,11 +4,10 @@ import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
-
 import com.chavaillaz.jira.client.UserClient;
 import com.chavaillaz.jira.domain.User;
 import com.chavaillaz.jira.domain.Users;
+import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
 public class ApacheHttpUserClient extends AbstractApacheHttpClient implements UserClient {
 

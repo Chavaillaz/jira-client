@@ -1,8 +1,8 @@
 package com.chavaillaz.jira.exception;
 
-import com.fasterxml.jackson.databind.JavaType;
-
 import java.text.MessageFormat;
+
+import com.fasterxml.jackson.databind.JavaType;
 
 public class DeserializationException extends JiraClientException {
 

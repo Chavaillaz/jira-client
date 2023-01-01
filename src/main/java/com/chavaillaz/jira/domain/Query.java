@@ -3,7 +3,6 @@ package com.chavaillaz.jira.domain;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -15,7 +14,7 @@ import lombok.ToString;
 public class Query extends Result {
 
     private String expand;
-    
+
     private List<String> fields;
 
     private String jql;

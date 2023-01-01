@@ -1,13 +1,13 @@
 package com.chavaillaz.jira.client;
 
+import java.util.Base64;
+
 import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Issues;
 import com.chavaillaz.jira.utils.ProxyConfiguration;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
-
-import java.util.Base64;
 
 /**
  * Abstract class implementing common parts of the {@link JiraClient}.
