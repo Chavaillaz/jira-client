@@ -9,15 +9,22 @@ import java.net.http.HttpClient;
 import java.util.List;
 import java.util.Optional;
 
-public class JavaHttpJiraClient extends AbstractJiraClient<HttpClient> {
+public class JavaHttpJiraClient<I extends Issue, L extends List<? extends I>> extends AbstractJiraClient<HttpClient, I, L> {
+
+    private final Class<I> issueClass;
+    private final Class<L> issuesClass;
 
     /**
      * Creates a new {@link JiraClient} with Java HTTP client.
      *
      * @param jiraUrl The Jira URL
+     * @param issueClass The issue class type
+     * @param issuesClass The issues list class type
      */
-    public JavaHttpJiraClient(String jiraUrl) {
+    public JavaHttpJiraClient(String jiraUrl, Class<I> issueClass, Class<L> issuesClass) {
         super(jiraUrl);
+        this.issueClass = issueClass;
+        this.issuesClass = issuesClass;
     }
 
     @Override
@@ -30,7 +37,7 @@ public class JavaHttpJiraClient extends AbstractJiraClient<HttpClient> {
     }
 
     @Override
-    public <T extends Issue> IssueClient<T> getIssueClient(Class<T> issueClass) {
+    public IssueClient<I> getIssueClient() {
         return new JavaHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueClass);
     }
 
@@ -45,7 +52,7 @@ public class JavaHttpJiraClient extends AbstractJiraClient<HttpClient> {
     }
 
     @Override
-    public <T extends List<? extends Issue>> SearchClient<T> getSearchClient(Class<T> issuesClass) {
+    public SearchClient<L> getSearchClient() {
         return new JavaHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesClass);
     }
 

@@ -2,6 +2,7 @@ package com.chavaillaz.jira.client.apache;
 
 import com.chavaillaz.jira.client.*;
 import com.chavaillaz.jira.domain.Issue;
+import com.chavaillaz.jira.domain.Issues;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
 import org.apache.hc.core5.http.HttpHost;
@@ -9,15 +10,31 @@ import org.apache.hc.core5.http.HttpHost;
 import java.util.List;
 import java.util.Optional;
 
-public class ApacheHttpJiraClient extends AbstractJiraClient<CloseableHttpAsyncClient> {
+public class ApacheHttpJiraClient<I extends Issue, L extends List<? extends I>> extends AbstractJiraClient<CloseableHttpAsyncClient, I, L> {
+
+    private final Class<I> issueClass;
+    private final Class<L> issuesClass;
 
     /**
-     * Creates a new {@link JiraClient} with Apache HTTP client.
+     * Creates a new {@link JiraClient} with Apache HTTP client with the given issues and its list.
+     *
+     * @param jiraUrl The Jira URL
+     * @param issueClass The issue class type
+     * @param issuesClass The issues list class type
+     */
+    public ApacheHttpJiraClient(String jiraUrl, Class<I> issueClass, Class<L> issuesClass) {
+        super(jiraUrl);
+        this.issueClass = issueClass;
+        this.issuesClass = issuesClass;
+    }
+
+    /**
+     * Creates a default {@link JiraClient} with Apache HTTP client.
      *
      * @param jiraUrl The Jira URL
      */
-    public ApacheHttpJiraClient(String jiraUrl) {
-        super(jiraUrl);
+    public static ApacheHttpJiraClient<Issue, Issues> jiraApacheClient(String jiraUrl) {
+        return new ApacheHttpJiraClient<>(jiraUrl, Issue.class, Issues.class);
     }
 
     @Override
@@ -31,7 +48,7 @@ public class ApacheHttpJiraClient extends AbstractJiraClient<CloseableHttpAsyncC
     }
 
     @Override
-    public <T extends Issue> IssueClient<T> getIssueClient(Class<T> issueClass) {
+    public IssueClient<I> getIssueClient() {
         return new ApacheHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueClass);
     }
 
@@ -46,7 +63,7 @@ public class ApacheHttpJiraClient extends AbstractJiraClient<CloseableHttpAsyncC
     }
 
     @Override
-    public <T extends List<? extends Issue>> SearchClient<T> getSearchClient(Class<T> issuesClass) {
+    public SearchClient<L> getSearchClient() {
         return new ApacheHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesClass);
     }
 
