@@ -78,7 +78,7 @@ It requires the following dependency:
     - `updateIssue(Issue issue)`
     - `deleteIssue(String issueKey)`
     - `assignIssue(String issueKey, User user)`
-    - `deleteAssignIssue(String issueKey)`
+    - `unassignIssue(String issueKey)`
     - `getTransitions(String issueKey)`
     - `doTransition(String issueKey, IssueTransition transition)`
   - Comments
