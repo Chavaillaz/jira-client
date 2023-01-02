@@ -27,7 +27,7 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
     /**
      * Creates a new abstract client based on Apache HTTP client.
      *
-     * @param client         The Java HTTP client to use
+     * @param client         The Apache HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication header (nullable)
      */
@@ -106,29 +106,24 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
     /**
      * Sends a multipart request and returns a domain object.
      *
-     * @param builder   The request builder
-     * @param multipart The multipart builder
-     * @param type      The domain object type class
-     * @param <T>       The domain object type
+     * @param requestBuilder   The request builder
+     * @param multipartBuilder The multipart builder
+     * @param type             The domain object type class
+     * @param <T>              The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     @SneakyThrows
-    protected <T> CompletableFuture<T> sendAsyncMultipartReturnDomain(SimpleRequestBuilder builder, MultipartEntityBuilder multipart, Class<T> type) {
+    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder requestBuilder, MultipartEntityBuilder multipartBuilder, Class<T> type) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String boundary = randomAlphanumeric(16);
-        multipart.setBoundary(boundary);
-        try (HttpEntity entity = multipart.build()) {
+        multipartBuilder.setBoundary(boundary);
+        try (HttpEntity entity = multipartBuilder.build()) {
             entity.writeTo(outputStream);
         }
-        SimpleHttpRequest request = builder
-                .setHeader(HEADER_CONTENT_TYPE, MULTIPART_FORM_DATA.getMimeType() + "; boundary=" + boundary)
+        requestBuilder.setHeader(HEADER_CONTENT_TYPE, MULTIPART_FORM_DATA.getMimeType() + "; boundary=" + boundary)
                 .setHeader(HEADER_ATLASSIAN_TOKEN, HEADER_ATLASSIAN_TOKEN_DISABLED)
-                .setBody(outputStream.toByteArray(), MULTIPART_FORM_DATA)
-                .build();
-        CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
-        return completableFuture.thenApply(SimpleHttpResponse::getBodyText)
-                .thenApply(body -> deserialize(body, type));
+                .setBody(outputStream.toByteArray(), MULTIPART_FORM_DATA);
+        return sendAsyncReturnDomain(requestBuilder, type);
     }
 
     public void close() throws Exception {

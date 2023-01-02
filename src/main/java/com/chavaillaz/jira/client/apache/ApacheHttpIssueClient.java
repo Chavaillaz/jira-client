@@ -180,7 +180,7 @@ public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpCl
     @Override
     @SneakyThrows
     public CompletableFuture<Attachments> addAttachment(String issueKey, File... files) {
-        return sendAsyncMultipartReturnDomain(requestBuilder(post(), URL_ISSUE_ATTACHMENTS, issueKey), multipartWithFiles(files), Attachments.class);
+        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUE_ATTACHMENTS, issueKey), multipartWithFiles(files), Attachments.class);
     }
 
     @Override

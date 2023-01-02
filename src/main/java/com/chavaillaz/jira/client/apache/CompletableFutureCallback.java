@@ -33,8 +33,9 @@ public class CompletableFutureCallback implements FutureCallback<SimpleHttpRespo
         log.debug("Request {} completed: {}", request, response);
         if (response.getCode() >= 300) {
             List<String> errors = new ArrayList<>();
-            if (isNotBlank(response.getBodyText())) {
-                errors = client.deserialize(response.getBodyText(), ErrorMessages.class);
+            String body = response.getBodyText();
+            if (isNotBlank(body)) {
+                errors = client.deserialize(body, ErrorMessages.class);
             }
             future.completeExceptionally(new ResponseException(response.getCode(), errors));
         } else {
