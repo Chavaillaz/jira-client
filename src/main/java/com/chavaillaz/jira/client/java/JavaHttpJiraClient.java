@@ -3,6 +3,7 @@ package com.chavaillaz.jira.client.java;
 import java.net.InetSocketAddress;
 import java.net.ProxySelector;
 import java.net.http.HttpClient;
+import java.time.Duration;
 import java.util.Optional;
 
 import com.chavaillaz.jira.client.AbstractJiraClient;
@@ -41,6 +42,7 @@ public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<Http
                 .proxy(Optional.ofNullable(this.proxy)
                         .map(config -> ProxySelector.of(new InetSocketAddress(config.getHost(), config.getPort())))
                         .orElse(ProxySelector.getDefault()))
+                .connectTimeout(Duration.ofSeconds(30))
                 .build();
     }
 

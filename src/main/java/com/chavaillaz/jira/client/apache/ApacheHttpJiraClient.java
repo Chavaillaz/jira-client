@@ -10,9 +10,13 @@ import com.chavaillaz.jira.client.SearchClient;
 import com.chavaillaz.jira.client.UserClient;
 import com.chavaillaz.jira.domain.Issue;
 import com.chavaillaz.jira.domain.Issues;
+import org.apache.hc.client5.http.config.ConnectionConfig;
+import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 import org.apache.hc.client5.http.impl.async.HttpAsyncClientBuilder;
+import org.apache.hc.client5.http.impl.nio.PoolingAsyncClientConnectionManagerBuilder;
 import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.util.Timeout;
 
 public class ApacheHttpJiraClient<I extends Issue> extends AbstractJiraClient<CloseableHttpAsyncClient, I> {
 
@@ -42,6 +46,15 @@ public class ApacheHttpJiraClient<I extends Issue> extends AbstractJiraClient<Cl
                 .setProxy(Optional.ofNullable(proxy)
                         .map(config -> new HttpHost(config.getScheme(), config.getHost(), config.getPort()))
                         .orElse(null))
+                .setConnectionManager(PoolingAsyncClientConnectionManagerBuilder.create()
+                        .setDefaultConnectionConfig(ConnectionConfig.custom()
+                                .setConnectTimeout(Timeout.ofSeconds(30))
+                                .setSocketTimeout(null)
+                                .build())
+                        .build())
+                .setDefaultRequestConfig(RequestConfig.custom()
+                        .setResponseTimeout(null)
+                        .build())
                 .build();
     }
 

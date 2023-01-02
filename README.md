@@ -16,6 +16,7 @@ Presently, it supports the two following HTTP clients:
 
 - Java HTTP client (included since Java 11)
 - Apache HTTP client 5.2
+- OkHttp client 4.10
 
 This library has been tested with a Jira instance version 8.20.
 
@@ -35,7 +36,7 @@ optional in the project, to avoid gathering them all together despite the fact t
 
 ### Java HTTP client
 
-It does not require any dependency.
+It does not require any dependency (already included in Java).
 
 ### Apache HTTP client
 
@@ -46,6 +47,18 @@ It requires the following dependency:
   <groupId>org.apache.httpcomponents.client5</groupId>
   <artifactId>httpclient5</artifactId>
   <version>5.2.x</version>
+</dependency>
+```
+
+### OkHttp client
+
+It requires the following dependency:
+
+```xml
+<dependency>
+    <groupId>com.squareup.okhttp3</groupId>
+    <artifactId>okhttp</artifactId>
+    <version>4.10.x</version>
 </dependency>
 ```
 
@@ -138,6 +151,7 @@ Instantiate the Jira client of your choice by giving your Jira instance URL:
 
 - [JavaHttpJiraClient](src/main/java/com/chavaillaz/jira/client/java/JavaHttpJiraClient.java)
 - [ApacheHttpJiraClient](src/main/java/com/chavaillaz/jira/client/apache/ApacheHttpJiraClient.java)
+- [OkHttpJiraClient](src/main/java/com/chavaillaz/jira/client/okhttp/OkHttpJiraClient.java)
 
 From this `JiraClient` you will then be able to get the desired clients described in the [feature chapter](#features).
 
@@ -146,7 +160,7 @@ password using `withAuthentication` method. If you need to connect via a proxy, 
 Below an example with Apache HTTP client using both methods:
 
 ```java
-JiraClient client = new ApacheHttpJiraClient("https://jira.mycompany.com")
+JiraClient<Issue> client = ApacheHttpJiraClient.jiraApacheClient("https://jira.mycompany.com")
     .withAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
@@ -204,9 +218,9 @@ public class CompanyIssue extends Issue {
 }
 ```
 
-Finally, specify it when getting the `JiraClient`. Please be aware that both solutions cannot live together as when you 
-have attributes in the class for your fields, it will then not be in  the `customFields` map (containing all the 
-unmapped fields).
+Finally, specify it when instantiating the `JiraClient`. Please be aware that both solutions cannot live together as 
+when you have attributes in the class for your fields, it will then not be in the `customFields` map (containing all 
+the unmapped fields).
 
 ## Contributing
 

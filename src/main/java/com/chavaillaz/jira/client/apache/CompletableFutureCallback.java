@@ -11,6 +11,7 @@ import com.chavaillaz.jira.domain.ErrorMessages;
 import com.chavaillaz.jira.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.core5.concurrent.FutureCallback;
 
@@ -24,11 +25,12 @@ import org.apache.hc.core5.concurrent.FutureCallback;
 public class CompletableFutureCallback implements FutureCallback<SimpleHttpResponse> {
 
     private final AbstractHttpClient client;
+    private final SimpleHttpRequest request;
     private final CompletableFuture<SimpleHttpResponse> future;
 
     @Override
     public void completed(SimpleHttpResponse response) {
-        log.debug("Request completed: {}", response);
+        log.debug("Request {} completed: {}", request, response);
         if (response.getCode() >= 300) {
             List<String> errors = new ArrayList<>();
             if (isNotBlank(response.getBodyText())) {
@@ -42,13 +44,13 @@ public class CompletableFutureCallback implements FutureCallback<SimpleHttpRespo
 
     @Override
     public void failed(Exception exception) {
-        log.debug("Request failed: {}", exception.getMessage());
+        log.debug("Request {} failed: {}", request, exception.getMessage());
         future.completeExceptionally(exception);
     }
 
     @Override
     public void cancelled() {
-        log.debug("Request cancelled");
+        log.debug("Request {} cancelled", request);
         future.cancel(false);
     }
 

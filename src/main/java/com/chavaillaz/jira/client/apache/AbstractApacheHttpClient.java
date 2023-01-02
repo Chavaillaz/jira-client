@@ -12,6 +12,7 @@ import com.chavaillaz.jira.client.AbstractHttpClient;
 import com.fasterxml.jackson.databind.JavaType;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpResponse;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
 import org.apache.hc.client5.http.entity.mime.MultipartEntityBuilder;
@@ -53,36 +54,37 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
     /**
      * Sends a request and discards the received content.
      *
-     * @param request The request builder
+     * @param builder The request builder
      * @return A {@link CompletableFuture} without content
      */
-    protected CompletableFuture<Void> sendAsyncReturnVoid(SimpleRequestBuilder request) {
-        return sendAsyncReturnDomain(request, Void.class);
+    protected CompletableFuture<Void> sendAsyncReturnVoid(SimpleRequestBuilder builder) {
+        return sendAsyncReturnDomain(builder, Void.class);
     }
 
     /**
      * Sends a request and returns a domain object.
      *
-     * @param request The request builder
+     * @param builder The request builder
      * @param type    The domain object type class
      * @param <T>     The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder request, Class<T> type) {
-        return sendAsyncReturnDomain(request, objectMapper.constructType(type));
+    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder builder, Class<T> type) {
+        return sendAsyncReturnDomain(builder, objectMapper.constructType(type));
     }
 
     /**
      * Sends a request and returns a domain object.
      *
-     * @param request The request builder
+     * @param builder The request builder
      * @param type    The domain object type class
      * @param <T>     The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder request, JavaType type) {
+    protected <T> CompletableFuture<T> sendAsyncReturnDomain(SimpleRequestBuilder builder, JavaType type) {
+        SimpleHttpRequest request = builder.build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request.build(), new CompletableFutureCallback(this, completableFuture));
+        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyText)
                 .thenApply(body -> deserialize(body, type));
     }
@@ -90,12 +92,13 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
     /**
      * Sends a request and returns an input stream.
      *
-     * @param request The request builder
+     * @param builder The request builder
      * @return A {@link CompletableFuture} with the input stream
      */
-    protected CompletableFuture<InputStream> sendAsyncReturnStream(SimpleRequestBuilder request) {
+    protected CompletableFuture<InputStream> sendAsyncReturnStream(SimpleRequestBuilder builder) {
+        SimpleHttpRequest request = builder.build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request.build(), new CompletableFutureCallback(this, completableFuture));
+        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyBytes)
                 .thenApply(ByteArrayInputStream::new);
     }
@@ -103,25 +106,27 @@ public class AbstractApacheHttpClient extends AbstractHttpClient {
     /**
      * Sends a multipart request and returns a domain object.
      *
-     * @param request   The request builder
+     * @param builder   The request builder
      * @param multipart The multipart builder
      * @param type      The domain object type class
      * @param <T>       The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
     @SneakyThrows
-    protected <T> CompletableFuture<T> sendAsyncMultipartReturnDomain(SimpleRequestBuilder request, MultipartEntityBuilder multipart, Class<T> type) {
+    protected <T> CompletableFuture<T> sendAsyncMultipartReturnDomain(SimpleRequestBuilder builder, MultipartEntityBuilder multipart, Class<T> type) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         String boundary = randomAlphanumeric(16);
         multipart.setBoundary(boundary);
         try (HttpEntity entity = multipart.build()) {
             entity.writeTo(outputStream);
         }
-        request.setHeader(HEADER_CONTENT_TYPE, MULTIPART_FORM_DATA.getMimeType() + "; boundary=" + boundary)
+        SimpleHttpRequest request = builder
+                .setHeader(HEADER_CONTENT_TYPE, MULTIPART_FORM_DATA.getMimeType() + "; boundary=" + boundary)
                 .setHeader(HEADER_ATLASSIAN_TOKEN, HEADER_ATLASSIAN_TOKEN_DISABLED)
-                .setBody(outputStream.toByteArray(), MULTIPART_FORM_DATA);
+                .setBody(outputStream.toByteArray(), MULTIPART_FORM_DATA)
+                .build();
         CompletableFuture<SimpleHttpResponse> completableFuture = new CompletableFuture<>();
-        client.execute(request.build(), new CompletableFutureCallback(this, completableFuture));
+        client.execute(request, new CompletableFutureCallback(this, request, completableFuture));
         return completableFuture.thenApply(SimpleHttpResponse::getBodyText)
                 .thenApply(body -> deserialize(body, type));
     }
