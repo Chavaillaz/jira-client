@@ -1,7 +1,11 @@
 # Jira Client
 
+[Jira]: https://docs.atlassian.com/software/jira/docs/api/REST/8.20.0/
 [CompletableFuture]: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html
 [Jackson]: https://github.com/FasterXML/jackson
+[JavaHttp]: https://openjdk.org/groups/net/httpclient/intro.html
+[ApacheHttp]: https://hc.apache.org/httpcomponents-client-5.2.x/
+[OkHttp]: https://square.github.io/okhttp/
 
 ![Dependency Check](https://github.com/chavaillaz/jira-client/actions/workflows/snyk.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/jira-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/jira-client)
@@ -12,13 +16,13 @@ extendable, allowing you to have custom clients and issues classes. All requests
 return a [CompletableFuture][CompletableFuture]. The serialization and deserialization of domain objects are performed 
 using [Jackson][Jackson].
 
-Presently, it supports the two following HTTP clients:
+Presently, it supports the following HTTP clients:
 
-- Java HTTP client (included since Java 11)
-- Apache HTTP client 5.2
-- OkHttp client 4.10
+- [Java HTTP client][JavaHttp] (included since Java 11)
+- [Apache HTTP client][ApacheHttp] 5.2
+- [OkHttp client][OkHttp] 4.10
 
-This library has been tested with a Jira instance version 8.20.
+Note that this library has been tested with a [Jira instance version 8.20][Jira].
 
 ## Installation
 
@@ -36,7 +40,7 @@ optional in the project, to avoid gathering them all together despite the fact t
 
 ### Java HTTP client
 
-It does not require any dependency (already included in Java).
+It does not require any dependency (already in Java).
 
 ### Apache HTTP client
 
@@ -147,23 +151,35 @@ It requires the following dependency:
 
 ### Client instantiation
 
-Instantiate the Jira client of your choice by giving your Jira instance URL:
+Instantiate the Jira client of your choice by giving your Jira instance URL. Depending on your needs, you may also want 
+to add authentication with a personal access token (PAT) or with username and password using `withAuthentication` 
+method. If you need to connect via a proxy, you can specify it with `withProxy`. Below an example for each HTTP client:
 
 - [JavaHttpJiraClient](src/main/java/com/chavaillaz/jira/client/java/JavaHttpJiraClient.java)
+
+```java
+JiraClient<Issue> client = JavaHttpJiraClient.jiraJavaClient("https://jira.mycompany.com")
+    .withAuthentication("myUsername","myPassword")
+    .withProxy("http://proxy.mycompany.com:1234");
+```
+
 - [ApacheHttpJiraClient](src/main/java/com/chavaillaz/jira/client/apache/ApacheHttpJiraClient.java)
-- [OkHttpJiraClient](src/main/java/com/chavaillaz/jira/client/okhttp/OkHttpJiraClient.java)
-
-From this `JiraClient` you will then be able to get the desired clients described in the [feature chapter](#features).
-
-Depending on your needs, you may also want to add authentication with a personal access token (PAT) or with username and 
-password using `withAuthentication` method. If you need to connect via a proxy, you can specify it with `withProxy`. 
-Below an example with Apache HTTP client using both methods:
 
 ```java
 JiraClient<Issue> client = ApacheHttpJiraClient.jiraApacheClient("https://jira.mycompany.com")
     .withAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
+
+- [OkHttpJiraClient](src/main/java/com/chavaillaz/jira/client/okhttp/OkHttpJiraClient.java)
+
+```java
+JiraClient<Issue> client = OkHttpJiraClient.jiraOkHttpClient("https://jira.mycompany.com")
+    .withAuthentication("myUsername","myPassword")
+    .withProxy("http://proxy.mycompany.com:1234");
+```
+
+From this `JiraClient` you will then be able to get the desired clients described in the [feature chapter](#features).
 
 ### Iterable results
 
@@ -184,7 +200,7 @@ If your project has custom fields for issues, you have two choices in order to g
 #### Use attribute containing all custom fields
 
 First possibility, simply use `issue.getFields().getCustomFields().get("customfield_12345")` to get the field and
-`issue.getFields().getCustomFields().put("customfield_12345", businessEngineer)` to set a value for this field.
+`issue.getFields().getCustomFields().put("customfield_12345", value)` to set a value for this field.
 
 #### Reimplement fields and issue class
 
@@ -218,9 +234,14 @@ public class CompanyIssue extends Issue {
 }
 ```
 
-Finally, specify it when instantiating the `JiraClient`. Please be aware that both solutions cannot live together as 
-when you have attributes in the class for your fields, it will then not be in the `customFields` map (containing all 
-the unmapped fields).
+Finally, specify it when instantiating the `JiraClient`, for example with Apache HTTP client:
+
+```java
+JiraClient<CompanyIssue> client = new ApacheHttpJiraClient<>("https://jira.mycompany.com", CompanyIssue.class);
+```
+
+Please be aware that both solutions cannot live together as when you have attributes in the class for your fields, it 
+will then not be in the `customFields` map (containing all the unmapped fields).
 
 ## Contributing
 
