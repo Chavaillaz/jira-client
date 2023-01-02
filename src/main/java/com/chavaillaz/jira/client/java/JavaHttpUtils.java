@@ -22,7 +22,7 @@ public class JavaHttpUtils {
     /**
      * Creates a body publisher for a multipart content.
      *
-     * @param data     The data to store
+     * @param data     The data to store in the request
      * @param boundary The boundary to separate them
      * @param charset  The charset to use
      * @return The corresponding body publisher

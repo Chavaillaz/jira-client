@@ -10,8 +10,6 @@ import java.io.File;
 import java.io.InputStream;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.IssueClient;
@@ -62,17 +60,17 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> updateIssue(T issue) {
-        return sendAsync(requestBuilder(URL_ISSUE, issue.getKey()).PUT(body(issue)));
+        return sendAsync(requestBuilder(URL_ISSUE, issue.getKey()).PUT(body(issue)), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteIssue(String issueKey) {
-        return sendAsync(requestBuilder(URL_ISSUE, issueKey).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE, issueKey).DELETE(), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> assignIssue(String issueKey, User user) {
-        return sendAsync(requestBuilder(URL_ISSUE_ASSIGNEE, issueKey).PUT(body(user)));
+        return sendAsync(requestBuilder(URL_ISSUE_ASSIGNEE, issueKey).PUT(body(user)), Void.class);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition) {
-        return sendAsync(requestBuilder(URL_ISSUE_TRANSITIONS, issueKey).POST(body(transition)));
+        return sendAsync(requestBuilder(URL_ISSUE_TRANSITIONS, issueKey).POST(body(transition)), Void.class);
     }
 
     @Override
@@ -107,12 +105,12 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> deleteComment(String issueKey, String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENT, issueKey, id).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENT, issueKey, id).DELETE(), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> addVote(String issueKey) {
-        return sendAsync(requestBuilder(URL_ISSUE_VOTES, issueKey).POST(noBody()));
+        return sendAsync(requestBuilder(URL_ISSUE_VOTES, issueKey).POST(noBody()), Void.class);
     }
 
     @Override
@@ -127,12 +125,12 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> addWatcher(String issueKey, String username) {
-        return sendAsync(requestBuilder(URL_ISSUE_WATCHERS, issueKey).POST(body(username)));
+        return sendAsync(requestBuilder(URL_ISSUE_WATCHERS, issueKey).POST(body(username)), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteWatcher(String issueKey, String username) {
-        return sendAsync(requestBuilder(URL_ISSUE_WATCHER, issueKey, username).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE_WATCHER, issueKey, username).DELETE(), Void.class);
     }
 
     @Override
@@ -157,7 +155,7 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> deleteWorkLog(String issueKey, String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_WORK_LOG, issueKey, id).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE_WORK_LOG, issueKey, id).DELETE(), Void.class);
     }
 
     @Override
@@ -167,9 +165,7 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<InputStream> getAttachmentContent(String url) {
-        return client.sendAsync(requestBuilder(url).GET().build(), BodyHandlers.ofInputStream())
-                .thenApply(this::checkResponse)
-                .thenApply(HttpResponse::body);
+        return sendAsync(requestBuilder(url).GET());
     }
 
     @Override
@@ -185,7 +181,7 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> deleteAttachment(String id) {
-        return sendAsync(requestBuilder(URL_ATTACHMENT, id).DELETE());
+        return sendAsync(requestBuilder(URL_ATTACHMENT, id).DELETE(), Void.class);
     }
 
     @Override
@@ -205,12 +201,12 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> updateRemoteLink(String issueKey, RemoteLink remoteLink) {
-        return sendAsync(requestBuilder(URL_ISSUE_REMOTE_LINK, issueKey, remoteLink.getId()).PUT(body(remoteLink)));
+        return sendAsync(requestBuilder(URL_ISSUE_REMOTE_LINK, issueKey, remoteLink.getId()).PUT(body(remoteLink)), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteRemoteLink(String issueKey, String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_REMOTE_LINK, issueKey, id).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE_REMOTE_LINK, issueKey, id).DELETE(), Void.class);
     }
 
     @Override
@@ -220,12 +216,12 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
 
     @Override
     public CompletableFuture<Void> addIssueLink(Link link) {
-        return sendAsync(requestBuilder(URL_ISSUE_LINKS).POST(body(link)));
+        return sendAsync(requestBuilder(URL_ISSUE_LINKS).POST(body(link)), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteIssueLink(String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_LINK, id).DELETE());
+        return sendAsync(requestBuilder(URL_ISSUE_LINK, id).DELETE(), Void.class);
     }
 
 }

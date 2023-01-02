@@ -55,7 +55,7 @@ public class JavaHttpSearchClient<T extends List<? extends Issue>> extends Abstr
 
     @Override
     public CompletableFuture<Void> deleteFilter(String id) {
-        return sendAsync(requestBuilder(URL_FILTER, id).DELETE());
+        return sendAsync(requestBuilder(URL_FILTER, id).DELETE(), Void.class);
     }
 
 }

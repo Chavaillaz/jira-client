@@ -50,185 +50,185 @@ public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpCl
 
     @Override
     public CompletableFuture<Identity> addIssue(T issue) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUES)
+        return sendAsync(requestBuilder(post(), URL_ISSUES)
                 .setBody(serialize(issue), APPLICATION_JSON), Identity.class);
     }
 
     @Override
     public CompletableFuture<T> getIssue(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_DETAILS, issueKey), issueType);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_DETAILS, issueKey), issueType);
     }
 
     @Override
     public CompletableFuture<Void> updateIssue(T issue) {
-        return sendAsyncReturnVoid(requestBuilder(put(), URL_ISSUE, issue.getKey())
-                .setBody(serialize(issue), APPLICATION_JSON));
+        return sendAsync(requestBuilder(put(), URL_ISSUE, issue.getKey())
+                .setBody(serialize(issue), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteIssue(String issueKey) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE, issueKey));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE, issueKey), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> assignIssue(String issueKey, User user) {
-        return sendAsyncReturnVoid(requestBuilder(put(), URL_ISSUE_ASSIGNEE, issueKey)
-                .setBody(serialize(user), APPLICATION_JSON));
+        return sendAsync(requestBuilder(put(), URL_ISSUE_ASSIGNEE, issueKey)
+                .setBody(serialize(user), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Transitions> getTransitions(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_TRANSITIONS, issueKey), Transitions.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_TRANSITIONS, issueKey), Transitions.class);
     }
 
     @Override
     public CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition) {
-        return sendAsyncReturnVoid(requestBuilder(post(), URL_ISSUE_TRANSITIONS, issueKey)
-                .setBody(serialize(transition), APPLICATION_JSON));
+        return sendAsync(requestBuilder(post(), URL_ISSUE_TRANSITIONS, issueKey)
+                .setBody(serialize(transition), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults), Comments.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults), Comments.class);
     }
 
     @Override
     public CompletableFuture<Comment> getComment(String issueKey, String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_COMMENT, issueKey, id), Comment.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENT, issueKey, id), Comment.class);
     }
 
     @Override
     public CompletableFuture<Comment> addComment(String issueKey, Comment comment) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUE_COMMENTS, issueKey)
+        return sendAsync(requestBuilder(post(), URL_ISSUE_COMMENTS, issueKey)
                 .setBody(serialize(comment), APPLICATION_JSON), Comment.class);
     }
 
     @Override
     public CompletableFuture<Comment> updateComment(String issueKey, Comment comment) {
-        return sendAsyncReturnDomain(requestBuilder(put(), URL_ISSUE_COMMENT, issueKey, comment.getId())
+        return sendAsync(requestBuilder(put(), URL_ISSUE_COMMENT, issueKey, comment.getId())
                 .setBody(serialize(comment), APPLICATION_JSON), Comment.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteComment(String issueKey, String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE_COMMENT, issueKey, id));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE_COMMENT, issueKey, id), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> addVote(String issueKey) {
-        return sendAsyncReturnVoid(requestBuilder(post(), URL_ISSUE_VOTES, issueKey));
+        return sendAsync(requestBuilder(post(), URL_ISSUE_VOTES, issueKey), Void.class);
     }
 
     @Override
     public CompletableFuture<Votes> getVotes(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_VOTES, issueKey), Votes.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_VOTES, issueKey), Votes.class);
     }
 
     @Override
     public CompletableFuture<Watchers> getWatchers(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_WATCHERS, issueKey), Watchers.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_WATCHERS, issueKey), Watchers.class);
     }
 
     @Override
     public CompletableFuture<Void> addWatcher(String issueKey, String username) {
-        return sendAsyncReturnVoid(requestBuilder(post(), URL_ISSUE_WATCHERS, issueKey)
-                .setBody(serialize(username), APPLICATION_JSON));
+        return sendAsync(requestBuilder(post(), URL_ISSUE_WATCHERS, issueKey)
+                .setBody(serialize(username), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteWatcher(String issueKey, String username) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE_WATCHER, issueKey, username));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE_WATCHER, issueKey, username), Void.class);
     }
 
     @Override
     public CompletableFuture<WorkLog> addWorkLog(String issueKey, WorkLog workLog) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUE_WORK_LOGS, issueKey)
+        return sendAsync(requestBuilder(post(), URL_ISSUE_WORK_LOGS, issueKey)
                 .setBody(serialize(workLog), APPLICATION_JSON), WorkLog.class);
     }
 
     @Override
     public CompletableFuture<WorkLogs> getWorkLogs(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_WORK_LOGS, issueKey), WorkLogs.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_WORK_LOGS, issueKey), WorkLogs.class);
     }
 
     @Override
     public CompletableFuture<WorkLog> getWorkLog(String issueKey, String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_WORK_LOG, issueKey, id), WorkLog.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_WORK_LOG, issueKey, id), WorkLog.class);
     }
 
     @Override
     public CompletableFuture<WorkLog> updateWorkLog(String issueKey, WorkLog workLog) {
-        return sendAsyncReturnDomain(requestBuilder(put(), URL_ISSUE_WORK_LOG, issueKey, workLog.getId())
+        return sendAsync(requestBuilder(put(), URL_ISSUE_WORK_LOG, issueKey, workLog.getId())
                 .setBody(serialize(workLog), APPLICATION_JSON), WorkLog.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteWorkLog(String issueKey, String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE_WORK_LOG, issueKey, id));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE_WORK_LOG, issueKey, id), Void.class);
     }
 
     @Override
     public CompletableFuture<Attachment> getAttachment(String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ATTACHMENT, id), Attachment.class);
+        return sendAsync(requestBuilder(get(), URL_ATTACHMENT, id), Attachment.class);
     }
 
     @Override
     public CompletableFuture<InputStream> getAttachmentContent(String url) {
-        return sendAsyncReturnStream(requestBuilder(get(), url));
+        return sendAsync(requestBuilder(get(), url));
     }
 
     @Override
     @SneakyThrows
     public CompletableFuture<Attachments> addAttachment(String issueKey, File... files) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUE_ATTACHMENTS, issueKey), multipartWithFiles(files), Attachments.class);
+        return sendAsync(requestBuilder(post(), URL_ISSUE_ATTACHMENTS, issueKey), multipartWithFiles(files), Attachments.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteAttachment(String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ATTACHMENT, id));
+        return sendAsync(requestBuilder(delete(), URL_ATTACHMENT, id), Void.class);
     }
 
     @Override
     public CompletableFuture<RemoteLinks> getRemoteLinks(String issueKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_REMOTE_LINKS, issueKey), RemoteLinks.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_REMOTE_LINKS, issueKey), RemoteLinks.class);
     }
 
     @Override
     public CompletableFuture<RemoteLink> getRemoteLink(String issueKey, String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_REMOTE_LINK, issueKey, id), RemoteLink.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_REMOTE_LINK, issueKey, id), RemoteLink.class);
     }
 
     @Override
     public CompletableFuture<Identity> addRemoteLink(String issueKey, RemoteLink remoteLink) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_ISSUE_REMOTE_LINKS, issueKey)
+        return sendAsync(requestBuilder(post(), URL_ISSUE_REMOTE_LINKS, issueKey)
                 .setBody(serialize(remoteLink), APPLICATION_JSON), Identity.class);
     }
 
     @Override
     public CompletableFuture<Void> updateRemoteLink(String issueKey, RemoteLink remoteLink) {
-        return sendAsyncReturnVoid(requestBuilder(put(), URL_ISSUE_REMOTE_LINK, issueKey, remoteLink.getId())
-                .setBody(serialize(remoteLink), APPLICATION_JSON));
+        return sendAsync(requestBuilder(put(), URL_ISSUE_REMOTE_LINK, issueKey, remoteLink.getId())
+                .setBody(serialize(remoteLink), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteRemoteLink(String issueKey, String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE_REMOTE_LINK, issueKey, id));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE_REMOTE_LINK, issueKey, id), Void.class);
     }
 
     @Override
     public CompletableFuture<Link> getIssueLink(String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_ISSUE_LINK, id), Link.class);
+        return sendAsync(requestBuilder(get(), URL_ISSUE_LINK, id), Link.class);
     }
 
     @Override
     public CompletableFuture<Void> addIssueLink(Link link) {
-        return sendAsyncReturnVoid(requestBuilder(post(), URL_ISSUE_LINKS)
-                .setBody(serialize(link), APPLICATION_JSON));
+        return sendAsync(requestBuilder(post(), URL_ISSUE_LINKS)
+                .setBody(serialize(link), APPLICATION_JSON), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteIssueLink(String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_ISSUE_LINK, id));
+        return sendAsync(requestBuilder(delete(), URL_ISSUE_LINK, id), Void.class);
     }
 
 }

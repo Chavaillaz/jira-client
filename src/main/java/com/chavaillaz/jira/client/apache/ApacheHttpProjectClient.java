@@ -34,49 +34,49 @@ public class ApacheHttpProjectClient extends AbstractApacheHttpClient implements
 
     @Override
     public CompletableFuture<Identity> addProject(ProjectChange project) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_PROJECTS)
+        return sendAsync(requestBuilder(post(), URL_PROJECTS)
                 .setBody(serialize(project), APPLICATION_JSON), Identity.class);
     }
 
     @Override
     public CompletableFuture<Projects> getProjects(boolean includeArchived, String expand) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECTS_DETAILS, includeArchived, expand), Projects.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECTS_DETAILS, includeArchived, expand), Projects.class);
     }
 
     @Override
     public CompletableFuture<Project> getProject(String projectKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECT, projectKey), Project.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECT, projectKey), Project.class);
     }
 
     @Override
     public CompletableFuture<Versions> getProjectVersions(String projectKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECT_VERSIONS, projectKey), Versions.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECT_VERSIONS, projectKey), Versions.class);
     }
 
     @Override
     public CompletableFuture<Components> getProjectComponents(String projectKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECT_COMPONENTS, projectKey), Components.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECT_COMPONENTS, projectKey), Components.class);
     }
 
     @Override
     public CompletableFuture<Statuses> getProjectStatuses(String projectKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECT_STATUSES, projectKey), Statuses.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECT_STATUSES, projectKey), Statuses.class);
     }
 
     @Override
     public CompletableFuture<Roles> getProjectRoles(String projectKey) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_PROJECT_ROLES, projectKey), Roles.class);
+        return sendAsync(requestBuilder(get(), URL_PROJECT_ROLES, projectKey), Roles.class);
     }
 
     @Override
     public CompletableFuture<Project> updateProject(String projectKey, ProjectChange project) {
-        return sendAsyncReturnDomain(requestBuilder(put(), URL_PROJECT, projectKey)
+        return sendAsync(requestBuilder(put(), URL_PROJECT, projectKey)
                 .setBody(serialize(project), APPLICATION_JSON), Project.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteProject(String projectKey) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_PROJECT, projectKey));
+        return sendAsync(requestBuilder(delete(), URL_PROJECT, projectKey), Void.class);
     }
 
 }

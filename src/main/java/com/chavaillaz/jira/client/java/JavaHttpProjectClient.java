@@ -68,7 +68,7 @@ public class JavaHttpProjectClient extends AbstractJavaHttpClient implements Pro
 
     @Override
     public CompletableFuture<Void> deleteProject(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT, projectKey).DELETE());
+        return sendAsync(requestBuilder(URL_PROJECT, projectKey).DELETE(), Void.class);
     }
 
 }

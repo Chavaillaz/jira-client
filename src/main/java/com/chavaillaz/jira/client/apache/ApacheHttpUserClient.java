@@ -24,23 +24,23 @@ public class ApacheHttpUserClient extends AbstractApacheHttpClient implements Us
 
     @Override
     public CompletableFuture<Users> getUsers(String search, Integer startAt, Integer maxResults, Boolean includeInactive) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_USERS_SEARCH, search, startAt, maxResults, includeInactive), Users.class);
+        return sendAsync(requestBuilder(get(), URL_USERS_SEARCH, search, startAt, maxResults, includeInactive), Users.class);
     }
 
     @Override
     public CompletableFuture<Users> getAssignableUsers(String search, String key, Integer startAt, Integer maxResults, Boolean includeInactive) {
         String url = key.contains("-") ? URL_USERS_ISSUE_ASSIGNABLE : URL_USERS_PROJECT_ASSIGNABLE;
-        return sendAsyncReturnDomain(requestBuilder(get(), url, search, key, startAt, maxResults, includeInactive), Users.class);
+        return sendAsync(requestBuilder(get(), url, search, key, startAt, maxResults, includeInactive), Users.class);
     }
 
     @Override
     public CompletableFuture<User> getUser(String username) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_USER, username), User.class);
+        return sendAsync(requestBuilder(get(), URL_USER, username), User.class);
     }
 
     @Override
     public CompletableFuture<User> getCurrentUser() {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_CURRENT_USER), User.class);
+        return sendAsync(requestBuilder(get(), URL_CURRENT_USER), User.class);
     }
 
 }

@@ -2,6 +2,7 @@ package com.chavaillaz.jira.client.java;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
+import java.io.InputStream;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
@@ -76,41 +77,41 @@ public class AbstractJavaHttpClient extends AbstractHttpClient {
     }
 
     /**
-     * Sends the given request and discards the received content.
+     * Sends a request and returns a domain object.
      *
-     * @param request The request builder
-     * @return A {@link CompletableFuture} without content
+     * @param requestBuilder The request builder
+     * @param returnType     The content type of the content received
+     * @param <T>            The content type
+     * @return A {@link CompletableFuture} with the deserialized response body
      */
-    protected CompletableFuture<Void> sendAsync(HttpRequest.Builder request) {
-        return client.sendAsync(request.build(), BodyHandlers.discarding())
+    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder requestBuilder, Class<T> returnType) {
+        return sendAsync(requestBuilder, objectMapper.constructType(returnType));
+    }
+
+    /**
+     * Sends a request and returns a domain object.
+     *
+     * @param requestBuilder The request builder
+     * @param returnType     The content type of the content received
+     * @param <T>            The content type
+     * @return A {@link CompletableFuture} with the deserialized response body
+     */
+    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder requestBuilder, JavaType returnType) {
+        return client.sendAsync(requestBuilder.build(), BodyHandlers.ofString())
+                .thenApply(this::checkResponse)
+                .thenApply(response -> deserialize(response.body(), returnType));
+    }
+
+    /**
+     * Sends a request and returns an input stream.
+     *
+     * @param requestBuilder The request builder
+     * @return A {@link CompletableFuture} with the input stream
+     */
+    protected CompletableFuture<InputStream> sendAsync(HttpRequest.Builder requestBuilder) {
+        return client.sendAsync(requestBuilder.build(), BodyHandlers.ofInputStream())
                 .thenApply(this::checkResponse)
                 .thenApply(HttpResponse::body);
-    }
-
-    /**
-     * Sends the given request and deserializes the received content.
-     *
-     * @param request The request builder
-     * @param type    The content type of the content received
-     * @param <T>     The content type
-     * @return A {@link CompletableFuture} with the deserialized response body
-     */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder request, Class<T> type) {
-        return sendAsync(request, objectMapper.constructType(type));
-    }
-
-    /**
-     * Sends the given request and deserializes the received content.
-     *
-     * @param request The request builder
-     * @param type    The content type of the content received
-     * @param <T>     The content type
-     * @return A {@link CompletableFuture} with the deserialized response body
-     */
-    protected <T> CompletableFuture<T> sendAsync(HttpRequest.Builder request, JavaType type) {
-        return client.sendAsync(request.build(), BodyHandlers.ofString())
-                .thenApply(this::checkResponse)
-                .thenApply(response -> deserialize(response.body(), type));
     }
 
     public void close() {

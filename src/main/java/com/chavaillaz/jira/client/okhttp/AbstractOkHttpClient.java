@@ -69,50 +69,40 @@ public class AbstractOkHttpClient extends AbstractHttpClient {
     }
 
     /**
-     * Sends a request and discards the received content.
+     * Sends a request and returns a domain object.
      *
-     * @param builder The request builder
-     * @return A {@link CompletableFuture} without content
+     * @param requestBuilder The request builder
+     * @param returnType     The domain object type class
+     * @param <T>            The domain object type
+     * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected CompletableFuture<Void> sendAsyncReturnVoid(Request.Builder builder) {
-        return sendAsyncReturnDomain(builder, Void.class);
+    protected <T> CompletableFuture<T> sendAsync(Request.Builder requestBuilder, Class<T> returnType) {
+        return sendAsync(requestBuilder, objectMapper.constructType(returnType));
     }
 
     /**
      * Sends a request and returns a domain object.
      *
-     * @param builder The request builder
-     * @param type    The domain object type class
-     * @param <T>     The domain object type
+     * @param requestBuilder The request builder
+     * @param returnType     The domain object type class
+     * @param <T>            The domain object type
      * @return A {@link CompletableFuture} with the deserialized domain object
      */
-    protected <T> CompletableFuture<T> sendAsyncReturnDomain(Request.Builder builder, Class<T> type) {
-        return sendAsyncReturnDomain(builder, objectMapper.constructType(type));
-    }
-
-    /**
-     * Sends a request and returns a domain object.
-     *
-     * @param builder The request builder
-     * @param type    The domain object type class
-     * @param <T>     The domain object type
-     * @return A {@link CompletableFuture} with the deserialized domain object
-     */
-    protected <T> CompletableFuture<T> sendAsyncReturnDomain(Request.Builder builder, JavaType type) {
+    protected <T> CompletableFuture<T> sendAsync(Request.Builder requestBuilder, JavaType returnType) {
         CompletableFuture<Response> completableFuture = new CompletableFuture<>();
-        client.newCall(builder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
-        return completableFuture.thenApply(response -> handleResponse(response, type));
+        client.newCall(requestBuilder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
+        return completableFuture.thenApply(response -> handleResponse(response, returnType));
     }
 
     /**
      * Sends a request and returns an input stream.
      *
-     * @param builder The request builder
+     * @param requestBuilder The request builder
      * @return A {@link CompletableFuture} with the input stream
      */
-    protected CompletableFuture<InputStream> sendAsyncReturnStream(Request.Builder builder) {
+    protected CompletableFuture<InputStream> sendAsync(Request.Builder requestBuilder) {
         CompletableFuture<Response> completableFuture = new CompletableFuture<>();
-        client.newCall(builder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
+        client.newCall(requestBuilder.build()).enqueue(new CompletableFutureCallback(this, completableFuture));
         return completableFuture.thenApply(Response::body)
                 .thenApply(ResponseBody::byteStream);
     }

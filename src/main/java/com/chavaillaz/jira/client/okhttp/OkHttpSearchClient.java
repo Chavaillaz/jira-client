@@ -30,32 +30,32 @@ public class OkHttpSearchClient<T extends List<? extends Issue>> extends Abstrac
 
     @Override
     public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand) {
-        return sendAsyncReturnDomain(requestBuilder(URL_SEARCH).post(body(Query.from(jql, startAt, maxResults, expand))), issuesListType);
+        return sendAsync(requestBuilder(URL_SEARCH).post(body(Query.from(jql, startAt, maxResults, expand))), issuesListType);
     }
 
     @Override
     public CompletableFuture<Filter> addFilter(Filter filter) {
-        return sendAsyncReturnDomain(requestBuilder(URL_FILTERS).post(body(filter)), Filter.class);
+        return sendAsync(requestBuilder(URL_FILTERS).post(body(filter)), Filter.class);
     }
 
     @Override
     public CompletableFuture<Filter> getFilter(String id) {
-        return sendAsyncReturnDomain(requestBuilder(URL_FILTER, id).get(), Filter.class);
+        return sendAsync(requestBuilder(URL_FILTER, id).get(), Filter.class);
     }
 
     @Override
     public CompletableFuture<Filters> getFavoriteFilters() {
-        return sendAsyncReturnDomain(requestBuilder(URL_FILTER_FAVOURITE).get(), Filters.class);
+        return sendAsync(requestBuilder(URL_FILTER_FAVOURITE).get(), Filters.class);
     }
 
     @Override
     public CompletableFuture<Filter> updateFilter(String id, Filter filter) {
-        return sendAsyncReturnDomain(requestBuilder(URL_FILTER, id).put(body(filter)), Filter.class);
+        return sendAsync(requestBuilder(URL_FILTER, id).put(body(filter)), Filter.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteFilter(String id) {
-        return sendAsyncReturnVoid(requestBuilder(URL_FILTER, id).delete());
+        return sendAsync(requestBuilder(URL_FILTER, id).delete(), Void.class);
     }
 
 }

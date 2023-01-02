@@ -36,35 +36,35 @@ public class ApacheHttpSearchClient<T extends List<? extends Issue>> extends Abs
 
     @Override
     public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_SEARCH)
+        return sendAsync(requestBuilder(post(), URL_SEARCH)
                 .setBody(serialize(Query.from(jql, startAt, maxResults, expand)), APPLICATION_JSON), issuesListType);
     }
 
     @Override
     public CompletableFuture<Filter> addFilter(Filter filter) {
-        return sendAsyncReturnDomain(requestBuilder(post(), URL_FILTERS)
+        return sendAsync(requestBuilder(post(), URL_FILTERS)
                 .setBody(serialize(filter), APPLICATION_JSON), Filter.class);
     }
 
     @Override
     public CompletableFuture<Filter> getFilter(String id) {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_FILTER, id), Filter.class);
+        return sendAsync(requestBuilder(get(), URL_FILTER, id), Filter.class);
     }
 
     @Override
     public CompletableFuture<Filters> getFavoriteFilters() {
-        return sendAsyncReturnDomain(requestBuilder(get(), URL_FILTER_FAVOURITE), Filters.class);
+        return sendAsync(requestBuilder(get(), URL_FILTER_FAVOURITE), Filters.class);
     }
 
     @Override
     public CompletableFuture<Filter> updateFilter(String id, Filter filter) {
-        return sendAsyncReturnDomain(requestBuilder(put(), URL_FILTER, id)
+        return sendAsync(requestBuilder(put(), URL_FILTER, id)
                 .setBody(serialize(filter), APPLICATION_JSON), Filter.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteFilter(String id) {
-        return sendAsyncReturnVoid(requestBuilder(delete(), URL_FILTER, id));
+        return sendAsync(requestBuilder(delete(), URL_FILTER, id), Void.class);
     }
 
 }

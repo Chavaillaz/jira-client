@@ -22,23 +22,23 @@ public class OkHttpUserClient extends AbstractOkHttpClient implements UserClient
 
     @Override
     public CompletableFuture<Users> getUsers(String search, Integer startAt, Integer maxResults, Boolean includeInactive) {
-        return sendAsyncReturnDomain(requestBuilder(URL_USERS_SEARCH, search, startAt, maxResults, includeInactive).get(), Users.class);
+        return sendAsync(requestBuilder(URL_USERS_SEARCH, search, startAt, maxResults, includeInactive).get(), Users.class);
     }
 
     @Override
     public CompletableFuture<Users> getAssignableUsers(String search, String key, Integer startAt, Integer maxResults, Boolean includeInactive) {
         String url = key.contains("-") ? URL_USERS_ISSUE_ASSIGNABLE : URL_USERS_PROJECT_ASSIGNABLE;
-        return sendAsyncReturnDomain(requestBuilder(url, search, key, startAt, maxResults, includeInactive).get(), Users.class);
+        return sendAsync(requestBuilder(url, search, key, startAt, maxResults, includeInactive).get(), Users.class);
     }
 
     @Override
     public CompletableFuture<User> getUser(String username) {
-        return sendAsyncReturnDomain(requestBuilder(URL_USER, username).get(), User.class);
+        return sendAsync(requestBuilder(URL_USER, username).get(), User.class);
     }
 
     @Override
     public CompletableFuture<User> getCurrentUser() {
-        return sendAsyncReturnDomain(requestBuilder(URL_CURRENT_USER).get(), User.class);
+        return sendAsync(requestBuilder(URL_CURRENT_USER).get(), User.class);
     }
 
 }
