@@ -35,12 +35,12 @@ public class Fields extends CommonFields {
     private User assignee;
 
     @JsonProperty("attachment")
-    private List<Attachment> attachments;
+    private Attachments attachments;
 
     @JsonProperty("comment")
     private Comments comments;
 
-    private List<Component> components;
+    private Components components;
 
     private OffsetDateTime created;
 
@@ -57,7 +57,7 @@ public class Fields extends CommonFields {
 
     private String environment;
 
-    private List<Version> fixVersions;
+    private Versions fixVersions;
 
     @JsonProperty("issuelinks")
     private List<Link> issueLinks;
@@ -66,7 +66,7 @@ public class Fields extends CommonFields {
 
     private String lastViewed;
 
-    private Issue parent;
+    private BasicIssue parent;
 
     private Progress progress;
 
@@ -79,7 +79,7 @@ public class Fields extends CommonFields {
     private OffsetDateTime resolutionDate;
 
     @JsonProperty("subtasks")
-    private List<Issue> subTasks;
+    private List<BasicIssue> subTasks;
 
     @JsonProperty("timeestimate")
     private Integer timeEstimate;
@@ -94,7 +94,7 @@ public class Fields extends CommonFields {
 
     private OffsetDateTime updated;
 
-    private List<Version> versions;
+    private Versions versions;
 
     private Votes votes;
 
