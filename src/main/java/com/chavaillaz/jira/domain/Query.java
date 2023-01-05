@@ -13,7 +13,7 @@ import lombok.ToString;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Query extends Result {
 
-    private String expand;
+    private List<String> expand;
 
     private List<String> fields;
 
@@ -25,15 +25,15 @@ public class Query extends Result {
      * @param jql        The query as Jira Query Language
      * @param startAt    The page offset
      * @param maxResults The number of results per page
-     * @param expand     The list of parameters to expand (comma separated)
+     * @param expand     The list of parameters to expand
      * @return The corresponding query
      */
-    public static Query from(String jql, Integer startAt, Integer maxResults, String expand) {
+    public static Query from(String jql, Integer startAt, Integer maxResults, String... expand) {
         Query query = new Query();
         query.setJql(jql);
         query.setStartAt(startAt);
         query.setMaxResults(maxResults);
-        query.setExpand(expand);
+        query.setExpand(List.of(expand));
         query.setFields(List.of("*all"));
         return query;
     }
