@@ -1,9 +1,9 @@
 package com.chavaillaz.jira.client.okhttp;
 
+import static java.util.Collections.emptyList;
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,20 +30,36 @@ public class CompletableFutureCallback implements Callback {
     private final CompletableFuture<Response> future;
 
     @Override
-    public void onResponse(Call call, Response response) throws IOException {
+    public void onResponse(Call call, Response response) {
         log.debug("{} completed: {}", call.request(), response);
 
         if (response.code() >= 300) {
-            List<String> errors = new ArrayList<>();
+            List<String> errors;
             try (ResponseBody body = response.body()) {
-                if (body != null && isNotBlank(body.string())) {
-                    errors = client.deserialize(body.string(), ErrorMessages.class);
-                }
+                errors = parseErrors(body);
             }
             future.completeExceptionally(new ResponseException(response.code(), errors));
         } else {
             future.complete(response);
         }
+    }
+
+    protected List<String> parseErrors(ResponseBody body) {
+        if (body != null) {
+            String bodyString = null;
+            try {
+                // Can only be consumed once
+                bodyString = body.string();
+                if (isNotBlank(bodyString)) {
+                    return client.deserialize(bodyString, ErrorMessages.class);
+                }
+            } catch (Exception e) {
+                if (isNotBlank(bodyString)) {
+                    return List.of(bodyString);
+                }
+            }
+        }
+        return emptyList();
     }
 
     @Override
