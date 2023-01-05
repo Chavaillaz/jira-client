@@ -29,7 +29,7 @@ public class OkHttpSearchClient<T extends List<? extends Issue>> extends Abstrac
     }
 
     @Override
-    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand) {
+    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, List<String> expand) {
         return sendAsync(requestBuilder(URL_SEARCH).post(body(Query.from(jql, startAt, maxResults, expand))), issuesListType);
     }
 

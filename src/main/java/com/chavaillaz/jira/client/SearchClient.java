@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.client;
 
+import static java.util.Collections.emptyList;
+
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -34,7 +36,7 @@ public interface SearchClient<T extends List<? extends Issue>> extends AutoClose
      * @return A {@link CompletableFuture} with the issues found
      */
     default CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults) {
-        return searchIssues(jql, startAt, maxResults, null);
+        return searchIssues(jql, startAt, maxResults, emptyList());
     }
 
     /**
@@ -43,10 +45,10 @@ public interface SearchClient<T extends List<? extends Issue>> extends AutoClose
      * @param jql        The query in Jira Query Language
      * @param startAt    The page offset
      * @param maxResults The number of results per page
-     * @param expand     The list of parameters to expand (comma separated)
+     * @param expand     The list of parameters to expand
      * @return A {@link CompletableFuture} with the issues found
      */
-    CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand);
+    CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, List<String> expand);
 
     /**
      * Creates a new search filter for the logged-in user.

@@ -28,12 +28,12 @@ public class Query extends Result {
      * @param expand     The list of parameters to expand
      * @return The corresponding query
      */
-    public static Query from(String jql, Integer startAt, Integer maxResults, String... expand) {
+    public static Query from(String jql, Integer startAt, Integer maxResults, List<String> expand) {
         Query query = new Query();
         query.setJql(jql);
         query.setStartAt(startAt);
         query.setMaxResults(maxResults);
-        query.setExpand(List.of(expand));
+        query.setExpand(expand);
         query.setFields(List.of("*all"));
         return query;
     }

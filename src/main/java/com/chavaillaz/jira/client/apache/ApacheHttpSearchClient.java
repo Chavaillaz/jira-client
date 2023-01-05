@@ -35,7 +35,7 @@ public class ApacheHttpSearchClient<T extends List<? extends Issue>> extends Abs
     }
 
     @Override
-    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, String expand) {
+    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, List<String> expand) {
         return sendAsync(requestBuilder(post(), URL_SEARCH)
                 .setBody(serialize(Query.from(jql, startAt, maxResults, expand)), APPLICATION_JSON), issuesListType);
     }
