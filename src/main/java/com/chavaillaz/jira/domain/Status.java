@@ -19,4 +19,16 @@ public class Status extends Identity {
 
     private String statusColor;
 
+    /**
+     * Creates a new status.
+     *
+     * @param key The status key
+     * @return The corresponding status
+     */
+    public static Status fromKey(String key) {
+        Status status = new Status();
+        status.setKey(key);
+        return status;
+    }
+
 }

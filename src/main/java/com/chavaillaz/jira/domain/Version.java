@@ -25,4 +25,28 @@ public class Version extends Identity {
 
     private Boolean released;
 
+    /**
+     * Creates a new version.
+     *
+     * @param id The version identifier
+     * @return The corresponding version
+     */
+    public static Version fromKey(String id) {
+        Version version = new Version();
+        version.setId(id);
+        return version;
+    }
+
+    /**
+     * Creates a new version.
+     *
+     * @param name The version name
+     * @return The corresponding version
+     */
+    public static Version fromName(String name) {
+        Version version = new Version();
+        version.setName(name);
+        return version;
+    }
+
 }

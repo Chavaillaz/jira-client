@@ -14,8 +14,10 @@ public class Subscriptions {
 
     @JsonMerge
     private final List<Object> items = new ArrayList<>();
+
     @JsonProperty("end-index")
     private Integer endIndex;
+
     @JsonProperty("max-results")
     private Integer maxResults;
 

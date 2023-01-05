@@ -20,13 +20,13 @@ public class Link {
     /**
      * Creates a new issue link.
      *
-     * @param type         The link type
+     * @param type         The link type name
      * @param inwardIssue  The inward issue key
      * @param outwardIssue The outward issue key
      * @return The corresponding link
      */
-    public static Link from(LinkType type, String inwardIssue, String outwardIssue) {
-        return from(type, BasicIssue.fromKey(inwardIssue), BasicIssue.fromKey(outwardIssue));
+    public static Link from(String type, String inwardIssue, String outwardIssue) {
+        return from(LinkType.fromName(type), BasicIssue.fromKey(inwardIssue), BasicIssue.fromKey(outwardIssue));
     }
 
     /**

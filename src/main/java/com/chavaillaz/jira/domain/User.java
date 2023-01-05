@@ -24,8 +24,20 @@ public class User extends Identity {
     /**
      * Creates a new user.
      *
-     * @param name The username
-     * @return THe corresponding user
+     * @param key The user key
+     * @return The corresponding user
+     */
+    public static User fromKey(String key) {
+        User user = new User();
+        user.setKey(key);
+        return user;
+    }
+
+    /**
+     * Creates a new user.
+     *
+     * @param name The user name
+     * @return The corresponding user
      */
     public static User fromName(String name) {
         User user = new User();

@@ -25,4 +25,16 @@ public class Transition {
         return transition;
     }
 
+    /**
+     * Creates a new transition.
+     *
+     * @param name The transition name
+     * @return The corresponding transition
+     */
+    public static Transition fromName(String name) {
+        Transition transition = new Transition();
+        transition.setName(name);
+        return transition;
+    }
+
 }

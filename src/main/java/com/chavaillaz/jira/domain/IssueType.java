@@ -29,6 +29,18 @@ public class IssueType extends Identity {
     /**
      * Creates a new issue type.
      *
+     * @param id The issue type identifier
+     * @return The corresponding issue type
+     */
+    public static IssueType fromId(String id) {
+        IssueType issueType = new IssueType();
+        issueType.setId(id);
+        return issueType;
+    }
+
+    /**
+     * Creates a new issue type.
+     *
      * @param name The issue type name
      * @return The corresponding issue type
      */

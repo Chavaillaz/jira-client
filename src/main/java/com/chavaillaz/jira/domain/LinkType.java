@@ -20,6 +20,18 @@ public class LinkType {
     /**
      * Creates a new link type.
      *
+     * @param id The link type identifier
+     * @return The corresponding link type
+     */
+    public static LinkType fromId(String id) {
+        LinkType linkType = new LinkType();
+        linkType.setId(id);
+        return linkType;
+    }
+
+    /**
+     * Creates a new link type.
+     *
      * @param name The link type name
      * @return The corresponding link type
      */
