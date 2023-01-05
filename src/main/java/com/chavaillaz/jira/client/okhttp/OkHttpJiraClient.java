@@ -52,22 +52,34 @@ public class OkHttpJiraClient<I extends Issue> extends AbstractJiraClient<OkHttp
 
     @Override
     public IssueClient<I> getIssueClient() {
-        return new OkHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueType);
+        if (cacheIssueClient == null) {
+            cacheIssueClient = new OkHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueType);
+        }
+        return cacheIssueClient;
     }
 
     @Override
     public ProjectClient getProjectClient() {
-        return new OkHttpProjectClient(newHttpClient(), jiraUrl + BASE_API, authentication);
+        if (cacheProjectClient == null) {
+            cacheProjectClient = new OkHttpProjectClient(newHttpClient(), jiraUrl + BASE_API, authentication);
+        }
+        return cacheProjectClient;
     }
 
     @Override
     public UserClient getUserClient() {
-        return new OkHttpUserClient(newHttpClient(), jiraUrl + BASE_API, authentication);
+        if (cacheUserClient == null) {
+            cacheUserClient = new OkHttpUserClient(newHttpClient(), jiraUrl + BASE_API, authentication);
+        }
+        return cacheUserClient;
     }
 
     @Override
     public SearchClient<Issues<I>> getSearchClient() {
-        return new OkHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesListType);
+        if (cacheSearchClient == null) {
+            cacheSearchClient = new OkHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesListType);
+        }
+        return cacheSearchClient;
     }
 
 }

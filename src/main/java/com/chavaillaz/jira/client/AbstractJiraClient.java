@@ -23,6 +23,10 @@ public abstract class AbstractJiraClient<C, I extends Issue> implements JiraClie
     protected final JavaType issuesListType;
     protected final String jiraUrl;
     protected String authentication;
+    protected IssueClient<I> cacheIssueClient;
+    protected ProjectClient cacheProjectClient;
+    protected SearchClient<Issues<I>> cacheSearchClient;
+    protected UserClient cacheUserClient;
     protected ProxyConfiguration proxy;
 
     /**
