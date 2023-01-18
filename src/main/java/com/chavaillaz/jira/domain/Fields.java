@@ -102,6 +102,6 @@ public class Fields extends CommonFields {
 
     private WorkLogs workLogs;
 
-    private Integer workRatio;
+    private Long workRatio;
 
 }

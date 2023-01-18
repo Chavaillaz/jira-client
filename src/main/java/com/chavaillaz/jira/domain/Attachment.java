@@ -23,7 +23,7 @@ public class Attachment {
 
     private String self;
 
-    private Integer size;
+    private Long size;
 
     private String thumbnail;
 

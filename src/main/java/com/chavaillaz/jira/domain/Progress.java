@@ -7,10 +7,10 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Progress {
 
-    private Integer percent;
+    private Long percent;
 
-    private Integer progress;
+    private Long progress;
 
-    private Integer total;
+    private Long total;
 
 }
