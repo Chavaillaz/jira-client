@@ -19,7 +19,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Getter
 public abstract class AbstractHttpClient {
 
@@ -137,6 +139,7 @@ public abstract class AbstractHttpClient {
         }
 
         try {
+            log.trace("Response to deserialize: {}", content);
             return objectMapper.readValue(content, type);
         } catch (Exception e) {
             throw new DeserializationException(content, type, e);
@@ -151,7 +154,9 @@ public abstract class AbstractHttpClient {
      */
     public String serialize(Object content) {
         try {
-            return objectMapper.writeValueAsString(content);
+            String json = objectMapper.writeValueAsString(content);
+            log.trace("Request serialized: {}", json);
+            return json;
         } catch (Exception e) {
             throw new SerializationException(content, e);
         }
