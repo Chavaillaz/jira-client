@@ -14,8 +14,8 @@ public class Identity implements Comparable<Identity> {
     private String self;
 
     @Override
-    public int compareTo(Identity object) {
-        return this.name.compareTo(object.getName());
+    public int compareTo(Identity other) {
+        return getName().compareTo(other.getName());
     }
 
 }

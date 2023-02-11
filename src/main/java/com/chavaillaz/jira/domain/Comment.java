@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Comment {
+public class Comment implements Comparable<Comment> {
 
     private User author;
 
@@ -33,6 +33,11 @@ public class Comment {
         Comment comment = new Comment();
         comment.setBody(content);
         return comment;
+    }
+
+    @Override
+    public int compareTo(Comment other) {
+        return getCreated().compareTo(other.getCreated());
     }
 
 }

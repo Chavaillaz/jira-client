@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Attachment {
+public class Attachment implements Comparable<Attachment> {
 
     private User author;
 
@@ -26,5 +26,10 @@ public class Attachment {
     private Long size;
 
     private String thumbnail;
+
+    @Override
+    public int compareTo(Attachment other) {
+        return getCreated().compareTo(other.getCreated());
+    }
 
 }

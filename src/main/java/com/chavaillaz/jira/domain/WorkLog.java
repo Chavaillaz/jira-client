@@ -9,7 +9,7 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class WorkLog {
+public class WorkLog implements Comparable<WorkLog> {
 
     private User author;
 
@@ -59,6 +59,11 @@ public class WorkLog {
         workLog.setTimeSpentSeconds((int) (timeHours * 60 * 60));
         workLog.setComment(comment);
         return workLog;
+    }
+
+    @Override
+    public int compareTo(WorkLog other) {
+        return getStarted().compareTo(other.getStarted());
     }
 
 }

@@ -51,9 +51,13 @@ public class RemoteLink {
     public static class RemoteLinkObject {
 
         private Icon icon;
+
         private Status status;
+
         private String summary;
+
         private String title;
+
         private String url;
 
         /**

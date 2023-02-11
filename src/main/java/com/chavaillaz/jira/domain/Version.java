@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.domain;
 
+import static java.lang.module.ModuleDescriptor.Version.parse;
+
 import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -47,6 +49,17 @@ public class Version extends Identity {
         Version version = new Version();
         version.setName(name);
         return version;
+    }
+
+    @Override
+    public int compareTo(Identity other) {
+        try {
+            var version = parse(this.getName());
+            var versionOther = parse(other.getName());
+            return version.compareTo(versionOther);
+        } catch (Exception e) {
+            return super.compareTo(other);
+        }
     }
 
 }

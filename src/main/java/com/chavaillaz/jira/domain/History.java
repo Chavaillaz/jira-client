@@ -15,7 +15,7 @@ import lombok.experimental.Delegate;
 @Data
 @JsonFormat(shape = OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class History implements List<HistoryItem> {
+public class History implements List<HistoryItem>, Comparable<History> {
 
     @Delegate
     @JsonMerge
@@ -47,6 +47,11 @@ public class History implements List<HistoryItem> {
         History container = new History();
         container.addAll(historyItems);
         return container;
+    }
+
+    @Override
+    public int compareTo(History other) {
+        return getCreated().compareTo(other.getCreated());
     }
 
 }
