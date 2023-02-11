@@ -28,7 +28,6 @@ import com.chavaillaz.jira.domain.Votes;
 import com.chavaillaz.jira.domain.Watchers;
 import com.chavaillaz.jira.domain.WorkLog;
 import com.chavaillaz.jira.domain.WorkLogs;
-import lombok.SneakyThrows;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
 public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpClient implements IssueClient<T> {
@@ -178,7 +177,6 @@ public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpCl
     }
 
     @Override
-    @SneakyThrows
     public CompletableFuture<Attachments> addAttachment(String issueKey, File... files) {
         return sendAsync(requestBuilder(post(), URL_ISSUE_ATTACHMENTS, issueKey), multipartWithFiles(files), Attachments.class);
     }

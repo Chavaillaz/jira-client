@@ -23,7 +23,6 @@ import com.chavaillaz.jira.domain.Votes;
 import com.chavaillaz.jira.domain.Watchers;
 import com.chavaillaz.jira.domain.WorkLog;
 import com.chavaillaz.jira.domain.WorkLogs;
-import lombok.SneakyThrows;
 import okhttp3.OkHttpClient;
 
 public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient implements IssueClient<T> {
@@ -164,7 +163,6 @@ public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient imp
     }
 
     @Override
-    @SneakyThrows
     public CompletableFuture<Attachments> addAttachment(String issueKey, File... files) {
         return sendAsync(requestBuilder(URL_ISSUE_ATTACHMENTS, issueKey)
                         .header(HEADER_ATLASSIAN_TOKEN, HEADER_ATLASSIAN_TOKEN_DISABLED)
