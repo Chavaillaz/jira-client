@@ -16,11 +16,11 @@ import lombok.experimental.Delegate;
 @Data
 @JsonFormat(shape = OBJECT)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Subscriptions implements List<Subscription> {
+public class UsersWrapper implements List<User> {
 
     @Delegate
     @JsonMerge
-    private final List<Subscription> items = new ArrayList<>();
+    private final List<User> items = new ArrayList<>();
 
     @JsonProperty("end-index")
     private Integer endIndex;
@@ -37,24 +37,24 @@ public class Subscriptions implements List<Subscription> {
     private Integer startIndex;
 
     /**
-     * Creates a new list of subscriptions.
+     * Creates a new list of users.
      *
-     * @param subscriptions The subscriptions to include in the list
-     * @return The corresponding list of subscriptions
+     * @param users The users to include in the list
+     * @return The corresponding list of users
      */
-    public static Subscriptions from(Subscription... subscriptions) {
-        return from(List.of(subscriptions));
+    public static UsersWrapper from(User... users) {
+        return from(List.of(users));
     }
 
     /**
-     * Creates a new list of subscriptions.
+     * Creates a new list of users.
      *
-     * @param subscriptions The subscriptions to include in the list
-     * @return The corresponding list of subscriptions
+     * @param users The users to include in the list
+     * @return The corresponding list of users
      */
-    public static Subscriptions from(List<Subscription> subscriptions) {
-        Subscriptions container = new Subscriptions();
-        container.addAll(subscriptions);
+    public static UsersWrapper from(List<User> users) {
+        UsersWrapper container = new UsersWrapper();
+        container.addAll(users);
         return container;
     }
 

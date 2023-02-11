@@ -23,9 +23,9 @@ public class Filter extends Identity {
 
     private String searchUrl;
 
-    private List<Object> sharePermissions;
+    private List<Permission> sharePermissions;
 
-    private Subscriptions sharedUsers;
+    private UsersWrapper sharedUsers;
 
     private Subscriptions subscriptions;
 
