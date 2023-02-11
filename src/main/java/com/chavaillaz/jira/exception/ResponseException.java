@@ -9,8 +9,8 @@ import lombok.Getter;
 @Getter
 public class ResponseException extends JiraClientException {
 
-    public final Integer statusCode;
-    public final List<String> errors;
+    private final Integer statusCode;
+    private final List<String> errors;
 
     /**
      * Creates a new Jira response exception.
