@@ -24,4 +24,26 @@ public class Comments extends Result implements List<Comment> {
     @JsonMerge
     private final List<Comment> comments = new ArrayList<>();
 
+    /**
+     * Creates a new list of comments.
+     *
+     * @param comments The comments to include in the list
+     * @return The corresponding list of comments
+     */
+    public static Comments from(Comment... comments) {
+        return from(List.of(comments));
+    }
+
+    /**
+     * Creates a new list of comments.
+     *
+     * @param comments The comments to include in the list
+     * @return The corresponding list of comments
+     */
+    public static Comments from(List<Comment> comments) {
+        Comments container = new Comments();
+        container.addAll(comments);
+        return container;
+    }
+
 }

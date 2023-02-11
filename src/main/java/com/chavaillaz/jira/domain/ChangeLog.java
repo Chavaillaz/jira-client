@@ -24,4 +24,26 @@ public class ChangeLog extends Result implements List<History> {
     @JsonMerge
     private final List<History> histories = new ArrayList<>();
 
+    /**
+     * Creates a new change log made up of issue updates.
+     *
+     * @param histories The updates to include in the list
+     * @return The corresponding change log
+     */
+    public static ChangeLog from(History... histories) {
+        return from(List.of(histories));
+    }
+
+    /**
+     * Creates a new change log made up of issue updates.
+     *
+     * @param histories The updates to include in the list
+     * @return The corresponding change log
+     */
+    public static ChangeLog from(List<History> histories) {
+        ChangeLog container = new ChangeLog();
+        container.addAll(histories);
+        return container;
+    }
+
 }

@@ -22,7 +22,7 @@ public class IssueType extends Identity {
 
     private String iconUrl;
 
-    private List<Status> statuses = new ArrayList<>();
+    private List<Status> statuses;
 
     private Boolean subtask;
 
@@ -35,6 +35,7 @@ public class IssueType extends Identity {
     public static IssueType fromId(String id) {
         IssueType issueType = new IssueType();
         issueType.setId(id);
+        issueType.setStatuses(new ArrayList<>());
         return issueType;
     }
 
@@ -47,6 +48,7 @@ public class IssueType extends Identity {
     public static IssueType fromName(String name) {
         IssueType issueType = new IssueType();
         issueType.setName(name);
+        issueType.setStatuses(new ArrayList<>());
         return issueType;
     }
 

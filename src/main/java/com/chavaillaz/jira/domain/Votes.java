@@ -26,4 +26,27 @@ public class Votes implements List<User> {
 
     private Integer votes;
 
+    /**
+     * Creates a new list of votes.
+     *
+     * @param votes The users to include in the list as voters
+     * @return The corresponding list of votes
+     */
+    public static Votes from(User... votes) {
+        return from(List.of(votes));
+    }
+
+    /**
+     * Creates a new list of votes.
+     *
+     * @param votes The users to include in the list as voters
+     * @return The corresponding list of votes
+     */
+    public static Votes from(List<User> votes) {
+        Votes container = new Votes();
+        container.addAll(votes);
+        container.setVotes(votes.size());
+        return container;
+    }
+
 }

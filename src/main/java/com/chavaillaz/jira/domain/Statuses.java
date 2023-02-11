@@ -24,4 +24,26 @@ public class Statuses extends Identity implements List<IssueType> {
     @JsonMerge
     private final List<IssueType> statuses = new ArrayList<>();
 
+    /**
+     * Creates a new list of statuses.
+     *
+     * @param issueTypes The statuses to include in the list
+     * @return The corresponding list of statuses
+     */
+    public static Statuses from(IssueType... issueTypes) {
+        return from(List.of(issueTypes));
+    }
+
+    /**
+     * Creates a new list of statuses.
+     *
+     * @param issueTypes The statuses to include in the list
+     * @return The corresponding list of statuses
+     */
+    public static Statuses from(List<IssueType> issueTypes) {
+        Statuses container = new Statuses();
+        container.addAll(issueTypes);
+        return container;
+    }
+
 }

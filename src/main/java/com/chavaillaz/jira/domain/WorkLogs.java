@@ -24,4 +24,26 @@ public class WorkLogs extends Result implements List<WorkLog> {
     @JsonMerge
     private final List<WorkLog> workLogs = new ArrayList<>();
 
+    /**
+     * Creates a new list of work logs.
+     *
+     * @param workLogs The work logs to include in the list
+     * @return The created list of work logs
+     */
+    public static WorkLogs from(WorkLog... workLogs) {
+        return from(List.of(workLogs));
+    }
+
+    /**
+     * Creates a new list of work logs.
+     *
+     * @param workLogs The work logs to include in the list
+     * @return The created list of work logs
+     */
+    public static WorkLogs from(List<WorkLog> workLogs) {
+        WorkLogs container = new WorkLogs();
+        container.addAll(workLogs);
+        return container;
+    }
+
 }

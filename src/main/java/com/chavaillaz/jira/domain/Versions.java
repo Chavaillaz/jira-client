@@ -20,4 +20,26 @@ public class Versions implements List<Version> {
     @JsonMerge
     private final List<Version> versions = new ArrayList<>();
 
+    /**
+     * Creates a new list of versions.
+     *
+     * @param versions The versions to include in the list
+     * @return The corresponding list of versions
+     */
+    public static Versions from(Version... versions) {
+        return from(List.of(versions));
+    }
+
+    /**
+     * Creates a new list of versions.
+     *
+     * @param versions The versions to include in the list
+     * @return The corresponding list of versions
+     */
+    public static Versions from(List<Version> versions) {
+        Versions container = new Versions();
+        container.addAll(versions);
+        return container;
+    }
+
 }

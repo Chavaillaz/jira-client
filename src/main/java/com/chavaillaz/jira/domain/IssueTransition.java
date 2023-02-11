@@ -14,13 +14,23 @@ public class IssueTransition {
     private Transition transition;
 
     /**
-     * Creates a new transition.
+     * Creates a new issue transition.
      *
      * @param transitionId The transition identifier
      * @return The corresponding transition
      */
     public static IssueTransition fromId(String transitionId) {
-        return new IssueTransition(Transition.fromId(transitionId));
+        return from(Transition.fromId(transitionId));
+    }
+
+    /**
+     * Creates a new issue transition.
+     *
+     * @param transition The transition
+     * @return The corresponding transition
+     */
+    public static IssueTransition from(Transition transition) {
+        return new IssueTransition(transition);
     }
 
 }

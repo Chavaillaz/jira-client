@@ -26,4 +26,27 @@ public class Watchers implements List<User> {
 
     private Integer watchCount;
 
+    /**
+     * Creates a new list of watchers.
+     *
+     * @param watchers The users to include in the list as watchers
+     * @return The corresponding list of watchers
+     */
+    public static Watchers from(User... watchers) {
+        return from(List.of(watchers));
+    }
+
+    /**
+     * Creates a new list of watchers.
+     *
+     * @param watchers The users to include in the list as watchers
+     * @return The corresponding list of watchers
+     */
+    public static Watchers from(List<User> watchers) {
+        Watchers container = new Watchers();
+        container.addAll(watchers);
+        container.setWatchCount(watchers.size());
+        return container;
+    }
+
 }

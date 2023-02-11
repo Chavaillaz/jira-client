@@ -24,4 +24,26 @@ public class Filters extends Result implements List<Filter> {
     @JsonMerge
     private final List<Filter> filters = new ArrayList<>();
 
+    /**
+     * Creates a new list of filters.
+     *
+     * @param filters The filters to include in the list
+     * @return The corresponding list of filters
+     */
+    public static Filters from(Filter... filters) {
+        return from(List.of(filters));
+    }
+
+    /**
+     * Creates a new list of filters.
+     *
+     * @param filters The filters to include in the list
+     * @return The corresponding list of filters
+     */
+    public static Filters from(List<Filter> filters) {
+        Filters container = new Filters();
+        container.addAll(filters);
+        return container;
+    }
+
 }

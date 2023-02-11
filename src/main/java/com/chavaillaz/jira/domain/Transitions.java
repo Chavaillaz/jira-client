@@ -24,4 +24,26 @@ public class Transitions extends Identity implements List<Transition> {
     @JsonMerge
     private final List<Transition> transitions = new ArrayList<>();
 
+    /**
+     * Creates a new list of transitions.
+     *
+     * @param transitions The transitions to include in the list
+     * @return The corresponding list of transitions
+     */
+    public static Transitions from(Transition... transitions) {
+        return from(List.of(transitions));
+    }
+
+    /**
+     * Creates a new list of transitions.
+     *
+     * @param transitions The transitions to include in the list
+     * @return The corresponding list of transitions
+     */
+    public static Transitions from(List<Transition> transitions) {
+        Transitions container = new Transitions();
+        container.addAll(transitions);
+        return container;
+    }
+
 }

@@ -24,4 +24,26 @@ public class RemoteLinks extends Result implements List<RemoteLink> {
     @JsonMerge
     private final List<RemoteLink> remoteLinks = new ArrayList<>();
 
+    /**
+     * Creates a new list of remote links.
+     *
+     * @param remoteLinks The remote links to include in the list
+     * @return The corresponding list of remote links
+     */
+    public static RemoteLinks from(RemoteLink... remoteLinks) {
+        return from(List.of(remoteLinks));
+    }
+
+    /**
+     * Creates a new list of remote links.
+     *
+     * @param remoteLinks The remote links to include in the list
+     * @return The corresponding list of remote links
+     */
+    public static RemoteLinks from(List<RemoteLink> remoteLinks) {
+        RemoteLinks container = new RemoteLinks();
+        container.addAll(remoteLinks);
+        return container;
+    }
+
 }

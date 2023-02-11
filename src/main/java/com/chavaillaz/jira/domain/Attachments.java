@@ -20,4 +20,26 @@ public class Attachments implements List<Attachment> {
     @JsonMerge
     private final List<Attachment> attachments = new ArrayList<>();
 
+    /**
+     * Creates a new list of attachments.
+     *
+     * @param attachments The attachments to include in the list
+     * @return The corresponding list of attachments
+     */
+    public static Attachments from(Attachment... attachments) {
+        return from(List.of(attachments));
+    }
+
+    /**
+     * Creates a new list of attachments.
+     *
+     * @param attachments The attachments to include in the list
+     * @return The corresponding list of attachments
+     */
+    public static Attachments from(List<Attachment> attachments) {
+        Attachments container = new Attachments();
+        container.addAll(attachments);
+        return container;
+    }
+
 }

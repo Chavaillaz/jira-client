@@ -20,4 +20,26 @@ public class Projects implements List<Project> {
     @JsonMerge
     private final List<Project> projects = new ArrayList<>();
 
+    /**
+     * Creates a new list of projects.
+     *
+     * @param projects The projects to include in the list
+     * @return The corresponding list of projects
+     */
+    public static Projects from(Project... projects) {
+        return from(List.of(projects));
+    }
+
+    /**
+     * Creates a new list of projects.
+     *
+     * @param projects The projects to include in the list
+     * @return The corresponding list of projects
+     */
+    public static Projects from(List<Project> projects) {
+        Projects container = new Projects();
+        container.addAll(projects);
+        return container;
+    }
+
 }

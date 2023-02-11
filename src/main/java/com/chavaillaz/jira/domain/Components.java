@@ -20,4 +20,26 @@ public class Components implements List<Component> {
     @JsonMerge
     private final List<Component> components = new ArrayList<>();
 
+    /**
+     * Creates a new list of components.
+     *
+     * @param components The components to include in the list
+     * @return The corresponding list of components
+     */
+    public static Components from(Component... components) {
+        return from(List.of(components));
+    }
+
+    /**
+     * Creates a new list of components.
+     *
+     * @param components The components to include in the list
+     * @return The corresponding list of components
+     */
+    public static Components from(List<Component> components) {
+        Components container = new Components();
+        container.addAll(components);
+        return container;
+    }
+
 }

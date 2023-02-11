@@ -27,4 +27,26 @@ public class History implements List<HistoryItem> {
 
     private String id;
 
+    /**
+     * Creates a new list of history items corresponding to updates in an issue.
+     *
+     * @param historyItems The updates to include in the list
+     * @return The corresponding list of updates
+     */
+    public static History from(HistoryItem... historyItems) {
+        return from(List.of(historyItems));
+    }
+
+    /**
+     * Creates a new list of history items corresponding to updates in an issue.
+     *
+     * @param historyItems The updates to include in the list
+     * @return The corresponding list of updates
+     */
+    public static History from(List<HistoryItem> historyItems) {
+        History container = new History();
+        container.addAll(historyItems);
+        return container;
+    }
+
 }

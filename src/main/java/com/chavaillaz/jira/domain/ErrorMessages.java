@@ -22,6 +22,12 @@ public class ErrorMessages implements List<String> {
     @JsonMerge
     private final List<String> errorMessages = new ArrayList<>();
 
+    /**
+     * Used by Jackson when reading fields that are not declared in the class.
+     *
+     * @param key   The field name
+     * @param value The field value
+     */
     @JsonAnySetter
     public void appendOtherErrors(String key, Object value) {
         if (value instanceof Map<?, ?> map) {

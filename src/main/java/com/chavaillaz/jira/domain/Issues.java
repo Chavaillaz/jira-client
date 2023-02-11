@@ -26,4 +26,26 @@ public class Issues<T extends Issue> extends Result implements List<T> {
 
     private String expand;
 
+    /**
+     * Creates a new list of issues.
+     *
+     * @param issues The issues to include in the list
+     * @return The corresponding list of issues
+     */
+    public static <T extends Issue> Issues<T> from(T... issues) {
+        return from(List.of(issues));
+    }
+
+    /**
+     * Creates a new list of issues.
+     *
+     * @param issues The issues to include in the list
+     * @return The corresponding list of issues
+     */
+    public static <T extends Issue> Issues<T> from(List<T> issues) {
+        Issues<T> container = new Issues<>();
+        container.addAll(issues);
+        return container;
+    }
+
 }

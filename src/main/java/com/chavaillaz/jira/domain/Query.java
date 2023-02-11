@@ -29,12 +29,26 @@ public class Query extends Result {
      * @return The corresponding query
      */
     public static Query from(String jql, Integer startAt, Integer maxResults, List<String> expand) {
+        return from(jql, startAt, maxResults, expand, List.of("*all"));
+    }
+
+    /**
+     * Creates a new query.
+     *
+     * @param jql        The query as Jira Query Language
+     * @param startAt    The page offset
+     * @param maxResults The number of results per page
+     * @param expand     The list of parameters to expand
+     * @param fields     The fields to load of the issues
+     * @return The corresponding query
+     */
+    public static Query from(String jql, Integer startAt, Integer maxResults, List<String> expand, List<String> fields) {
         Query query = new Query();
         query.setJql(jql);
         query.setStartAt(startAt);
         query.setMaxResults(maxResults);
         query.setExpand(expand);
-        query.setFields(List.of("*all"));
+        query.setFields(fields);
         return query;
     }
 

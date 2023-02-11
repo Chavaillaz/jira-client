@@ -20,4 +20,26 @@ public class Users implements List<User> {
     @JsonMerge
     private final List<User> users = new ArrayList<>();
 
+    /**
+     * Creates a new list of users.
+     *
+     * @param users The users to include in the list
+     * @return The corresponding list of users
+     */
+    public static Users from(User... users) {
+        return from(List.of(users));
+    }
+
+    /**
+     * Creates a new list of users.
+     *
+     * @param users The users to include in the list
+     * @return The corresponding list of users
+     */
+    public static Users from(List<User> users) {
+        Users container = new Users();
+        container.addAll(users);
+        return container;
+    }
+
 }
