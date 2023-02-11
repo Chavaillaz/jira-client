@@ -25,7 +25,7 @@ public class Filter extends Identity {
 
     private List<Object> sharePermissions;
 
-    private SharedUsers sharedUsers;
+    private Subscriptions sharedUsers;
 
     private Subscriptions subscriptions;
 
