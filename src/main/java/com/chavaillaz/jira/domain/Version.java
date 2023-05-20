@@ -33,7 +33,7 @@ public class Version extends Identity {
      * @param id The version identifier
      * @return The corresponding version
      */
-    public static Version fromKey(String id) {
+    public static Version fromId(String id) {
         Version version = new Version();
         version.setId(id);
         return version;
@@ -47,6 +47,20 @@ public class Version extends Identity {
      */
     public static Version fromName(String name) {
         Version version = new Version();
+        version.setName(name);
+        return version;
+    }
+
+    /**
+     * Creates a new version.
+     *
+     * @param id   The version identifier
+     * @param name The version name
+     * @return The corresponding version
+     */
+    public static Version from(String id, String name) {
+        Version version = new Version();
+        version.setId(id);
         version.setName(name);
         return version;
     }

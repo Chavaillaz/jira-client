@@ -22,12 +22,12 @@ public class Status extends Identity {
     /**
      * Creates a new status.
      *
-     * @param key The status key
+     * @param id The status identifier
      * @return The corresponding status
      */
-    public static Status fromKey(String key) {
+    public static Status fromId(String id) {
         Status status = new Status();
-        status.setKey(key);
+        status.setId(id);
         return status;
     }
 
@@ -46,13 +46,13 @@ public class Status extends Identity {
     /**
      * Creates a new status.
      *
-     * @param key  The status key
+     * @param id   The status identifier
      * @param name The status name
      * @return The corresponding status
      */
-    public static Status from(String key, String name) {
+    public static Status from(String id, String name) {
         Status status = new Status();
-        status.setKey(key);
+        status.setId(id);
         status.setName(name);
         return status;
     }

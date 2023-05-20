@@ -37,4 +37,18 @@ public class Transition {
         return transition;
     }
 
+    /**
+     * Creates a new transition.
+     *
+     * @param id   The transition identifier
+     * @param name The transition name
+     * @return The corresponding transition
+     */
+    public static Transition from(String id, String name) {
+        Transition transition = new Transition();
+        transition.setId(id);
+        transition.setName(name);
+        return transition;
+    }
+
 }
