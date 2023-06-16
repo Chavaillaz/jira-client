@@ -44,22 +44,22 @@ public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient imp
 
     @Override
     public CompletableFuture<Identity> addIssue(T issue) {
-        return sendAsync(requestBuilder(URL_ISSUES).post(body(issue)), Identity.class);
+        return sendAsync(requestBuilder(URL_ISSUE_CREATION).post(body(issue)), Identity.class);
     }
 
     @Override
-    public CompletableFuture<T> getIssue(String issueKey) {
-        return sendAsync(requestBuilder(URL_ISSUE_DETAILS, issueKey).get(), issueType);
+    public CompletableFuture<T> getIssue(String issueKey, IssueExpand... expandFlags) {
+        return sendAsync(requestBuilder(URL_ISSUE_SELECTION, issueKey, IssueExpand.getParameters(expandFlags)).get(), issueType);
     }
 
     @Override
     public CompletableFuture<Void> updateIssue(T issue) {
-        return sendAsync(requestBuilder(URL_ISSUE, issue.getKey()).put(body(issue)), Void.class);
+        return sendAsync(requestBuilder(URL_ISSUE_ACTION, issue.getKey()).put(body(issue)), Void.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteIssue(String issueKey) {
-        return sendAsync(requestBuilder(URL_ISSUE, issueKey).delete(), Void.class);
+        return sendAsync(requestBuilder(URL_ISSUE_ACTION, issueKey).delete(), Void.class);
     }
 
     @Override
@@ -78,28 +78,28 @@ public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient imp
     }
 
     @Override
-    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults).get(), Comments.class);
+    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... expandFlags) {
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults, CommentExpand.getParameters(expandFlags)).get(), Comments.class);
     }
 
     @Override
-    public CompletableFuture<Comment> getComment(String issueKey, String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENT, issueKey, id).get(), Comment.class);
+    public CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags) {
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENT_SELECTION, issueKey, id, CommentExpand.getParameters(expandFlags)).get(), Comment.class);
     }
 
     @Override
     public CompletableFuture<Comment> addComment(String issueKey, Comment comment) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENTS, issueKey).post(body(comment)), Comment.class);
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENT_CREATION, issueKey).post(body(comment)), Comment.class);
     }
 
     @Override
     public CompletableFuture<Comment> updateComment(String issueKey, Comment comment) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENT, issueKey, comment.getId()).put(body(comment)), Comment.class);
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENT_ACTION, issueKey, comment.getId()).put(body(comment)), Comment.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteComment(String issueKey, String id) {
-        return sendAsync(requestBuilder(URL_ISSUE_COMMENT, issueKey, id).delete(), Void.class);
+        return sendAsync(requestBuilder(URL_ISSUE_COMMENT_ACTION, issueKey, id).delete(), Void.class);
     }
 
     @Override

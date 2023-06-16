@@ -4,6 +4,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.net.URI;
 import java.text.MessageFormat;
@@ -134,7 +135,7 @@ public abstract class AbstractHttpClient {
      * @return The object instance of the given type
      */
     public <T> T deserialize(String content, JavaType type) {
-        if (type.getRawClass() == Void.class) {
+        if (type.getRawClass() == Void.class || isBlank(content)) {
             return null;
         }
 

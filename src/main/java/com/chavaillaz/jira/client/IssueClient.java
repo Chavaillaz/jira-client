@@ -1,7 +1,15 @@
 package com.chavaillaz.jira.client;
 
+import static com.chavaillaz.jira.client.IssueClient.IssueExpand.CHANGELOG;
+import static com.chavaillaz.jira.client.IssueClient.IssueExpand.TRANSITIONS;
+import static java.util.Optional.empty;
+import static java.util.stream.Collectors.joining;
+
 import java.io.File;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.domain.Attachment;
@@ -20,17 +28,20 @@ import com.chavaillaz.jira.domain.Votes;
 import com.chavaillaz.jira.domain.Watchers;
 import com.chavaillaz.jira.domain.WorkLog;
 import com.chavaillaz.jira.domain.WorkLogs;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 public interface IssueClient<T extends Issue> extends AutoCloseable {
 
-    String URL_ISSUES = "issue/";
-    String URL_ISSUE = "issue/{0}";
-    String URL_ISSUE_DETAILS = "issue/{0}?expand=transitions,changelog";
+    String URL_ISSUE_CREATION = "issue/";
+    String URL_ISSUE_ACTION = "issue/{0}";
+    String URL_ISSUE_SELECTION = "issue/{0}?expand={1}";
     String URL_ISSUE_ASSIGNEE = "issue/{0}/assignee";
     String URL_ISSUE_TRANSITIONS = "issue/{0}/transitions";
-    String URL_ISSUE_COMMENTS = "issue/{0}/comment";
-    String URL_ISSUE_COMMENTS_SELECTION = "issue/{0}/comment?startAt={1}&maxResults={2}";
-    String URL_ISSUE_COMMENT = "issue/{0}/comment/{1}";
+    String URL_ISSUE_COMMENTS_SELECTION = "issue/{0}/comment?startAt={1}&maxResults={2}&expand={3}";
+    String URL_ISSUE_COMMENT_CREATION = "issue/{0}/comment";
+    String URL_ISSUE_COMMENT_ACTION = "issue/{0}/comment/{1}";
+    String URL_ISSUE_COMMENT_SELECTION = "issue/{0}/comment/{1}?expand={2}";
     String URL_ISSUE_VOTES = "issue/{0}/votes";
     String URL_ISSUE_WATCHERS = "issue/{0}/watchers";
     String URL_ISSUE_WATCHER = "issue/{0}/watchers?username={1}";
@@ -53,11 +64,53 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
 
     /**
      * Returns a full representation of the issue for the given issue key.
+     * By default, the issue will be expanded with its changelog and possible transitions.
+     * Note that if the issue does not exist, the {@link CompletableFuture} will complete exceptionally.
      *
      * @param issueKey The issue key
      * @return A {@link CompletableFuture} with the corresponding issue
      */
-    CompletableFuture<T> getIssue(String issueKey);
+    default CompletableFuture<T> getIssue(String issueKey) {
+        return getIssue(issueKey, CHANGELOG, TRANSITIONS);
+    }
+
+    /**
+     * Returns a full representation of the issue for the given issue key.
+     * Note that if the issue does not exist, the {@link CompletableFuture} will complete exceptionally.
+     *
+     * @param issueKey    The issue key
+     * @param expandFlags The optional flags to expand values returned
+     * @return A {@link CompletableFuture} with the corresponding issue
+     */
+    CompletableFuture<T> getIssue(String issueKey, IssueExpand... expandFlags);
+
+    /**
+     * Returns a full representation of the issue for the given issue key.
+     * By default, the issue will be expanded with its changelog and possible transitions.
+     * Note that if the issue does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey The issue key
+     * @return A {@link CompletableFuture} with the corresponding optional issue
+     */
+    default CompletableFuture<Optional<T>> getIssueOptional(String issueKey) {
+        return getIssue(issueKey)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
+     * Returns a full representation of the issue for the given issue key.
+     * Note that if the issue does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey    The issue key
+     * @param expandFlags The optional flags to expand values returned
+     * @return A {@link CompletableFuture} with the corresponding optional issue
+     */
+    default CompletableFuture<Optional<T>> getIssueOptional(String issueKey, IssueExpand... expandFlags) {
+        return getIssue(issueKey, expandFlags)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
 
     /**
      * Updates fields of an issue.
@@ -125,21 +178,23 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
     /**
      * Gets the comments of an issue with selection criteria.
      *
-     * @param issueKey   The issue key
-     * @param startAt    The page offset
-     * @param maxResults The number of results per page
+     * @param issueKey    The issue key
+     * @param startAt     The page offset
+     * @param maxResults  The number of results per page
+     * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the comments
      */
-    CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults);
+    CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... expandFlags);
 
     /**
      * Gets a comment.
      *
-     * @param issueKey The issue key
-     * @param id       The comment identifier
+     * @param issueKey    The issue key
+     * @param id          The comment identifier
+     * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the comment
      */
-    CompletableFuture<Comment> getComment(String issueKey, String id);
+    CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags);
 
     /**
      * Adds a comment in an issue.
@@ -354,5 +409,93 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> deleteIssueLink(String id);
+
+    /**
+     * Expand flags for issues.
+     */
+    @Getter
+    @AllArgsConstructor
+    enum IssueExpand {
+
+        /**
+         * Option to show field values in HTML format.
+         */
+        RENDERED_FIELDS("renderedFields"),
+
+        /**
+         * Option to display name of each field.
+         */
+        NAMES("names"),
+
+        /**
+         * Option to get schema for each field which describes a type of the field.
+         */
+        SCHEMA("schema"),
+
+        /**
+         * Option to get all possible transitions for the given issue.
+         */
+        TRANSITIONS("transitions"),
+
+        /**
+         * Option to get all possibles operations which may be applied on issue.
+         */
+        OPERATIONS("operations"),
+
+        /**
+         * Option to get information about how each field may be edited.
+         * It contains field's schema as well.
+         */
+        EDIT_META("editmeta"),
+
+        /**
+         * Option to get the history of all changes of the given issue.
+         */
+        CHANGELOG("changelog"),
+
+        /**
+         * Option to get REST representations of all fields.
+         * Some field may contain more recent versions.
+         * RESET representations are numbered.
+         * The greatest number always represents the most recent version.
+         * It is recommended that the most recent version is used.
+         * version for these fields which provide a more recent REST representation.
+         * After including versionedRepresentations "fields" field become hidden.
+         */
+        VERSIONED_REPRESENTATIONS("versionedRepresentations");
+
+        private final String parameter;
+
+        public static String getParameters(IssueExpand... expand) {
+            return Arrays.stream(expand)
+                    .filter(Objects::nonNull)
+                    .map(IssueExpand::getParameter)
+                    .collect(joining(","));
+        }
+
+    }
+
+    /**
+     * Expand flags for comments.
+     */
+    @Getter
+    @AllArgsConstructor
+    enum CommentExpand {
+
+        /**
+         * Option to show field values in HTML format.
+         */
+        RENDERED_BODY("renderedBody");
+
+        private final String parameter;
+
+        public static String getParameters(CommentExpand... expand) {
+            return Arrays.stream(expand)
+                    .filter(Objects::nonNull)
+                    .map(CommentExpand::getParameter)
+                    .collect(joining(","));
+        }
+
+    }
 
 }

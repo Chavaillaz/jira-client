@@ -74,7 +74,8 @@ It requires the following dependency:
   Everything for issues, including comments, links, transitions, attachments and work logs**
   - Issues
     - `addIssue(Issue issue)`
-    - `getIssue(String issueKey)`
+    - `getIssue(String issueKey, IssueExpand... flags)`
+    - `getIssueOptional(String issueKey, IssueExpand... flags)`
     - `updateIssue(Issue issue)`
     - `deleteIssue(String issueKey)`
     - `assignIssue(String issueKey, User user)`
@@ -83,8 +84,8 @@ It requires the following dependency:
     - `doTransition(String issueKey, IssueTransition transition)`
   - Comments
     - `getComments(String issueKey)`
-    - `getComments(String issueKey, Integer startAt, Integer maxResults)`
-    - `getComment(String issueKey, String id)`
+    - `getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... flags)`
+    - `getComment(String issueKey, String id, CommentExpand... flags)`
     - `addComment(String issueKey, Comment comment)`
     - `updateComment(String issueKey, Comment comment)`
     - `deleteComment(String issueKey, String id)`

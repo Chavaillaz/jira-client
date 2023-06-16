@@ -13,6 +13,8 @@ public class Comment implements Comparable<Comment> {
 
     private String body;
 
+    private String renderedBody;
+
     private OffsetDateTime created;
 
     private String id;
