@@ -13,6 +13,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
+import com.chavaillaz.jira.client.jackson.OffsetDateTimeDeserializer;
 import com.chavaillaz.jira.exception.DeserializationException;
 import com.chavaillaz.jira.exception.SerializationException;
 import com.fasterxml.jackson.databind.JavaType;
@@ -55,7 +56,8 @@ public abstract class AbstractHttpClient {
     protected ObjectMapper buildObjectMapper() {
         return JsonMapper.builder()
                 .addModule(new JavaTimeModule()
-                        .addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer()))
+                        .addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer())
+                        .addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer()))
                 .serializationInclusion(NON_NULL)
                 .enable(ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                 .disable(WRITE_DATES_AS_TIMESTAMPS)
