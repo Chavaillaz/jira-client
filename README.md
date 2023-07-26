@@ -20,7 +20,7 @@ Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
 - [Apache HTTP client][ApacheHttp] 5.2
-- [OkHttp client][OkHttp] 4.10
+- [OkHttp client][OkHttp] 4.11
 
 Note that this library has been tested with a [Jira instance version 8.20][Jira].
 
@@ -62,7 +62,7 @@ It requires the following dependency:
 <dependency>
     <groupId>com.squareup.okhttp3</groupId>
     <artifactId>okhttp</artifactId>
-    <version>4.10.x</version>
+    <version>4.11.x</version>
 </dependency>
 ```
 
