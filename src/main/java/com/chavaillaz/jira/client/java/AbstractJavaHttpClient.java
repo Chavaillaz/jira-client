@@ -1,7 +1,5 @@
 package com.chavaillaz.jira.client.java;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.io.InputStream;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -9,12 +7,10 @@ import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.AbstractHttpClient;
-import com.chavaillaz.jira.domain.ErrorMessages;
 import com.chavaillaz.jira.exception.ResponseException;
 import com.fasterxml.jackson.databind.JavaType;
 
@@ -67,11 +63,7 @@ public class AbstractJavaHttpClient extends AbstractHttpClient {
      */
     protected <T> HttpResponse<T> checkResponse(HttpResponse<T> response) {
         if (response.statusCode() >= 300) {
-            List<String> errors = new ArrayList<>();
-            if (response.body() instanceof String bodyString && isNotBlank(bodyString)) {
-                errors = deserialize(bodyString, ErrorMessages.class);
-            }
-            throw new ResponseException(response.statusCode(), errors);
+            throw new ResponseException(response.statusCode(), Objects.toString(response.body(), null));
         }
         return response;
     }

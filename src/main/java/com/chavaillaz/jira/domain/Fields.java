@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.domain;
 
+import static com.chavaillaz.jira.client.JiraConstants.defaultObjectMapper;
+
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -103,5 +105,43 @@ public class Fields extends CommonFields {
     private WorkLogs workLogs;
 
     private Long workRatio;
+
+    /**
+     * Gets a custom field with the given key.
+     * Note that a field can only be retrieved here if not already defined in the class itself.
+     *
+     * @param key The custom field key
+     * @return The custom field value
+     */
+    public Object getCustomField(String key) {
+        return this.customFields.get(key);
+    }
+
+    /**
+     * Gets a custom field with the given key and casts it directly to the given type, if possible.
+     * If the field type does not correspond to the given one, a {@code null} value will be returned.
+     * Note that a field can only be retrieved here if not already defined in the class itself.
+     *
+     * @param key  The custom field key
+     * @param type The custom field class
+     * @param <T>  The custom field type
+     * @return The custom field value
+     * @throws IllegalArgumentException If conversion fails due to incompatible type
+     */
+    public <T> T getCustomField(String key, Class<T> type) {
+        return defaultObjectMapper().convertValue(this.customFields.get(key), type);
+    }
+
+    /**
+     * Sets a custom field with the given key and value.
+     * If a previous value has been set for the given field, the old value is replaced by the given one.
+     * Note that a field can only be set here if not already defined in the class itself.
+     *
+     * @param key   The custom field key
+     * @param value The custom field value
+     */
+    public void putCustomField(String key, Object value) {
+        this.customFields.put(key, value);
+    }
 
 }

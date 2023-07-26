@@ -1,13 +1,8 @@
 package com.chavaillaz.jira.client.apache;
 
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.AbstractHttpClient;
-import com.chavaillaz.jira.domain.ErrorMessages;
 import com.chavaillaz.jira.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,12 +27,7 @@ public class CompletableFutureCallback implements FutureCallback<SimpleHttpRespo
     public void completed(SimpleHttpResponse response) {
         log.debug("Request {} completed: {}", request, response);
         if (response.getCode() >= 300) {
-            List<String> errors = new ArrayList<>();
-            String body = response.getBodyText();
-            if (isNotBlank(body)) {
-                errors = client.deserialize(body, ErrorMessages.class);
-            }
-            future.completeExceptionally(new ResponseException(response.getCode(), errors));
+            future.completeExceptionally(new ResponseException(response.getCode(), response.getBodyText()));
         } else {
             future.complete(response);
         }

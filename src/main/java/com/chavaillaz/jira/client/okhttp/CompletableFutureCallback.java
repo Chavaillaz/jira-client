@@ -1,14 +1,9 @@
 package com.chavaillaz.jira.client.okhttp;
 
-import static java.util.Collections.emptyList;
-import static org.apache.commons.lang3.StringUtils.isNotBlank;
-
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.AbstractHttpClient;
-import com.chavaillaz.jira.domain.ErrorMessages;
 import com.chavaillaz.jira.exception.ResponseException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,32 +29,16 @@ public class CompletableFutureCallback implements Callback {
         log.debug("{} completed: {}", call.request(), response);
 
         if (response.code() >= 300) {
-            List<String> errors;
+            String content;
             try (ResponseBody body = response.body()) {
-                errors = parseErrors(body);
+                content = body != null ? body.string() : null;
+            } catch (Exception e) {
+                content = e.getMessage();
             }
-            future.completeExceptionally(new ResponseException(response.code(), errors));
+            future.completeExceptionally(new ResponseException(response.code(), content));
         } else {
             future.complete(response);
         }
-    }
-
-    protected List<String> parseErrors(ResponseBody body) {
-        if (body != null) {
-            String bodyString = null;
-            try {
-                // Can only be consumed once
-                bodyString = body.string();
-                if (isNotBlank(bodyString)) {
-                    return client.deserialize(bodyString, ErrorMessages.class);
-                }
-            } catch (Exception e) {
-                if (isNotBlank(bodyString)) {
-                    return List.of(bodyString);
-                }
-            }
-        }
-        return emptyList();
     }
 
     @Override

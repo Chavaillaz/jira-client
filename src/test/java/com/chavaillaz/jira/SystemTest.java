@@ -37,9 +37,9 @@ class SystemTest {
         );
     }
 
-    @DisplayName("Check story fields")
     @ParameterizedTest(name = "{0}")
     @MethodSource("allClients")
+    @DisplayName("Check story fields")
     @Disabled("Set Jira URL and credentials before launching")
     void checkStoryFields(JiraClient<CompanyIssue> client) throws Exception {
         CompanyIssue issue = client.getIssueClient().getIssue("PROJECT-12345").get();

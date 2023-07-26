@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.client.java;
 
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN;
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
 import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
 import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;

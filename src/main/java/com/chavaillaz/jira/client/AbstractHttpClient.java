@@ -1,25 +1,18 @@
 package com.chavaillaz.jira.client;
 
-import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
-import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static com.chavaillaz.jira.client.JiraConstants.defaultObjectMapper;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 import java.net.URI;
 import java.text.MessageFormat;
-import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Map;
 
-import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
-import com.chavaillaz.jira.client.jackson.OffsetDateTimeDeserializer;
 import com.chavaillaz.jira.exception.DeserializationException;
 import com.chavaillaz.jira.exception.SerializationException;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,12 +23,11 @@ public abstract class AbstractHttpClient {
     public static final String HEADER_AUTHORIZATION = "Authorization";
     public static final String HEADER_CONTENT_TYPE = "Content-Type";
     public static final String HEADER_CONTENT_JSON = "application/json";
-    public static final String HEADER_ATLASSIAN_TOKEN = "X-Atlassian-Token";
-    public static final String HEADER_ATLASSIAN_TOKEN_DISABLED = "no-check";
 
     protected final String authentication;
     protected final String baseUrl;
-    protected final ObjectMapper objectMapper = buildObjectMapper();
+
+    protected ObjectMapper objectMapper = defaultObjectMapper();
 
     /**
      * Creates a new abstract client.
@@ -46,22 +38,6 @@ public abstract class AbstractHttpClient {
     protected AbstractHttpClient(String baseUrl, String authentication) {
         this.baseUrl = baseUrl;
         this.authentication = authentication;
-    }
-
-    /**
-     * Creates an object mapper that will be used to serialize and deserialize all objects.
-     *
-     * @return The object mapper
-     */
-    protected ObjectMapper buildObjectMapper() {
-        return JsonMapper.builder()
-                .addModule(new JavaTimeModule()
-                        .addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer())
-                        .addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer()))
-                .serializationInclusion(NON_NULL)
-                .enable(ACCEPT_CASE_INSENSITIVE_PROPERTIES)
-                .disable(WRITE_DATES_AS_TIMESTAMPS)
-                .build();
     }
 
     /**

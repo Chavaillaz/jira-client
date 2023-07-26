@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.client.apache;
 
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN;
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
 import static org.apache.hc.core5.http.ContentType.MULTIPART_FORM_DATA;
 

@@ -1,5 +1,7 @@
 package com.chavaillaz.jira.client.okhttp;
 
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN;
+import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
 import static com.chavaillaz.jira.client.okhttp.OkHttpUtils.multipartWithFiles;
 
 import java.io.File;
