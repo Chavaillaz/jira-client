@@ -197,6 +197,21 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
     CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags);
 
     /**
+     * Gets a comment.
+     * Note that if the comment does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey    The issue key
+     * @param id          The comment identifier
+     * @param expandFlags The optional flags to expand values returned
+     * @return A {@link CompletableFuture} with the corresponding optional comment
+     */
+    default CompletableFuture<Optional<Comment>> getCommentOptional(String issueKey, String id, CommentExpand... expandFlags) {
+        return getComment(issueKey, id, expandFlags)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
      * Adds a comment in an issue.
      *
      * @param issueKey The issue key
@@ -292,6 +307,20 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
     CompletableFuture<WorkLog> getWorkLog(String issueKey, String id);
 
     /**
+     * Gets a work log.
+     * Note that if the work log does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey The issue key
+     * @param id       The work log identifier
+     * @return A {@link CompletableFuture} with the corresponding optional work log
+     */
+    default CompletableFuture<Optional<WorkLog>> getWorkLogOptional(String issueKey, String id) {
+        return getWorkLog(issueKey, id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
      * Updates a work log.
      *
      * @param issueKey The issue key
@@ -316,6 +345,19 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
      * @return A {@link CompletableFuture} with the attachment
      */
     CompletableFuture<Attachment> getAttachment(String id);
+
+    /**
+     * Gets an attachment.
+     * Note that if the attachment does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param id The attachment identifier
+     * @return A {@link CompletableFuture} with the corresponding optional attachment
+     */
+    default CompletableFuture<Optional<Attachment>> getAttachmentOptional(String id) {
+        return getAttachment(id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
 
     /**
      * Gets an attachment content.
@@ -360,6 +402,20 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
     CompletableFuture<RemoteLink> getRemoteLink(String issueKey, String id);
 
     /**
+     * Gets a remote link.
+     * Note that if the remote link does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey The issue key
+     * @param id       The remote link identifier
+     * @return A {@link CompletableFuture} with the corresponding optional remote link
+     */
+    default CompletableFuture<Optional<RemoteLink>> getRemoteLinkOptional(String issueKey, String id) {
+        return getRemoteLink(issueKey, id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
      * Adds a remote link to an issue.
      *
      * @param issueKey   The issue key
@@ -393,6 +449,19 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
      * @return A {@link CompletableFuture} with the issue link
      */
     CompletableFuture<Link> getIssueLink(String id);
+
+    /**
+     * Gets an issue link.
+     * Note that if the issue link does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param id The issue link identifier
+     * @return A {@link CompletableFuture} with the corresponding optional issue link
+     */
+    default CompletableFuture<Optional<Link>> getIssueLinkOptional(String id) {
+        return getIssueLink(id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
 
     /**
      * Adds an issue link.

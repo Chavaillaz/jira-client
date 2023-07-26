@@ -1,8 +1,10 @@
 package com.chavaillaz.jira.client;
 
 import static java.util.Collections.emptyList;
+import static java.util.Optional.empty;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.domain.Filter;
@@ -65,6 +67,19 @@ public interface SearchClient<T extends List<? extends Issue>> extends AutoClose
      * @return A {@link CompletableFuture} with the filter found
      */
     CompletableFuture<Filter> getFilter(String id);
+
+    /**
+     * Gets a filter.
+     * Note that if the filter does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param id The filter identifier
+     * @return A {@link CompletableFuture} with the corresponding optional filter
+     */
+    default CompletableFuture<Optional<Filter>> getFilterOptional(String id) {
+        return getFilter(id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
 
     /**
      * Gets all favorite filters of the logged-in user.

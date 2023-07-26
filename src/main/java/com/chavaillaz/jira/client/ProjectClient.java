@@ -1,5 +1,8 @@
 package com.chavaillaz.jira.client;
 
+import static java.util.Optional.empty;
+
+import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.domain.Components;
@@ -54,6 +57,19 @@ public interface ProjectClient extends AutoCloseable {
      * @return A {@link CompletableFuture} with the project
      */
     CompletableFuture<Project> getProject(String projectKey);
+
+    /**
+     * Gets a specific project.
+     * Note that if the project does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param projectKey The project key
+     * @return A {@link CompletableFuture} with the corresponding optional project
+     */
+    default CompletableFuture<Optional<Project>> getProjectOptional(String projectKey) {
+        return getProject(projectKey)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
 
     /**
      * Gets the list of available versions in a project.

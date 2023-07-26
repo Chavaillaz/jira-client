@@ -86,6 +86,7 @@ It requires the following dependency:
     - `getComments(String issueKey)`
     - `getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... flags)`
     - `getComment(String issueKey, String id, CommentExpand... flags)`
+    - `getCommentOptional(String issueKey, String id, CommentExpand... flags)`
     - `addComment(String issueKey, Comment comment)`
     - `updateComment(String issueKey, Comment comment)`
     - `deleteComment(String issueKey, String id)`
@@ -100,21 +101,25 @@ It requires the following dependency:
     - `addWorkLog(String issueKey, WorkLog workLog)`
     - `getWorkLogs(String issueKey)`
     - `getWorkLog(String issueKey, String id)`
+    - `getWorkLogOptional(String issueKey, String id)`
     - `updateWorkLog(String issueKey, WorkLog workLog)`
     - `deleteWorkLog(String issueKey, String id)`
   - Attachments
     - `getAttachment(String id)`
+    - `getAttachmentOptional(String id)`
     - `getAttachmentContent(String url)`
     - `addAttachment(String issueKey, File... files)`
     - `deleteAttachment(String id)`
   - Remote Links
     - `getRemoteLinks(String issueKey)`
     - `getRemoteLink(String issueKey, String id)`
+    - `getRemoteLinkOptional(String issueKey, String id)`
     - `addRemoteLink(String issueKey, RemoteLink remoteLink)`
     - `updateRemoteLink(String issueKey, RemoteLink remoteLink)`
     - `deleteRemoteLink(String issueKey, String id)`
   - Issue Links
     - `getIssueLink(String id)`
+    - `getIssueLinkOptional(String id)`
     - `addIssueLink(Link link)`
     - `deleteIssueLink(String id)`
 - **[SearchClient](src/main/java/com/chavaillaz/jira/client/SearchClient.java) -
@@ -126,6 +131,7 @@ It requires the following dependency:
   - Filters
     - `addFilter(Filter filter)`
     - `getFilter(String id)`
+    - `getFilterOptional(String id)`
     - `getFavoriteFilters()`
     - `updateFilter(String id, Filter filter)`
     - `deleteFilter(String id)`
@@ -135,6 +141,7 @@ It requires the following dependency:
   - `getProjects()`
   - `getProjects(boolean includeArchived, String expand)`
   - `getProject(String projectKey)`
+  - `getProjectOptional(String projectKey)`
   - `getProjectVersions(String projectKey)`
   - `getProjectComponents(String projectKey)`
   - `getProjectStatuses(String projectKey)`
@@ -148,6 +155,7 @@ It requires the following dependency:
   - `getAssignableUsers(String search, String key)`
   - `getAssignableUsers(String search, String key, Integer startAt, Integer maxResults, Boolean includeInactive)`
   - `getUser(String username)`
+  - `getUserOptional(String username)`
   - `getCurrentUser()`
 
 ### Client instantiation
