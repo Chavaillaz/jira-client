@@ -20,7 +20,7 @@ Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
 - [Apache HTTP client][ApacheHttp] 5.2
-- [OkHttp client][OkHttp] 4.11
+- [OkHttp client][OkHttp] 4.12
 
 Note that this library has been tested with a [Jira instance version 8.20][Jira].
 
