@@ -1,11 +1,8 @@
 package com.chavaillaz.jira.client.java;
 
-import java.net.InetSocketAddress;
-import java.net.ProxySelector;
 import java.net.http.HttpClient;
-import java.time.Duration;
-import java.util.Optional;
 
+import com.chavaillaz.client.java.JavaHttpUtils;
 import com.chavaillaz.jira.client.AbstractJiraClient;
 import com.chavaillaz.jira.client.IssueClient;
 import com.chavaillaz.jira.client.JiraClient;
@@ -38,44 +35,27 @@ public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<Http
 
     @Override
     public HttpClient newHttpClient() {
-        return HttpClient.newBuilder()
-                .proxy(Optional.ofNullable(this.proxy)
-                        .map(config -> ProxySelector.of(new InetSocketAddress(config.getHost(), config.getPort())))
-                        .orElse(ProxySelector.getDefault()))
-                .connectTimeout(Duration.ofSeconds(30))
-                .build();
+        return JavaHttpUtils.newHttpClient(proxy);
     }
 
     @Override
     public IssueClient<I> getIssueClient() {
-        if (cacheIssueClient == null) {
-            cacheIssueClient = new JavaHttpIssueClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issueType);
-        }
-        return cacheIssueClient;
+        return cacheIssueClient.get(() -> new JavaHttpIssueClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issueType));
     }
 
     @Override
     public ProjectClient getProjectClient() {
-        if (cacheProjectClient == null) {
-            cacheProjectClient = new JavaHttpProjectClient(newHttpClient(), jiraUrl + BASE_API, authentication);
-        }
-        return cacheProjectClient;
+        return cacheProjectClient.get(() -> new JavaHttpProjectClient(newHttpClient(), baseUrl + BASE_API, authentication));
     }
 
     @Override
     public UserClient getUserClient() {
-        if (cacheUserClient == null) {
-            cacheUserClient = new JavaHttpUserClient(newHttpClient(), jiraUrl + BASE_API, authentication);
-        }
-        return cacheUserClient;
+        return cacheUserClient.get(() -> new JavaHttpUserClient(newHttpClient(), baseUrl + BASE_API, authentication));
     }
 
     @Override
     public SearchClient<Issues<I>> getSearchClient() {
-        if (cacheSearchClient == null) {
-            cacheSearchClient = new JavaHttpSearchClient<>(newHttpClient(), jiraUrl + BASE_API, authentication, issuesListType);
-        }
-        return cacheSearchClient;
+        return cacheSearchClient.get(() -> new JavaHttpSearchClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issuesListType));
     }
 
 }

@@ -26,7 +26,7 @@ class SystemTest {
     static final JiraClient<CompanyIssue> OK_HTTP_CLIENT = configure(new OkHttpJiraClient<>(JIRA_INSTANCE, CompanyIssue.class));
 
     static <I extends Issue> JiraClient<I> configure(JiraClient<I> client) {
-        return client.withAuthentication("myUsername", "myPassword");
+        return client.withUserAuthentication("myUsername", "myPassword");
     }
 
     static Stream<Arguments> allClients() {

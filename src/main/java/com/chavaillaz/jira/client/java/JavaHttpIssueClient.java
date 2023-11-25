@@ -1,9 +1,9 @@
 package com.chavaillaz.jira.client.java;
 
+import static com.chavaillaz.client.java.JavaHttpUtils.multipartWithFiles;
+import static com.chavaillaz.client.java.JavaHttpUtils.ofMimeMultipartData;
 import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN;
 import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.multipartWithFiles;
-import static com.chavaillaz.jira.client.java.JavaHttpUtils.ofMimeMultipartData;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
@@ -15,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.client.JiraAuthentication;
 import com.chavaillaz.jira.domain.Attachment;
 import com.chavaillaz.jira.domain.Attachments;
 import com.chavaillaz.jira.domain.Comment;
@@ -42,10 +43,10 @@ public class JavaHttpIssueClient<T extends Issue> extends AbstractJavaHttpClient
      *
      * @param client         The Java HTTP client to use
      * @param baseUrl        The URL of Jira
-     * @param authentication The authentication header (nullable)
+     * @param authentication The authentication information
      * @param issueType      The issue class type
      */
-    public JavaHttpIssueClient(HttpClient client, String baseUrl, String authentication, Class<T> issueType) {
+    public JavaHttpIssueClient(HttpClient client, String baseUrl, JiraAuthentication authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
         this.issueType = issueType;
     }

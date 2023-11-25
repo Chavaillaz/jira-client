@@ -3,6 +3,7 @@ package com.chavaillaz.jira.client.okhttp;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.jira.client.JiraAuthentication;
 import com.chavaillaz.jira.client.SearchClient;
 import com.chavaillaz.jira.domain.Filter;
 import com.chavaillaz.jira.domain.Filters;
@@ -20,10 +21,10 @@ public class OkHttpSearchClient<T extends List<? extends Issue>> extends Abstrac
      *
      * @param client         The OkHttp client to use
      * @param baseUrl        The URL of Jira
-     * @param authentication The authentication header (nullable)
+     * @param authentication The authentication information
      * @param issuesListType The issues list class type
      */
-    public OkHttpSearchClient(OkHttpClient client, String baseUrl, String authentication, JavaType issuesListType) {
+    public OkHttpSearchClient(OkHttpClient client, String baseUrl, JiraAuthentication authentication, JavaType issuesListType) {
         super(client, baseUrl, authentication);
         this.issuesListType = issuesListType;
     }

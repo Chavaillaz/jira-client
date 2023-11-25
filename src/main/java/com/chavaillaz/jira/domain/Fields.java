@@ -1,6 +1,6 @@
 package com.chavaillaz.jira.domain;
 
-import static com.chavaillaz.jira.client.JiraConstants.defaultObjectMapper;
+import static com.chavaillaz.jira.client.JiraConstants.jiraObjectMapper;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -129,7 +129,7 @@ public class Fields extends CommonFields {
      * @throws IllegalArgumentException If conversion fails due to incompatible type
      */
     public <T> T getCustomField(String key, Class<T> type) {
-        return defaultObjectMapper().convertValue(this.customFields.get(key), type);
+        return jiraObjectMapper().convertValue(this.customFields.get(key), type);
     }
 
     /**

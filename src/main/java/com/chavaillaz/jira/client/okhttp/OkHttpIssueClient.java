@@ -1,14 +1,15 @@
 package com.chavaillaz.jira.client.okhttp;
 
+import static com.chavaillaz.client.okhttp.OkHttpUtils.multipartWithFiles;
 import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN;
 import static com.chavaillaz.jira.client.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
-import static com.chavaillaz.jira.client.okhttp.OkHttpUtils.multipartWithFiles;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.jira.client.IssueClient;
+import com.chavaillaz.jira.client.JiraAuthentication;
 import com.chavaillaz.jira.domain.Attachment;
 import com.chavaillaz.jira.domain.Attachments;
 import com.chavaillaz.jira.domain.Comment;
@@ -36,10 +37,10 @@ public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient imp
      *
      * @param client         The OkHttp client to use
      * @param baseUrl        The URL of Jira
-     * @param authentication The authentication header (nullable)
+     * @param authentication The authentication information
      * @param issueType      The issue class type
      */
-    public OkHttpIssueClient(OkHttpClient client, String baseUrl, String authentication, Class<T> issueType) {
+    public OkHttpIssueClient(OkHttpClient client, String baseUrl, JiraAuthentication authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
         this.issueType = issueType;
     }

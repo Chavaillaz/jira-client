@@ -10,25 +10,19 @@ import lombok.ToString;
 @EqualsAndHashCode(callSuper = true)
 public class CompanyFields extends Fields {
 
-    @JsonProperty("customfield_10000")
+    @JsonProperty("customfield_51540")
     private String team;
 
-    @JsonProperty("customfield_10001")
+    @JsonProperty("customfield_93440")
     private User businessEngineer;
 
-    @JsonProperty("customfield_10002")
+    @JsonProperty("customfield_23143")
     private User projectManager;
 
-    /**
-     * Option field (value to be selected from a list of possibilities)
-     */
-    @JsonProperty("customfield_10003")
+    @JsonProperty("customfield_84462")
     private FieldWrapper urgency;
 
-    /**
-     * XRay test execution (needs specific Jira plugin)
-     */
-    @JsonProperty("customfield_10004")
+    @JsonProperty("customfield_52559")
     private TestExecution testExecution;
 
 }

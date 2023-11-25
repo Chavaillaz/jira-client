@@ -2,6 +2,7 @@ package com.chavaillaz.jira.client.okhttp;
 
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.jira.client.JiraAuthentication;
 import com.chavaillaz.jira.client.UserClient;
 import com.chavaillaz.jira.domain.User;
 import com.chavaillaz.jira.domain.Users;
@@ -14,9 +15,9 @@ public class OkHttpUserClient extends AbstractOkHttpClient implements UserClient
      *
      * @param client         The OkHttp client to use
      * @param baseUrl        The URL of Jira
-     * @param authentication The authentication header (nullable)
+     * @param authentication The authentication information
      */
-    public OkHttpUserClient(OkHttpClient client, String baseUrl, String authentication) {
+    public OkHttpUserClient(OkHttpClient client, String baseUrl, JiraAuthentication authentication) {
         super(client, baseUrl, authentication);
     }
 

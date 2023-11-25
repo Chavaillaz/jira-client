@@ -17,6 +17,7 @@ import com.chavaillaz.jira.client.jackson.OffsetDateTimeSerializer;
 import com.chavaillaz.jira.domain.ErrorMessages;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.experimental.UtilityClass;
 
@@ -48,9 +49,10 @@ public class JiraConstants {
      *
      * @return The object mapper
      */
-    public static ObjectMapper defaultObjectMapper() {
+    public static ObjectMapper jiraObjectMapper() {
         return JsonMapper.builder()
-                .addModule(new JavaTimeModule()
+                .addModule(new JavaTimeModule())
+                .addModule(new SimpleModule()
                         .addSerializer(OffsetDateTime.class, new OffsetDateTimeSerializer())
                         .addDeserializer(OffsetDateTime.class, new OffsetDateTimeDeserializer()))
                 .serializationInclusion(NON_NULL)
@@ -68,7 +70,7 @@ public class JiraConstants {
      */
     public static List<String> extractJsonErrors(String json) {
         try {
-            return defaultObjectMapper().readValue(json, ErrorMessages.class);
+            return jiraObjectMapper().readValue(json, ErrorMessages.class);
         } catch (Exception e) {
             return null;
         }

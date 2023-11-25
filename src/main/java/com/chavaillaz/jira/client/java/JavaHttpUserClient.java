@@ -3,6 +3,7 @@ package com.chavaillaz.jira.client.java;
 import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.jira.client.JiraAuthentication;
 import com.chavaillaz.jira.client.SearchClient;
 import com.chavaillaz.jira.client.UserClient;
 import com.chavaillaz.jira.domain.User;
@@ -15,9 +16,9 @@ public class JavaHttpUserClient extends AbstractJavaHttpClient implements UserCl
      *
      * @param client         The Java HTTP client to use
      * @param baseUrl        The URL of Jira
-     * @param authentication The authentication header (nullable)
+     * @param authentication The authentication information
      */
-    public JavaHttpUserClient(HttpClient client, String baseUrl, String authentication) {
+    public JavaHttpUserClient(HttpClient client, String baseUrl, JiraAuthentication authentication) {
         super(client, baseUrl, authentication);
     }
 

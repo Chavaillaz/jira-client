@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-class ResponseExceptionTest {
+class JiraResponseExceptionTest {
 
     @Test
     @DisplayName("Check error extraction from HTML format")
@@ -31,7 +31,7 @@ class ResponseExceptionTest {
                 </div>
                 """;
 
-        Exception exception = new ResponseException(401, body);
+        Exception exception = new JiraResponseException(401, body);
         assertEquals("Jira responded with 401: Encountered a 401 - Unauthorized error while loading this page. "
                 + "Basic Authentication Failure - Reason : AUTHENTICATED_FAILED Go to Jira home", exception.getMessage());
     }
@@ -48,7 +48,7 @@ class ResponseExceptionTest {
                 }
                 """;
 
-        Exception exception = new ResponseException(404, body);
+        Exception exception = new JiraResponseException(404, body);
         assertEquals("Jira responded with 404: Issue Does Not Exist", exception.getMessage());
     }
 
@@ -57,7 +57,7 @@ class ResponseExceptionTest {
     void checkUnknownErrors() {
         String body = "I'm a teapot";
 
-        Exception exception = new ResponseException(418, body);
+        Exception exception = new JiraResponseException(418, body);
         assertEquals("Jira responded with 418: I'm a teapot", exception.getMessage());
     }
 
