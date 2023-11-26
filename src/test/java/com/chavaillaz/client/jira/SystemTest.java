@@ -1,5 +1,6 @@
 package com.chavaillaz.client.jira;
 
+import static io.vertx.core.Vertx.vertx;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Named.named;
 import static org.junit.platform.commons.util.StringUtils.isNotBlank;
@@ -11,6 +12,7 @@ import com.chavaillaz.client.jira.domain.CompanyIssue;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.java.JavaHttpJiraClient;
 import com.chavaillaz.client.jira.okhttp.OkHttpJiraClient;
+import com.chavaillaz.client.jira.vertx.VertxHttpJiraClient;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -23,6 +25,7 @@ class SystemTest {
     static final JiraClient<CompanyIssue> JAVA_HTTP_CLIENT = configure(new JavaHttpJiraClient<>(JIRA_INSTANCE, CompanyIssue.class));
     static final JiraClient<CompanyIssue> APACHE_HTTP_CLIENT = configure(new ApacheHttpJiraClient<>(JIRA_INSTANCE, CompanyIssue.class));
     static final JiraClient<CompanyIssue> OK_HTTP_CLIENT = configure(new OkHttpJiraClient<>(JIRA_INSTANCE, CompanyIssue.class));
+    static final JiraClient<CompanyIssue> VERTX_HTTP_CLIENT = configure(new VertxHttpJiraClient<>(vertx(), JIRA_INSTANCE, CompanyIssue.class));
 
     static <I extends Issue> JiraClient<I> configure(JiraClient<I> client) {
         return client.withUserAuthentication("myUsername", "myPassword");
@@ -32,7 +35,8 @@ class SystemTest {
         return Stream.of(
                 Arguments.of(named("Java HTTP client", JAVA_HTTP_CLIENT)),
                 Arguments.of(named("Apache HTTP client", APACHE_HTTP_CLIENT)),
-                Arguments.of(named("OkHttp client", OK_HTTP_CLIENT))
+                Arguments.of(named("OkHttp client", OK_HTTP_CLIENT)),
+                Arguments.of(named("Vert.x client", VERTX_HTTP_CLIENT))
         );
     }
 

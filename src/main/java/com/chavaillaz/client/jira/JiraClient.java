@@ -1,5 +1,7 @@
 package com.chavaillaz.client.jira;
 
+import static io.vertx.core.Vertx.vertx;
+
 import com.chavaillaz.client.common.Client;
 import com.chavaillaz.client.jira.apache.ApacheHttpJiraClient;
 import com.chavaillaz.client.jira.api.IssueClient;
@@ -10,6 +12,7 @@ import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.Issues;
 import com.chavaillaz.client.jira.java.JavaHttpJiraClient;
 import com.chavaillaz.client.jira.okhttp.OkHttpJiraClient;
+import com.chavaillaz.client.jira.vertx.VertxHttpJiraClient;
 
 public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
 
@@ -38,6 +41,15 @@ public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
      */
     static OkHttpJiraClient<Issue> okHttpClient(String jiraUrl) {
         return new OkHttpJiraClient<>(jiraUrl, Issue.class);
+    }
+
+    /**
+     * Creates a default {@link JiraClient} with Vert.x client.
+     *
+     * @param jiraUrl The Jira URL
+     */
+    static VertxHttpJiraClient<Issue> vertxClient(String jiraUrl) {
+        return new VertxHttpJiraClient<>(vertx(), jiraUrl, Issue.class);
     }
 
     /**
