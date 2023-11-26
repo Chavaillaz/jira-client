@@ -4,7 +4,7 @@ import java.net.http.HttpClient;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.jira.JiraAuthentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.SearchClient;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
@@ -24,7 +24,7 @@ public class JavaHttpSearchClient<T extends List<? extends Issue>> extends Abstr
      * @param authentication The authentication information
      * @param issuesListType The issues list class type
      */
-    public JavaHttpSearchClient(HttpClient client, String baseUrl, JiraAuthentication authentication, JavaType issuesListType) {
+    public JavaHttpSearchClient(HttpClient client, String baseUrl, Authentication authentication, JavaType issuesListType) {
         super(client, baseUrl, authentication);
         this.issuesListType = issuesListType;
     }

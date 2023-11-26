@@ -8,7 +8,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.jira.JiraAuthentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.ProjectClient;
 import com.chavaillaz.client.jira.domain.Components;
 import com.chavaillaz.client.jira.domain.Identity;
@@ -29,7 +29,7 @@ public class ApacheHttpProjectClient extends AbstractApacheHttpClient implements
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public ApacheHttpProjectClient(CloseableHttpAsyncClient client, String baseUrl, JiraAuthentication authentication) {
+    public ApacheHttpProjectClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
     }
 

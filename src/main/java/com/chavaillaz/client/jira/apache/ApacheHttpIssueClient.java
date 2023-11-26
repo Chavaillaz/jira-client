@@ -1,6 +1,6 @@
 package com.chavaillaz.client.jira.apache;
 
-import static com.chavaillaz.client.apache.ApacheHttpUtils.multipartWithFiles;
+import static com.chavaillaz.client.common.apache.ApacheHttpUtils.multipartWithFiles;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.delete;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.post;
@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.jira.JiraAuthentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.IssueClient;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
@@ -43,7 +43,7 @@ public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpCl
      * @param authentication The authentication information
      * @param issueType      The issue class type
      */
-    public ApacheHttpIssueClient(CloseableHttpAsyncClient client, String baseUrl, JiraAuthentication authentication, Class<T> issueType) {
+    public ApacheHttpIssueClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
         this.issueType = issueType;
     }

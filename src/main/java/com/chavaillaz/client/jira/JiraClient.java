@@ -1,6 +1,6 @@
 package com.chavaillaz.client.jira;
 
-import com.chavaillaz.client.Client;
+import com.chavaillaz.client.common.Client;
 import com.chavaillaz.client.jira.apache.ApacheHttpJiraClient;
 import com.chavaillaz.client.jira.api.IssueClient;
 import com.chavaillaz.client.jira.api.ProjectClient;

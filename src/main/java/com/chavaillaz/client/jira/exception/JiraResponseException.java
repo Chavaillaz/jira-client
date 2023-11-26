@@ -3,7 +3,7 @@ package com.chavaillaz.client.jira.exception;
 import static java.lang.String.join;
 import static java.util.Optional.ofNullable;
 
-import com.chavaillaz.client.exception.ResponseException;
+import com.chavaillaz.client.common.exception.ResponseException;
 import com.chavaillaz.client.jira.JiraConstants;
 
 public class JiraResponseException extends ResponseException {

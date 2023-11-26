@@ -4,7 +4,7 @@ import static com.chavaillaz.client.jira.JiraConstants.BASE_API;
 
 import java.net.http.HttpClient;
 
-import com.chavaillaz.client.java.JavaHttpUtils;
+import com.chavaillaz.client.common.java.JavaHttpUtils;
 import com.chavaillaz.client.jira.AbstractJiraClient;
 import com.chavaillaz.client.jira.JiraClient;
 import com.chavaillaz.client.jira.api.IssueClient;
@@ -33,22 +33,22 @@ public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<Http
 
     @Override
     public IssueClient<I> getIssueClient() {
-        return cacheIssueClient.get(() -> new JavaHttpIssueClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issueType));
+        return issueClient.get(() -> new JavaHttpIssueClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issueType));
     }
 
     @Override
     public ProjectClient getProjectClient() {
-        return cacheProjectClient.get(() -> new JavaHttpProjectClient(newHttpClient(), baseUrl + BASE_API, authentication));
+        return projectClient.get(() -> new JavaHttpProjectClient(newHttpClient(), baseUrl + BASE_API, authentication));
     }
 
     @Override
     public UserClient getUserClient() {
-        return cacheUserClient.get(() -> new JavaHttpUserClient(newHttpClient(), baseUrl + BASE_API, authentication));
+        return userClient.get(() -> new JavaHttpUserClient(newHttpClient(), baseUrl + BASE_API, authentication));
     }
 
     @Override
     public SearchClient<Issues<I>> getSearchClient() {
-        return cacheSearchClient.get(() -> new JavaHttpSearchClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issuesListType));
+        return searchClient.get(() -> new JavaHttpSearchClient<>(newHttpClient(), baseUrl + BASE_API, authentication, issuesListType));
     }
 
 }

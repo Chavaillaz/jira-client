@@ -9,7 +9,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.chavaillaz.client.jira.JiraAuthentication;
+import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.SearchClient;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
@@ -30,7 +30,7 @@ public class ApacheHttpSearchClient<T extends List<? extends Issue>> extends Abs
      * @param authentication The authentication information
      * @param issuesListType The issues list class type
      */
-    public ApacheHttpSearchClient(CloseableHttpAsyncClient client, String baseUrl, JiraAuthentication authentication, JavaType issuesListType) {
+    public ApacheHttpSearchClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, JavaType issuesListType) {
         super(client, baseUrl, authentication);
         this.issuesListType = issuesListType;
     }
