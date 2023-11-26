@@ -5,11 +5,9 @@ import static com.chavaillaz.client.jira.JiraConstants.jiraObjectMapper;
 import com.chavaillaz.client.common.exception.ResponseException;
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.exception.JiraResponseException;
-import lombok.extern.slf4j.Slf4j;
 import okhttp3.OkHttpClient;
 
-@Slf4j
-public class AbstractOkHttpClient extends com.chavaillaz.client.common.okhttp.AbstractOkHttpClient {
+public abstract class AbstractOkHttpClient extends com.chavaillaz.client.common.okhttp.AbstractOkHttpClient {
 
     /**
      * Creates a new abstract client based on OkHttp client.
@@ -18,7 +16,7 @@ public class AbstractOkHttpClient extends com.chavaillaz.client.common.okhttp.Ab
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public AbstractOkHttpClient(OkHttpClient client, String baseUrl, Authentication authentication) {
+    protected AbstractOkHttpClient(OkHttpClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
         this.objectMapper = jiraObjectMapper();
     }

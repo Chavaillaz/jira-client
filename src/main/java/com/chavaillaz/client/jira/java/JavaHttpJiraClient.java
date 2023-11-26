@@ -17,7 +17,7 @@ import com.chavaillaz.client.jira.domain.Issues;
 public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<HttpClient, I> {
 
     /**
-     * Creates a new {@link JiraClient} with Java HTTP client.
+     * Creates a new {@link JiraClient} using Java HTTP client with the given issue type.
      *
      * @param jiraUrl   The Jira URL
      * @param issueType The issue class type

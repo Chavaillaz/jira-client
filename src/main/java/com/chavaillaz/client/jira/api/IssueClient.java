@@ -535,6 +535,12 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
 
         private final String parameter;
 
+        /**
+         * Concatenates the given issue expansion flags with a comma separating them.
+         *
+         * @param expand The flags to expand issues
+         * @return The concatenation of the given flags
+         */
         public static String getParameters(IssueExpand... expand) {
             return Arrays.stream(expand)
                     .filter(Objects::nonNull)
@@ -558,6 +564,12 @@ public interface IssueClient<T extends Issue> extends AutoCloseable {
 
         private final String parameter;
 
+        /**
+         * Concatenates the given comment expansion flags with a comma separating them.
+         *
+         * @param expand The flags to expand comments
+         * @return The concatenation of the given flags
+         */
         public static String getParameters(CommentExpand... expand) {
             return Arrays.stream(expand)
                     .filter(Objects::nonNull)

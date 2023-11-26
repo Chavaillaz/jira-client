@@ -8,7 +8,7 @@ import com.chavaillaz.client.common.exception.ResponseException;
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.exception.JiraResponseException;
 
-public class AbstractJavaHttpClient extends com.chavaillaz.client.common.java.AbstractJavaHttpClient {
+public abstract class AbstractJavaHttpClient extends com.chavaillaz.client.common.java.AbstractJavaHttpClient {
 
     /**
      * Creates a new abstract client based on Java HTTP client.
@@ -17,7 +17,7 @@ public class AbstractJavaHttpClient extends com.chavaillaz.client.common.java.Ab
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public AbstractJavaHttpClient(HttpClient client, String baseUrl, Authentication authentication) {
+    protected AbstractJavaHttpClient(HttpClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
         this.objectMapper = jiraObjectMapper();
     }

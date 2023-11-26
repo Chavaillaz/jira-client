@@ -16,7 +16,7 @@ import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 public class ApacheHttpJiraClient<I extends Issue> extends AbstractJiraClient<CloseableHttpAsyncClient, I> {
 
     /**
-     * Creates a new {@link JiraClient} with Apache HTTP client with the given issues and its list.
+     * Creates a new {@link JiraClient} using Apache HTTP client with the given issue type.
      *
      * @param jiraUrl   The Jira URL
      * @param issueType The issue class type

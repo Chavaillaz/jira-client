@@ -16,7 +16,7 @@ import okhttp3.OkHttpClient;
 public class OkHttpJiraClient<I extends Issue> extends AbstractJiraClient<OkHttpClient, I> {
 
     /**
-     * Creates a new {@link JiraClient} with OkHttp client with the given issues and its list.
+     * Creates a new {@link JiraClient} using OkHttp client with the given issue type.
      *
      * @param jiraUrl   The Jira URL
      * @param issueType The issue class type
