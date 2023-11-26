@@ -9,6 +9,7 @@ import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -86,13 +87,13 @@ public class JiraConstants {
      * @see #ERRORS_HTML_PATTERN
      */
     public static String extractHtmlErrors(String html) {
-        Matcher matcher = ERRORS_HTML_PATTERN.matcher(html);
-        if (matcher.find()) {
-            return normalizeSpace(matcher.group("errors")
-                    .replaceAll("<[^>]*>", EMPTY)
-                    .replaceAll("\\&[a-z]*\\;", EMPTY));
-        }
-        return null;
+        return Optional.ofNullable(html)
+                .map(ERRORS_HTML_PATTERN::matcher)
+                .filter(Matcher::find)
+                .map(matcher -> normalizeSpace(matcher.group("errors")
+                        .replaceAll("<[^>]*>", EMPTY)
+                        .replaceAll("\\&[a-z]*\\;", EMPTY)))
+                .orElse(null);
     }
 
 }
