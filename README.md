@@ -62,7 +62,7 @@ It requires the following dependency:
 <dependency>
     <groupId>com.squareup.okhttp3</groupId>
     <artifactId>okhttp</artifactId>
-    <version>4.11.x</version>
+    <version>4.12.x</version>
 </dependency>
 ```
 
@@ -70,7 +70,7 @@ It requires the following dependency:
 
 ### Features
 
-- **[IssueClient](src/main/java/com/chavaillaz/jira/client/IssueClient.java) -
+- **[IssueClient](src/main/java/com/chavaillaz/client/jira/api/IssueClient.java) -
   Everything for issues, including comments, links, transitions, attachments and work logs**
   - Issues
     - `addIssue(Issue issue)`
@@ -122,7 +122,7 @@ It requires the following dependency:
     - `getIssueLinkOptional(String id)`
     - `addIssueLink(Link link)`
     - `deleteIssueLink(String id)`
-- **[SearchClient](src/main/java/com/chavaillaz/jira/client/SearchClient.java) -
+- **[SearchClient](src/main/java/com/chavaillaz/client/jira/api/SearchClient.java) -
   Everything for searches, including filters**
   - Searches
     - `searchIssues(String jql)`
@@ -135,7 +135,7 @@ It requires the following dependency:
     - `getFavoriteFilters()`
     - `updateFilter(String id, Filter filter)`
     - `deleteFilter(String id)`
-- **[ProjectClient](src/main/java/com/chavaillaz/jira/client/ProjectClient.java) -
+- **[ProjectClient](src/main/java/com/chavaillaz/client/jira/api/ProjectClient.java) -
   Everything for projects, including components, versions, statuses and roles**
   - `addProject(ProjectChange project)`
   - `getProjects()`
@@ -148,7 +148,7 @@ It requires the following dependency:
   - `getProjectRoles(String projectKey)`
   - `updateProject(String projectKey, ProjectChange project)`
   - `deleteProject(String projectKey)`
-- **[UserClient](src/main/java/com/chavaillaz/jira/client/ProjectClient.java) -
+- **[UserClient](src/main/java/com/chavaillaz/client/jira/api/ProjectClient.java) -
   Everything for users**
   - `getUsers(String search)`
   - `getUsers(String search, Integer startAt, Integer maxResults, Boolean includeInactive)`
@@ -161,30 +161,31 @@ It requires the following dependency:
 ### Client instantiation
 
 Instantiate the Jira client of your choice by giving your Jira instance URL. Depending on your needs, you may also want 
-to add authentication with a personal access token (PAT) or with username and password using `withAuthentication` 
-method. If you need to connect via a proxy, you can specify it with `withProxy`. Below an example for each HTTP client:
+to add authentication with a personal access token (PAT) using `withTokenAuthentication` or with username and password 
+using `withUserAuthentication` method. If you need to connect via a proxy, you can specify it with `withProxy`. Below 
+an example for each HTTP client:
 
-- [JavaHttpJiraClient](src/main/java/com/chavaillaz/jira/client/java/JavaHttpJiraClient.java)
+- [JavaHttpJiraClient](src/main/java/com/chavaillaz/client/jira/java/JavaHttpJiraClient.java)
 
 ```java
-JiraClient<Issue> client = JavaHttpJiraClient.jiraJavaClient("https://jira.mycompany.com")
-    .withAuthentication("myUsername","myPassword")
+JiraClient<Issue> client = JiraClient.javaClient("https://jira.mycompany.com")
+    .withUserAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
 
-- [ApacheHttpJiraClient](src/main/java/com/chavaillaz/jira/client/apache/ApacheHttpJiraClient.java)
+- [ApacheHttpJiraClient](src/main/java/com/chavaillaz/client/jira/apache/ApacheHttpJiraClient.java)
 
 ```java
-JiraClient<Issue> client = ApacheHttpJiraClient.jiraApacheClient("https://jira.mycompany.com")
-    .withAuthentication("myUsername","myPassword")
+JiraClient<Issue> client = JiraClient.apacheClient("https://jira.mycompany.com")
+    .withUserAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
 
-- [OkHttpJiraClient](src/main/java/com/chavaillaz/jira/client/okhttp/OkHttpJiraClient.java)
+- [OkHttpJiraClient](src/main/java/com/chavaillaz/client/jira/okhttp/OkHttpJiraClient.java)
 
 ```java
-JiraClient<Issue> client = OkHttpJiraClient.jiraOkHttpClient("https://jira.mycompany.com")
-    .withAuthentication("myUsername","myPassword")
+JiraClient<Issue> client = JiraClient.okHttpClient("https://jira.mycompany.com")
+    .withUserAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
 
