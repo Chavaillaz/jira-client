@@ -11,7 +11,7 @@ import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
 import com.chavaillaz.client.jira.domain.Issue;
 
-public interface SearchClient<T extends List<? extends Issue>> extends AutoCloseable {
+public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseable {
 
     String URL_SEARCH = "search";
     String URL_FILTERS = "filter";

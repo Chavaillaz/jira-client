@@ -1,9 +1,14 @@
-package com.chavaillaz.client.jira.okhttp;
+package com.chavaillaz.client.jira.vertx;
+
+import static io.vertx.core.http.HttpMethod.DELETE;
+import static io.vertx.core.http.HttpMethod.GET;
+import static io.vertx.core.http.HttpMethod.POST;
+import static io.vertx.core.http.HttpMethod.PUT;
 
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.ProjectClient;
+import com.chavaillaz.client.jira.api.ProjectApi;
 import com.chavaillaz.client.jira.domain.Components;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
@@ -12,64 +17,64 @@ import com.chavaillaz.client.jira.domain.Projects;
 import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
-import okhttp3.OkHttpClient;
+import io.vertx.ext.web.client.WebClient;
 
-public class OkHttpProjectClient extends AbstractOkHttpClient implements ProjectClient {
+public class VertxHttpProjectApi extends AbstractVertxHttpClient implements ProjectApi {
 
     /**
-     * Creates a new {@link ProjectClient} using OkHttp client.
+     * Creates a new {@link ProjectApi} using Vert.x client.
      *
-     * @param client         The OkHttp client to use
+     * @param client         The Vert.x client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public OkHttpProjectClient(OkHttpClient client, String baseUrl, Authentication authentication) {
+    public VertxHttpProjectApi(WebClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
     }
 
     @Override
     public CompletableFuture<Identity> addProject(ProjectChange project) {
-        return sendAsync(requestBuilder(URL_PROJECTS).post(body(project)), Identity.class);
+        return handleAsync(requestBuilder(POST, URL_PROJECTS).sendBuffer(body(project)), Identity.class);
     }
 
     @Override
     public CompletableFuture<Projects> getProjects(boolean includeArchived, String expand) {
-        return sendAsync(requestBuilder(URL_PROJECTS_DETAILS, includeArchived, expand).get(), Projects.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECTS_DETAILS, includeArchived, expand).send(), Projects.class);
     }
 
     @Override
     public CompletableFuture<Project> getProject(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT, projectKey).get(), Project.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECT, projectKey).send(), Project.class);
     }
 
     @Override
     public CompletableFuture<Versions> getProjectVersions(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT_VERSIONS, projectKey).get(), Versions.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECT_VERSIONS, projectKey).send(), Versions.class);
     }
 
     @Override
     public CompletableFuture<Components> getProjectComponents(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT_COMPONENTS, projectKey).get(), Components.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECT_COMPONENTS, projectKey).send(), Components.class);
     }
 
     @Override
     public CompletableFuture<Statuses> getProjectStatuses(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT_STATUSES, projectKey).get(), Statuses.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECT_STATUSES, projectKey).send(), Statuses.class);
     }
 
     @Override
     public CompletableFuture<Roles> getProjectRoles(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT_ROLES, projectKey).get(), Roles.class);
+        return handleAsync(requestBuilder(GET, URL_PROJECT_ROLES, projectKey).send(), Roles.class);
     }
 
     @Override
     public CompletableFuture<Project> updateProject(String projectKey, ProjectChange project) {
-        return sendAsync(requestBuilder(URL_PROJECT, projectKey).put(body(project)), Project.class);
+        return handleAsync(requestBuilder(PUT, URL_PROJECT, projectKey).sendBuffer(body(project)), Project.class);
     }
 
     @Override
     public CompletableFuture<Void> deleteProject(String projectKey) {
-        return sendAsync(requestBuilder(URL_PROJECT, projectKey).delete(), Void.class);
+        return handleAsync(requestBuilder(DELETE, URL_PROJECT, projectKey).send(), Void.class);
     }
 
 }

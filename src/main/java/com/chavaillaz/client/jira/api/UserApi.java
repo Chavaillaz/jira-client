@@ -8,7 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import com.chavaillaz.client.jira.domain.User;
 import com.chavaillaz.client.jira.domain.Users;
 
-public interface UserClient extends AutoCloseable {
+public interface UserApi extends AutoCloseable {
 
     String URL_CURRENT_USER = "myself";
     String URL_USER = "user?username={0}";

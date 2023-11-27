@@ -5,21 +5,21 @@ import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.UserClient;
+import com.chavaillaz.client.jira.api.UserApi;
 import com.chavaillaz.client.jira.domain.User;
 import com.chavaillaz.client.jira.domain.Users;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
-public class ApacheHttpUserClient extends AbstractApacheHttpClient implements UserClient {
+public class ApacheHttpUserApi extends AbstractApacheHttpClient implements UserApi {
 
     /**
-     * Creates a new {@link UserClient} using Apache HTTP client.
+     * Creates a new {@link UserApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public ApacheHttpUserClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
+    public ApacheHttpUserApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
     }
 

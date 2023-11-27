@@ -9,7 +9,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.ProjectClient;
+import com.chavaillaz.client.jira.api.ProjectApi;
 import com.chavaillaz.client.jira.domain.Components;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
@@ -20,16 +20,16 @@ import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
-public class ApacheHttpProjectClient extends AbstractApacheHttpClient implements ProjectClient {
+public class ApacheHttpProjectApi extends AbstractApacheHttpClient implements ProjectApi {
 
     /**
-     * Creates a new {@link ProjectClient} using Apache HTTP client.
+     * Creates a new {@link ProjectApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public ApacheHttpProjectClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
+    public ApacheHttpProjectApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
     }
 

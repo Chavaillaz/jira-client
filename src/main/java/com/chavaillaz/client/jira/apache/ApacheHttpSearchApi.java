@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.SearchClient;
+import com.chavaillaz.client.jira.api.SearchApi;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
 import com.chavaillaz.client.jira.domain.Issue;
@@ -18,19 +18,19 @@ import com.chavaillaz.client.jira.domain.Query;
 import com.fasterxml.jackson.databind.JavaType;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
-public class ApacheHttpSearchClient<T extends List<? extends Issue>> extends AbstractApacheHttpClient implements SearchClient<T> {
+public class ApacheHttpSearchApi<T extends List<? extends Issue>> extends AbstractApacheHttpClient implements SearchApi<T> {
 
     protected final JavaType issuesListType;
 
     /**
-     * Creates a new {@link SearchClient} using Apache HTTP client.
+     * Creates a new {@link SearchApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      * @param issuesListType The issues list class type
      */
-    public ApacheHttpSearchClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, JavaType issuesListType) {
+    public ApacheHttpSearchApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, JavaType issuesListType) {
         super(client, baseUrl, authentication);
         this.issuesListType = issuesListType;
     }

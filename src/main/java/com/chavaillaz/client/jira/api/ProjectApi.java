@@ -14,7 +14,7 @@ import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
 
-public interface ProjectClient extends AutoCloseable {
+public interface ProjectApi extends AutoCloseable {
 
     String URL_PROJECTS = "project";
     String URL_PROJECTS_DETAILS = "project?includeArchived={0}&expand={1}";

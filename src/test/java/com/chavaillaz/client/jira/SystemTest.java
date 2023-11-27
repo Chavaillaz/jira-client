@@ -45,7 +45,7 @@ class SystemTest {
     @DisplayName("Check story fields")
     @Disabled("Set Jira URL and credentials before launching")
     void checkStoryFields(JiraClient<CompanyIssue> client) throws Exception {
-        CompanyIssue issue = client.getIssueClient().getIssue("PROJECT-12345").get();
+        CompanyIssue issue = client.getIssueApi().getIssue("PROJECT-12345").get();
         assertTrue(isNotBlank(issue.getFields().getSummary()));
         assertTrue(isNotBlank(issue.getFields().getDescription()));
         // TODO: Add other assertion of fields, depending on your issue and possibly on your custom fields

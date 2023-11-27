@@ -12,7 +12,7 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.IssueClient;
+import com.chavaillaz.client.jira.api.IssueApi;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
@@ -31,19 +31,19 @@ import com.chavaillaz.client.jira.domain.WorkLog;
 import com.chavaillaz.client.jira.domain.WorkLogs;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
 
-public class ApacheHttpIssueClient<T extends Issue> extends AbstractApacheHttpClient implements IssueClient<T> {
+public class ApacheHttpIssueApi<T extends Issue> extends AbstractApacheHttpClient implements IssueApi<T> {
 
     protected final Class<T> issueType;
 
     /**
-     * Creates a new {@link IssueClient} using Apache HTTP client.
+     * Creates a new {@link IssueApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      * @param issueType      The issue class type
      */
-    public ApacheHttpIssueClient(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
+    public ApacheHttpIssueApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
         this.issueType = issueType;
     }

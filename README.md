@@ -6,6 +6,7 @@
 [JavaHttp]: https://openjdk.org/groups/net/httpclient/intro.html
 [ApacheHttp]: https://hc.apache.org/httpcomponents-client-5.2.x/
 [OkHttp]: https://square.github.io/okhttp/
+[Vertx]: https://vertx.io/docs/vertx-web-client/java/
 
 ![Dependency Check](https://github.com/chavaillaz/jira-client/actions/workflows/snyk.yml/badge.svg)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/jira-client/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.chavaillaz/jira-client)
@@ -21,6 +22,7 @@ Presently, it supports the following HTTP clients:
 - [Java HTTP client][JavaHttp] (included since Java 11)
 - [Apache HTTP client][ApacheHttp] 5.2
 - [OkHttp client][OkHttp] 4.12
+- [Vert.x client][Vertx] 4.5
 
 Note that this library has been tested with a [Jira instance version 8.20][Jira].
 
@@ -66,11 +68,23 @@ It requires the following dependency:
 </dependency>
 ```
 
+### Vert.x client
+
+It requires the following dependency:
+
+```xml
+<dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-web-client</artifactId>
+    <version>4.5.x</version>
+</dependency>
+```
+
 ## Usage
 
 ### Features
 
-- **[IssueClient](src/main/java/com/chavaillaz/client/jira/api/IssueClient.java) -
+- **[IssueApi](src/main/java/com/chavaillaz/client/jira/api/IssueApi.java) -
   Everything for issues, including comments, links, transitions, attachments and work logs**
   - Issues
     - `addIssue(Issue issue)`
@@ -122,7 +136,7 @@ It requires the following dependency:
     - `getIssueLinkOptional(String id)`
     - `addIssueLink(Link link)`
     - `deleteIssueLink(String id)`
-- **[SearchClient](src/main/java/com/chavaillaz/client/jira/api/SearchClient.java) -
+- **[SearchApi](src/main/java/com/chavaillaz/client/jira/api/SearchApi.java) -
   Everything for searches, including filters**
   - Searches
     - `searchIssues(String jql)`
@@ -135,7 +149,7 @@ It requires the following dependency:
     - `getFavoriteFilters()`
     - `updateFilter(String id, Filter filter)`
     - `deleteFilter(String id)`
-- **[ProjectClient](src/main/java/com/chavaillaz/client/jira/api/ProjectClient.java) -
+- **[ProjectApi](src/main/java/com/chavaillaz/client/jira/api/ProjectApi.java) -
   Everything for projects, including components, versions, statuses and roles**
   - `addProject(ProjectChange project)`
   - `getProjects()`
@@ -148,7 +162,7 @@ It requires the following dependency:
   - `getProjectRoles(String projectKey)`
   - `updateProject(String projectKey, ProjectChange project)`
   - `deleteProject(String projectKey)`
-- **[UserClient](src/main/java/com/chavaillaz/client/jira/api/ProjectClient.java) -
+- **[UserApi](src/main/java/com/chavaillaz/client/jira/api/UserApi.java) -
   Everything for users**
   - `getUsers(String search)`
   - `getUsers(String search, Integer startAt, Integer maxResults, Boolean includeInactive)`
@@ -185,6 +199,14 @@ JiraClient<Issue> client = JiraClient.apacheClient("https://jira.mycompany.com")
 
 ```java
 JiraClient<Issue> client = JiraClient.okHttpClient("https://jira.mycompany.com")
+    .withUserAuthentication("myUsername","myPassword")
+    .withProxy("http://proxy.mycompany.com:1234");
+```
+
+- [VertxHttpJiraClient](src/main/java/com/chavaillaz/client/jira/vertx/VertxHttpJiraClient.java)
+
+```java
+JiraClient<Issue> client = JiraClient.vertxClient("https://jira.mycompany.com")
     .withUserAuthentication("myUsername","myPassword")
     .withProxy("http://proxy.mycompany.com:1234");
 ```

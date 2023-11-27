@@ -4,7 +4,7 @@ import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.ProjectClient;
+import com.chavaillaz.client.jira.api.ProjectApi;
 import com.chavaillaz.client.jira.domain.Components;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
@@ -14,16 +14,16 @@ import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
 
-public class JavaHttpProjectClient extends AbstractJavaHttpClient implements ProjectClient {
+public class JavaHttpProjectApi extends AbstractJavaHttpClient implements ProjectApi {
 
     /**
-     * Creates a new {@link ProjectClient} using Java HTTP client.
+     * Creates a new {@link ProjectApi} using Java HTTP client.
      *
      * @param client         The Java HTTP client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      */
-    public JavaHttpProjectClient(HttpClient client, String baseUrl, Authentication authentication) {
+    public JavaHttpProjectApi(HttpClient client, String baseUrl, Authentication authentication) {
         super(client, baseUrl, authentication);
     }
 

@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
-import com.chavaillaz.client.jira.api.IssueClient;
+import com.chavaillaz.client.jira.api.IssueApi;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
@@ -28,19 +28,19 @@ import com.chavaillaz.client.jira.domain.WorkLog;
 import com.chavaillaz.client.jira.domain.WorkLogs;
 import okhttp3.OkHttpClient;
 
-public class OkHttpIssueClient<T extends Issue> extends AbstractOkHttpClient implements IssueClient<T> {
+public class OkHttpIssueApi<T extends Issue> extends AbstractOkHttpClient implements IssueApi<T> {
 
     protected final Class<T> issueType;
 
     /**
-     * Creates a new {@link IssueClient} using OkHttp client.
+     * Creates a new {@link IssueApi} using OkHttp client.
      *
      * @param client         The OkHttp client to use
      * @param baseUrl        The URL of Jira
      * @param authentication The authentication information
      * @param issueType      The issue class type
      */
-    public OkHttpIssueClient(OkHttpClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
+    public OkHttpIssueApi(OkHttpClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
         super(client, baseUrl, authentication);
         this.issueType = issueType;
     }

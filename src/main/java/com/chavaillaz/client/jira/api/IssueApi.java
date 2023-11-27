@@ -1,7 +1,7 @@
 package com.chavaillaz.client.jira.api;
 
-import static com.chavaillaz.client.jira.api.IssueClient.IssueExpand.CHANGELOG;
-import static com.chavaillaz.client.jira.api.IssueClient.IssueExpand.TRANSITIONS;
+import static com.chavaillaz.client.jira.api.IssueApi.IssueExpand.CHANGELOG;
+import static com.chavaillaz.client.jira.api.IssueApi.IssueExpand.TRANSITIONS;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.joining;
 
@@ -31,7 +31,7 @@ import com.chavaillaz.client.jira.domain.WorkLogs;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-public interface IssueClient<T extends Issue> extends AutoCloseable {
+public interface IssueApi<T extends Issue> extends AutoCloseable {
 
     String URL_ISSUE_CREATION = "issue/";
     String URL_ISSUE_ACTION = "issue/{0}";

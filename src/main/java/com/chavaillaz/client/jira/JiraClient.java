@@ -4,10 +4,10 @@ import static io.vertx.core.Vertx.vertx;
 
 import com.chavaillaz.client.common.Client;
 import com.chavaillaz.client.jira.apache.ApacheHttpJiraClient;
-import com.chavaillaz.client.jira.api.IssueClient;
-import com.chavaillaz.client.jira.api.ProjectClient;
-import com.chavaillaz.client.jira.api.SearchClient;
-import com.chavaillaz.client.jira.api.UserClient;
+import com.chavaillaz.client.jira.api.IssueApi;
+import com.chavaillaz.client.jira.api.ProjectApi;
+import com.chavaillaz.client.jira.api.SearchApi;
+import com.chavaillaz.client.jira.api.UserApi;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.Issues;
 import com.chavaillaz.client.jira.java.JavaHttpJiraClient;
@@ -53,31 +53,31 @@ public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
     }
 
     /**
-     * Gets the issue client with the default issue type.
+     * Gets the issue API with the default issue type.
      *
      * @return The issue client
      */
-    IssueClient<I> getIssueClient();
+    IssueApi<I> getIssueApi();
 
     /**
-     * Gets the search client with the default issue list type.
+     * Gets the search API with the default issue list type.
      *
      * @return The search client
      */
-    SearchClient<Issues<I>> getSearchClient();
+    SearchApi<Issues<I>> getSearchApi();
 
     /**
-     * Gets the project client.
+     * Gets the project API.
      *
      * @return The project client
      */
-    ProjectClient getProjectClient();
+    ProjectApi getProjectApi();
 
     /**
-     * Gets the project client.
+     * Gets the project API.
      *
      * @return The project client
      */
-    UserClient getUserClient();
+    UserApi getUserApi();
 
 }
