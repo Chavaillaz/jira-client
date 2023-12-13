@@ -2,10 +2,12 @@ package com.chavaillaz.client.jira.java;
 
 import java.net.http.HttpClient;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.SearchApi;
+import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
 import com.chavaillaz.client.jira.domain.Issue;
@@ -30,8 +32,8 @@ public class JavaHttpSearchApi<T extends List<? extends Issue>> extends Abstract
     }
 
     @Override
-    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, List<String> expand) {
-        return sendAsync(requestBuilder(URL_SEARCH).POST(body(Query.from(jql, startAt, maxResults, expand))), issuesListType);
+    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand, Set<String> fields) {
+        return sendAsync(requestBuilder(URL_SEARCH).POST(body(Query.from(jql, startAt, maxResults, expand, fields))), issuesListType);
     }
 
     @Override

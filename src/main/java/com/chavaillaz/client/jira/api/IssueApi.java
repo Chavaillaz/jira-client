@@ -1,17 +1,16 @@
 package com.chavaillaz.client.jira.api;
 
-import static com.chavaillaz.client.jira.api.IssueApi.IssueExpand.CHANGELOG;
-import static com.chavaillaz.client.jira.api.IssueApi.IssueExpand.TRANSITIONS;
+import static com.chavaillaz.client.jira.api.expand.IssueExpand.CHANGELOG;
+import static com.chavaillaz.client.jira.api.expand.IssueExpand.TRANSITIONS;
 import static java.util.Optional.empty;
-import static java.util.stream.Collectors.joining;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.client.jira.api.expand.CommentExpand;
+import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
@@ -28,8 +27,6 @@ import com.chavaillaz.client.jira.domain.Votes;
 import com.chavaillaz.client.jira.domain.Watchers;
 import com.chavaillaz.client.jira.domain.WorkLog;
 import com.chavaillaz.client.jira.domain.WorkLogs;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 
 public interface IssueApi<T extends Issue> extends AutoCloseable {
 
@@ -478,105 +475,5 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> deleteIssueLink(String id);
-
-    /**
-     * Expand flags for issues.
-     */
-    @Getter
-    @AllArgsConstructor
-    enum IssueExpand {
-
-        /**
-         * Option to show field values in HTML format.
-         */
-        RENDERED_FIELDS("renderedFields"),
-
-        /**
-         * Option to display name of each field.
-         */
-        NAMES("names"),
-
-        /**
-         * Option to get schema for each field which describes a type of the field.
-         */
-        SCHEMA("schema"),
-
-        /**
-         * Option to get all possible transitions for the given issue.
-         */
-        TRANSITIONS("transitions"),
-
-        /**
-         * Option to get all possibles operations which may be applied on issue.
-         */
-        OPERATIONS("operations"),
-
-        /**
-         * Option to get information about how each field may be edited.
-         * It contains field's schema as well.
-         */
-        EDIT_META("editmeta"),
-
-        /**
-         * Option to get the history of all changes of the given issue.
-         */
-        CHANGELOG("changelog"),
-
-        /**
-         * Option to get REST representations of all fields.
-         * Some field may contain more recent versions.
-         * RESET representations are numbered.
-         * The greatest number always represents the most recent version.
-         * It is recommended that the most recent version is used.
-         * version for these fields which provide a more recent REST representation.
-         * After including versionedRepresentations "fields" field become hidden.
-         */
-        VERSIONED_REPRESENTATIONS("versionedRepresentations");
-
-        private final String parameter;
-
-        /**
-         * Concatenates the given issue expansion flags with a comma separating them.
-         *
-         * @param expand The flags to expand issues
-         * @return The concatenation of the given flags
-         */
-        public static String getParameters(IssueExpand... expand) {
-            return Arrays.stream(expand)
-                    .filter(Objects::nonNull)
-                    .map(IssueExpand::getParameter)
-                    .collect(joining(","));
-        }
-
-    }
-
-    /**
-     * Expand flags for comments.
-     */
-    @Getter
-    @AllArgsConstructor
-    enum CommentExpand {
-
-        /**
-         * Option to show field values in HTML format.
-         */
-        RENDERED_BODY("renderedBody");
-
-        private final String parameter;
-
-        /**
-         * Concatenates the given comment expansion flags with a comma separating them.
-         *
-         * @param expand The flags to expand comments
-         * @return The concatenation of the given flags
-         */
-        public static String getParameters(CommentExpand... expand) {
-            return Arrays.stream(expand)
-                    .filter(Objects::nonNull)
-                    .map(CommentExpand::getParameter)
-                    .collect(joining(","));
-        }
-
-    }
 
 }

@@ -1,7 +1,7 @@
 package com.chavaillaz.client.jira.java;
 
+import static com.chavaillaz.client.common.java.JavaHttpUtils.mimeMultipartData;
 import static com.chavaillaz.client.common.java.JavaHttpUtils.multipartWithFiles;
-import static com.chavaillaz.client.common.java.JavaHttpUtils.ofMimeMultipartData;
 import static com.chavaillaz.client.jira.JiraConstants.HEADER_ATLASSIAN_TOKEN;
 import static com.chavaillaz.client.jira.JiraConstants.HEADER_ATLASSIAN_TOKEN_DISABLED;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
@@ -16,6 +16,8 @@ import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.IssueApi;
+import com.chavaillaz.client.jira.api.expand.CommentExpand;
+import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
@@ -178,7 +180,7 @@ public class JavaHttpIssueApi<T extends Issue> extends AbstractJavaHttpClient im
         HttpRequest.Builder request = requestBuilder(URL_ISSUE_ATTACHMENTS, issueKey)
                 .setHeader(HEADER_CONTENT_TYPE, "multipart/form-data; boundary=" + boundary)
                 .setHeader(HEADER_ATLASSIAN_TOKEN, HEADER_ATLASSIAN_TOKEN_DISABLED)
-                .POST(ofMimeMultipartData(multipartWithFiles(files), boundary, UTF_8));
+                .POST(mimeMultipartData(multipartWithFiles(files), boundary, UTF_8));
         return sendAsync(request, Attachments.class);
     }
 

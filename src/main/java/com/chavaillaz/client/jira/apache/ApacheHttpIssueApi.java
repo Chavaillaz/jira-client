@@ -13,6 +13,8 @@ import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.IssueApi;
+import com.chavaillaz.client.jira.api.expand.CommentExpand;
+import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;

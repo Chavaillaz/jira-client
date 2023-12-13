@@ -7,10 +7,12 @@ import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.put;
 import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
 import com.chavaillaz.client.jira.api.SearchApi;
+import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
 import com.chavaillaz.client.jira.domain.Issue;
@@ -36,9 +38,9 @@ public class ApacheHttpSearchApi<T extends List<? extends Issue>> extends Abstra
     }
 
     @Override
-    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, List<String> expand) {
+    public CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand, Set<String> fields) {
         return sendAsync(requestBuilder(post(), URL_SEARCH)
-                .setBody(serialize(Query.from(jql, startAt, maxResults, expand)), APPLICATION_JSON), issuesListType);
+                .setBody(serialize(Query.from(jql, startAt, maxResults, expand, fields)), APPLICATION_JSON), issuesListType);
     }
 
     @Override
