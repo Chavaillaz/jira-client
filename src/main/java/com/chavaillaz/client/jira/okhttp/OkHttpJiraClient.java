@@ -27,7 +27,7 @@ public class OkHttpJiraClient<I extends Issue> extends AbstractJiraClient<OkHttp
 
     @Override
     public OkHttpClient newHttpClient() {
-        return OkHttpUtils.newHttpClient(proxy);
+        return OkHttpUtils.defaultHttpClientBuilder(proxy).build();
     }
 
     @Override

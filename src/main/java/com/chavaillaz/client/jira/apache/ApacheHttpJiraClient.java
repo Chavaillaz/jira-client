@@ -27,7 +27,7 @@ public class ApacheHttpJiraClient<I extends Issue> extends AbstractJiraClient<Cl
 
     @Override
     public CloseableHttpAsyncClient newHttpClient() {
-        return ApacheHttpUtils.newHttpClient(proxy);
+        return ApacheHttpUtils.defaultHttpClientBuilder(proxy).build();
     }
 
     @Override

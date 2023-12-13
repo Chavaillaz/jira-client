@@ -28,7 +28,7 @@ public class JavaHttpJiraClient<I extends Issue> extends AbstractJiraClient<Http
 
     @Override
     public HttpClient newHttpClient() {
-        return JavaHttpUtils.newHttpClient(proxy);
+        return JavaHttpUtils.defaultHttpClientBuilder(proxy).build();
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.chavaillaz.client.jira.vertx;
 
-import static com.chavaillaz.client.common.vertx.VertxUtils.newWebClientOptions;
+import static com.chavaillaz.client.common.vertx.VertxUtils.defaultWebClientOptions;
 import static com.chavaillaz.client.jira.JiraConstants.BASE_API;
 
 import com.chavaillaz.client.jira.AbstractJiraClient;
@@ -32,7 +32,7 @@ public class VertxHttpJiraClient<I extends Issue> extends AbstractJiraClient<Web
 
     @Override
     public WebClient newHttpClient() {
-        return WebClient.create(vertx, newWebClientOptions(proxy));
+        return WebClient.create(vertx, defaultWebClientOptions(proxy));
     }
 
     @Override
