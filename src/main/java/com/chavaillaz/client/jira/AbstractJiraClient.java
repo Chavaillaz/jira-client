@@ -20,13 +20,13 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
  */
 public abstract class AbstractJiraClient<C, I extends Issue> extends AbstractClient<C, JiraClient<I>> implements JiraClient<I> {
 
+    protected final LazyCachedObject<IssueApi<I>> issueApi = new LazyCachedObject<>();
+    protected final LazyCachedObject<ProjectApi> projectApi = new LazyCachedObject<>();
+    protected final LazyCachedObject<SearchApi<Issues<I>>> searchApi = new LazyCachedObject<>();
+    protected final LazyCachedObject<UserApi> userApi = new LazyCachedObject<>();
+
     protected final Class<I> issueType;
     protected final JavaType issuesListType;
-
-    protected LazyCachedObject<IssueApi<I>> issueApi = new LazyCachedObject<>();
-    protected LazyCachedObject<ProjectApi> projectApi = new LazyCachedObject<>();
-    protected LazyCachedObject<SearchApi<Issues<I>>> searchApi = new LazyCachedObject<>();
-    protected LazyCachedObject<UserApi> userApi = new LazyCachedObject<>();
 
     /**
      * Creates a new abstract client.
