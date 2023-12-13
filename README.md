@@ -20,7 +20,7 @@ using [Jackson][Jackson].
 Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
-- [Apache HTTP client][ApacheHttp] 5.2
+- [Apache HTTP client][ApacheHttp] 5.3
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
@@ -50,9 +50,9 @@ It requires the following dependency:
 
 ```xml
 <dependency>
-  <groupId>org.apache.httpcomponents.client5</groupId>
-  <artifactId>httpclient5</artifactId>
-  <version>5.2.x</version>
+    <groupId>org.apache.httpcomponents.client5</groupId>
+    <artifactId>httpclient5</artifactId>
+    <version>5.3.x</version>
 </dependency>
 ```
 
@@ -211,7 +211,7 @@ JiraClient<Issue> client = JiraClient.vertxClient("https://jira.mycompany.com")
     .withProxy("http://proxy.mycompany.com:1234");
 ```
 
-From this `JiraClient` you will then be able to get the desired clients described in the [feature chapter](#features).
+From this `JiraClient` you will then be able to get the desired APIs described in the [feature chapter](#features).
 
 ### Iterable results
 
