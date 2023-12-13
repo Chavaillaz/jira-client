@@ -141,7 +141,8 @@ It requires the following dependency:
   - Searches
     - `searchIssues(String jql)`
     - `searchIssues(String jql, Integer startAt, Integer maxResults)`
-    - `searchIssues(String jql, Integer startAt, Integer maxResults, String expand)`
+    - `searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand)`
+    - `searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand, Set<String> fields)`
   - Filters
     - `addFilter(Filter filter)`
     - `getFilter(String id)`
