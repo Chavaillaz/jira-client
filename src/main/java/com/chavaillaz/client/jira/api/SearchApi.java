@@ -1,5 +1,6 @@
 package com.chavaillaz.client.jira.api;
 
+import static com.chavaillaz.client.jira.api.IssueApi.ALL_FIELDS;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
 
@@ -34,7 +35,7 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
 
     /**
      * Performs a search for issues.
-     * No parameter is expanded and all navigable fields in the issues are returned.
+     * No parameter is expanded and all fields in the issues are returned.
      *
      * @param jql        The query in Jira Query Language
      * @param startAt    The page offset
@@ -56,7 +57,7 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
      * @return A {@link CompletableFuture} with the issues found
      */
     default CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand) {
-        return searchIssues(jql, startAt, maxResults, expand, Set.of("*navigable"));
+        return searchIssues(jql, startAt, maxResults, expand, ALL_FIELDS);
     }
 
     /**

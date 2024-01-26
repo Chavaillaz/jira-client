@@ -2,11 +2,13 @@ package com.chavaillaz.client.jira.api;
 
 import static com.chavaillaz.client.jira.api.expand.IssueExpand.CHANGELOG;
 import static com.chavaillaz.client.jira.api.expand.IssueExpand.TRANSITIONS;
+import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
 
 import java.io.File;
 import java.io.InputStream;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.jira.api.expand.CommentExpand;
@@ -32,7 +34,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
 
     String URL_ISSUE_CREATION = "issue/";
     String URL_ISSUE_ACTION = "issue/{0}";
-    String URL_ISSUE_SELECTION = "issue/{0}?expand={1}";
+    String URL_ISSUE_SELECTION = "issue/{0}?expand={1}&fields={2}";
     String URL_ISSUE_ASSIGNEE = "issue/{0}/assignee";
     String URL_ISSUE_TRANSITIONS = "issue/{0}/transitions";
     String URL_ISSUE_COMMENTS_SELECTION = "issue/{0}/comment?startAt={1}&maxResults={2}&expand={3}";
@@ -51,6 +53,8 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     String URL_ISSUE_LINKS = "issueLink/";
     String URL_ISSUE_LINK = "issueLink/{0}";
 
+    Set<String> ALL_FIELDS = Set.of("*all");
+
     /**
      * Creates an issue.
      *
@@ -60,33 +64,46 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     CompletableFuture<Identity> addIssue(T issue);
 
     /**
-     * Returns a full representation of the issue for the given issue key.
+     * Returns a full representation of the issue identified by the given key.
      * By default, the issue will be expanded with its changelog and possible transitions.
      * Note that if the issue does not exist, the {@link CompletableFuture} will complete exceptionally.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the corresponding issue
      */
     default CompletableFuture<T> getIssue(String issueKey) {
-        return getIssue(issueKey, CHANGELOG, TRANSITIONS);
+        return getIssue(issueKey, Set.of(CHANGELOG, TRANSITIONS));
     }
 
     /**
-     * Returns a full representation of the issue for the given issue key.
+     * Returns a full representation of the issue identified by the given key.
      * Note that if the issue does not exist, the {@link CompletableFuture} will complete exceptionally.
      *
-     * @param issueKey    The issue key
+     * @param issueKey    The key identifying the issue
      * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the corresponding issue
      */
-    CompletableFuture<T> getIssue(String issueKey, IssueExpand... expandFlags);
+    default CompletableFuture<T> getIssue(String issueKey, Set<IssueExpand> expandFlags) {
+        return getIssue(issueKey, expandFlags, ALL_FIELDS);
+    }
 
     /**
-     * Returns a full representation of the issue for the given issue key.
+     * Returns a representation with the given fields of the issue identified by the given key.
+     * Note that if the issue does not exist, the {@link CompletableFuture} will complete exceptionally.
+     *
+     * @param issueKey    The key identifying the issue
+     * @param expandFlags The optional flags to expand values returned
+     * @param fields      The list of fields to be present in the issue retrieved
+     * @return A {@link CompletableFuture} with the corresponding issue
+     */
+    CompletableFuture<T> getIssue(String issueKey, Set<IssueExpand> expandFlags, Set<String> fields);
+
+    /**
+     * Returns a full representation of the issue identified by the given key.
      * By default, the issue will be expanded with its changelog and possible transitions.
      * Note that if the issue does not exist, an {@link Optional#empty()} will be returned.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the corresponding optional issue
      */
     default CompletableFuture<Optional<T>> getIssueOptional(String issueKey) {
@@ -96,15 +113,30 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     }
 
     /**
-     * Returns a full representation of the issue for the given issue key.
+     * Returns a full representation of the issue identified by the given key.
      * Note that if the issue does not exist, an {@link Optional#empty()} will be returned.
      *
-     * @param issueKey    The issue key
+     * @param issueKey    The key identifying the issue
      * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the corresponding optional issue
      */
-    default CompletableFuture<Optional<T>> getIssueOptional(String issueKey, IssueExpand... expandFlags) {
+    default CompletableFuture<Optional<T>> getIssueOptional(String issueKey, Set<IssueExpand> expandFlags) {
         return getIssue(issueKey, expandFlags)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
+     * Returns a representation with the given fields of the issue identified by the given key.
+     * Note that if the issue does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey    The key identifying the issue
+     * @param expandFlags The optional flags to expand values returned
+     * @param fields      The list of fields to be present in the issue retrieved
+     * @return A {@link CompletableFuture} with the corresponding issue
+     */
+    default CompletableFuture<Optional<T>> getIssueOptional(String issueKey, Set<IssueExpand> expandFlags, Set<String> fields) {
+        return getIssue(issueKey, expandFlags, fields)
                 .thenApply(Optional::of)
                 .exceptionally(exception -> empty());
     }
@@ -120,7 +152,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> deleteIssue(String issueKey);
@@ -128,7 +160,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Assigns an issue to someone.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param user     The user to assign the issue to
      * @return A {@link CompletableFuture} without content
      */
@@ -137,7 +169,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Removes the current user assigned to the issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} without content
      */
     default CompletableFuture<Void> unassignIssue(String issueKey) {
@@ -147,7 +179,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets the possible transitions of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the possible transitions
      */
     CompletableFuture<Transitions> getTransitions(String issueKey);
@@ -155,7 +187,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Performs a transition for an issue.
      *
-     * @param issueKey   The issue key
+     * @param issueKey   The key identifying the issue
      * @param transition The transition to perform
      * @return A {@link CompletableFuture} without content
      */
@@ -165,7 +197,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * Gets the comments of an issue.
      * This uses a page offset of 0 and a number of results par page of 50.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the comments
      */
     default CompletableFuture<Comments> getComments(String issueKey) {
@@ -173,36 +205,71 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     }
 
     /**
-     * Gets the comments of an issue with selection criteria.
+     * Gets the comments of an issue.
      *
-     * @param issueKey    The issue key
+     * @param issueKey The key identifying the issue
+     * @return A {@link CompletableFuture} with the comments
+     */
+    default CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults) {
+        return getComments(issueKey, startAt, maxResults, emptySet());
+    }
+
+    /**
+     * Gets the comments of an issue.
+     *
+     * @param issueKey    The key identifying the issue
      * @param startAt     The page offset
      * @param maxResults  The number of results per page
      * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the comments
      */
-    CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... expandFlags);
+    CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, Set<CommentExpand> expandFlags);
 
     /**
      * Gets a comment.
      *
-     * @param issueKey    The issue key
+     * @param issueKey The key identifying the issue
+     * @param id       The comment identifier
+     * @return A {@link CompletableFuture} with the comment
+     */
+    default CompletableFuture<Comment> getComment(String issueKey, String id) {
+        return getComment(issueKey, id, emptySet());
+    }
+
+    /**
+     * Gets a comment.
+     *
+     * @param issueKey    The key identifying the issue
      * @param id          The comment identifier
      * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the comment
      */
-    CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags);
+    CompletableFuture<Comment> getComment(String issueKey, String id, Set<CommentExpand> expandFlags);
 
     /**
      * Gets a comment.
      * Note that if the comment does not exist, an {@link Optional#empty()} will be returned.
      *
-     * @param issueKey    The issue key
+     * @param issueKey The key identifying the issue
+     * @param id       The comment identifier
+     * @return A {@link CompletableFuture} with the corresponding optional comment
+     */
+    default CompletableFuture<Optional<Comment>> getCommentOptional(String issueKey, String id) {
+        return getComment(issueKey, id)
+                .thenApply(Optional::of)
+                .exceptionally(exception -> empty());
+    }
+
+    /**
+     * Gets a comment.
+     * Note that if the comment does not exist, an {@link Optional#empty()} will be returned.
+     *
+     * @param issueKey    The key identifying the issue
      * @param id          The comment identifier
      * @param expandFlags The optional flags to expand values returned
      * @return A {@link CompletableFuture} with the corresponding optional comment
      */
-    default CompletableFuture<Optional<Comment>> getCommentOptional(String issueKey, String id, CommentExpand... expandFlags) {
+    default CompletableFuture<Optional<Comment>> getCommentOptional(String issueKey, String id, Set<CommentExpand> expandFlags) {
         return getComment(issueKey, id, expandFlags)
                 .thenApply(Optional::of)
                 .exceptionally(exception -> empty());
@@ -211,7 +278,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds a comment in an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param comment  The comment to add
      * @return A {@link CompletableFuture} with the comment
      */
@@ -220,7 +287,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Updates a comment.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param comment  The comment to update
      * @return A {@link CompletableFuture} with the comment
      */
@@ -229,7 +296,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes a comment.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The comment identifier
      * @return A {@link CompletableFuture} without content
      */
@@ -238,7 +305,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds the vote of the current user to an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> addVote(String issueKey);
@@ -246,7 +313,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets the votes of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the issue votes
      */
     CompletableFuture<Votes> getVotes(String issueKey);
@@ -254,7 +321,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets the watchers of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the issue watchers
      */
     CompletableFuture<Watchers> getWatchers(String issueKey);
@@ -262,7 +329,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds a user to the watchers of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param username The username
      * @return A {@link CompletableFuture} without content
      */
@@ -271,7 +338,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes a user from the watchers of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param username The username
      * @return A {@link CompletableFuture} without content
      */
@@ -280,7 +347,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds a work log to an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param workLog  The work log to add
      * @return A {@link CompletableFuture} with the work log
      */
@@ -289,7 +356,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets all work logs from an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the work logs
      */
     CompletableFuture<WorkLogs> getWorkLogs(String issueKey);
@@ -297,7 +364,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets a work log.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The work log identifier
      * @return A {@link CompletableFuture} with the work log
      */
@@ -307,7 +374,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * Gets a work log.
      * Note that if the work log does not exist, an {@link Optional#empty()} will be returned.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The work log identifier
      * @return A {@link CompletableFuture} with the corresponding optional work log
      */
@@ -320,7 +387,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Updates a work log.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param workLog  The work log containing only the fields to update
      * @return A {@link CompletableFuture} with the work log
      */
@@ -329,7 +396,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes a work log.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The work log identifier
      * @return A {@link CompletableFuture} without content
      */
@@ -367,7 +434,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds an attachment to an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param files    The attachments to add
      * @return A {@link CompletableFuture} with the attachment
      */
@@ -384,7 +451,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets the remote links of an issue.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the remote links
      */
     CompletableFuture<RemoteLinks> getRemoteLinks(String issueKey);
@@ -392,7 +459,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Gets a remote link.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The remote link identifier
      * @return A {@link CompletableFuture} with the remote link
      */
@@ -402,7 +469,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * Gets a remote link.
      * Note that if the remote link does not exist, an {@link Optional#empty()} will be returned.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The remote link identifier
      * @return A {@link CompletableFuture} with the corresponding optional remote link
      */
@@ -415,7 +482,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds a remote link to an issue.
      *
-     * @param issueKey   The issue key
+     * @param issueKey   The key identifying the issue
      * @param remoteLink The remote link
      * @return A {@link CompletableFuture} with the remote link identifiers
      */
@@ -424,7 +491,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Updates a remote link.
      *
-     * @param issueKey   The issue key
+     * @param issueKey   The key identifying the issue
      * @param remoteLink The remote link to update
      * @return A {@link CompletableFuture} without content
      */
@@ -433,7 +500,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes a remote link.
      *
-     * @param issueKey The issue key
+     * @param issueKey The key identifying the issue
      * @param id       The remote link identifier
      * @return A {@link CompletableFuture} without content
      */

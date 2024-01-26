@@ -88,8 +88,12 @@ It requires the following dependency:
   Everything for issues, including comments, links, transitions, attachments and work logs**
   - Issues
     - `addIssue(Issue issue)`
-    - `getIssue(String issueKey, IssueExpand... flags)`
-    - `getIssueOptional(String issueKey, IssueExpand... flags)`
+    - `getIssue(String issueKey)`
+    - `getIssue(String issueKey, Set<IssueExpand> flags)`
+    - `getIssue(String issueKey, Set<IssueExpand> flags, Set<String> fields)`
+    - `getIssueOptional(String issueKey)`
+    - `getIssueOptional(String issueKey, Set<IssueExpand> flags)`
+    - `getIssueOptional(String issueKey, Set<IssueExpand> flags, Set<String> fields)`
     - `updateIssue(Issue issue)`
     - `deleteIssue(String issueKey)`
     - `assignIssue(String issueKey, User user)`
@@ -98,9 +102,12 @@ It requires the following dependency:
     - `doTransition(String issueKey, IssueTransition transition)`
   - Comments
     - `getComments(String issueKey)`
-    - `getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... flags)`
-    - `getComment(String issueKey, String id, CommentExpand... flags)`
-    - `getCommentOptional(String issueKey, String id, CommentExpand... flags)`
+    - `getComments(String issueKey, Integer startAt, Integer maxResults)`
+    - `getComments(String issueKey, Integer startAt, Integer maxResults, Set<CommentExpand> flags)`
+    - `getComment(String issueKey, String id)`
+    - `getComment(String issueKey, String id, Set<CommentExpand> flags)`
+    - `getCommentOptional(String issueKey, String id)`
+    - `getCommentOptional(String issueKey, String id, Set<CommentExpand> flags)`
     - `addComment(String issueKey, Comment comment)`
     - `updateComment(String issueKey, Comment comment)`
     - `deleteComment(String issueKey, String id)`

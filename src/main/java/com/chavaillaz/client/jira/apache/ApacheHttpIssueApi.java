@@ -1,6 +1,7 @@
 package com.chavaillaz.client.jira.apache;
 
 import static com.chavaillaz.client.common.apache.ApacheHttpUtils.multipartWithFiles;
+import static java.lang.String.join;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.delete;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.post;
@@ -9,6 +10,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
@@ -57,8 +59,8 @@ public class ApacheHttpIssueApi<T extends Issue> extends AbstractApacheHttpClien
     }
 
     @Override
-    public CompletableFuture<T> getIssue(String issueKey, IssueExpand... expandFlags) {
-        return sendAsync(requestBuilder(get(), URL_ISSUE_SELECTION, issueKey, IssueExpand.getParameters(expandFlags)), issueType);
+    public CompletableFuture<T> getIssue(String issueKey, Set<IssueExpand> expandFlags, Set<String> fields) {
+        return sendAsync(requestBuilder(get(), URL_ISSUE_SELECTION, issueKey, IssueExpand.asParameter(expandFlags), join(",", fields)), issueType);
     }
 
     @Override
@@ -90,13 +92,13 @@ public class ApacheHttpIssueApi<T extends Issue> extends AbstractApacheHttpClien
     }
 
     @Override
-    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... expandFlags) {
-        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults, CommentExpand.getParameters(expandFlags)), Comments.class);
+    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, Set<CommentExpand> expandFlags) {
+        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults, CommentExpand.asParameter(expandFlags)), Comments.class);
     }
 
     @Override
-    public CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags) {
-        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENT_SELECTION, issueKey, id, CommentExpand.getParameters(expandFlags)), Comment.class);
+    public CompletableFuture<Comment> getComment(String issueKey, String id, Set<CommentExpand> expandFlags) {
+        return sendAsync(requestBuilder(get(), URL_ISSUE_COMMENT_SELECTION, issueKey, id, CommentExpand.asParameter(expandFlags)), Comment.class);
     }
 
     @Override

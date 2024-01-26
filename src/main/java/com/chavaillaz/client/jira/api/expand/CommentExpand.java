@@ -2,8 +2,8 @@ package com.chavaillaz.client.jira.api.expand;
 
 import static java.util.stream.Collectors.joining;
 
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,11 +25,11 @@ public enum CommentExpand {
     /**
      * Concatenates the given comment expansion flags with a comma separating them.
      *
-     * @param expand The flags to expand comments
+     * @param expandFlags The flags to expand comments
      * @return The concatenation of the given flags
      */
-    public static String getParameters(CommentExpand... expand) {
-        return Arrays.stream(expand)
+    public static String asParameter(Set<CommentExpand> expandFlags) {
+        return expandFlags.stream()
                 .filter(Objects::nonNull)
                 .map(CommentExpand::getParameter)
                 .collect(joining(","));

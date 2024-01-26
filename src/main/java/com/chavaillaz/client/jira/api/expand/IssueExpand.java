@@ -2,8 +2,8 @@ package com.chavaillaz.client.jira.api.expand;
 
 import static java.util.stream.Collectors.joining;
 
-import java.util.Arrays;
 import java.util.Objects;
+import java.util.Set;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -67,11 +67,11 @@ public enum IssueExpand {
     /**
      * Concatenates the given issue expansion flags with a comma separating them.
      *
-     * @param expand The flags to expand issues
+     * @param expandFlags The flags to expand issues
      * @return The concatenation of the given flags
      */
-    public static String getParameters(IssueExpand... expand) {
-        return Arrays.stream(expand)
+    public static String asParameter(Set<IssueExpand> expandFlags) {
+        return expandFlags.stream()
                 .filter(Objects::nonNull)
                 .map(IssueExpand::getParameter)
                 .collect(joining(","));

@@ -3,19 +3,25 @@ package com.chavaillaz.client.jira;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static com.fasterxml.jackson.databind.MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES;
 import static com.fasterxml.jackson.databind.SerializationFeature.WRITE_DATES_AS_TIMESTAMPS;
+import static java.util.Collections.emptyList;
+import static java.util.stream.Collectors.toSet;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.normalizeSpace;
 
+import java.lang.reflect.Field;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.chavaillaz.client.jira.domain.ErrorMessages;
 import com.chavaillaz.client.jira.jackson.OffsetDateTimeDeserializer;
 import com.chavaillaz.client.jira.jackson.OffsetDateTimeSerializer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
@@ -94,6 +100,39 @@ public class JiraConstants {
                         .replaceAll("<[^>]*>", EMPTY)
                         .replaceAll("\\&[a-z]*\\;", EMPTY)))
                 .orElse(null);
+    }
+
+    /**
+     * Gets the names of all fields declared in a class type and its hierarchy.
+     * The names are retrieved either by {@link JsonProperty#value()} or by {@link Field#getName()}.
+     * Meant to be used to optimize calls to Jira in order to get only the attributes available in the given model.
+     *
+     * @param type The class type
+     * @return The names of all declared fields
+     */
+    public static Set<String> getNameFields(Class<?> type) {
+        return getDeepFields(type).stream()
+                .map(field -> Optional.ofNullable(field.getAnnotation(JsonProperty.class))
+                        .map(JsonProperty::value)
+                        .orElse(field.getName()))
+                .collect(toSet());
+    }
+
+    /**
+     * Gathers all fields from the given type and all its hierarchy.
+     *
+     * @param type The class type
+     * @return The fields, including the inherited ones
+     */
+    public static List<Field> getDeepFields(Class<?> type) {
+        if (type == null) {
+            return emptyList();
+        }
+
+        List<Field> deepFields = new ArrayList<>(getDeepFields(type.getSuperclass()));
+        List<Field> fields = List.of(type.getDeclaredFields());
+        deepFields.addAll(fields);
+        return deepFields;
     }
 
 }

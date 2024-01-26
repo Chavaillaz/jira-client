@@ -7,9 +7,11 @@ import static io.vertx.core.http.HttpMethod.DELETE;
 import static io.vertx.core.http.HttpMethod.GET;
 import static io.vertx.core.http.HttpMethod.POST;
 import static io.vertx.core.http.HttpMethod.PUT;
+import static java.lang.String.join;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
@@ -57,8 +59,8 @@ public class VertxHttpIssueApi<T extends Issue> extends AbstractVertxHttpClient 
     }
 
     @Override
-    public CompletableFuture<T> getIssue(String issueKey, IssueExpand... expandFlags) {
-        return handleAsync(requestBuilder(GET, URL_ISSUE_SELECTION, issueKey, IssueExpand.getParameters(expandFlags)).send(), issueType);
+    public CompletableFuture<T> getIssue(String issueKey, Set<IssueExpand> expandFlags, Set<String> fields) {
+        return handleAsync(requestBuilder(GET, URL_ISSUE_SELECTION, issueKey, IssueExpand.asParameter(expandFlags), join(",", fields)).send(), issueType);
     }
 
     @Override
@@ -87,13 +89,13 @@ public class VertxHttpIssueApi<T extends Issue> extends AbstractVertxHttpClient 
     }
 
     @Override
-    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, CommentExpand... expandFlags) {
-        return handleAsync(requestBuilder(GET, URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults, CommentExpand.getParameters(expandFlags)).send(), Comments.class);
+    public CompletableFuture<Comments> getComments(String issueKey, Integer startAt, Integer maxResults, Set<CommentExpand> expandFlags) {
+        return handleAsync(requestBuilder(GET, URL_ISSUE_COMMENTS_SELECTION, issueKey, startAt, maxResults, CommentExpand.asParameter(expandFlags)).send(), Comments.class);
     }
 
     @Override
-    public CompletableFuture<Comment> getComment(String issueKey, String id, CommentExpand... expandFlags) {
-        return handleAsync(requestBuilder(GET, URL_ISSUE_COMMENT_SELECTION, issueKey, id, CommentExpand.getParameters(expandFlags)).send(), Comment.class);
+    public CompletableFuture<Comment> getComment(String issueKey, String id, Set<CommentExpand> expandFlags) {
+        return handleAsync(requestBuilder(GET, URL_ISSUE_COMMENT_SELECTION, issueKey, id, CommentExpand.asParameter(expandFlags)).send(), Comment.class);
     }
 
     @Override
