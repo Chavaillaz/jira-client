@@ -26,4 +26,9 @@ public abstract class AbstractVertxHttpClient extends com.chavaillaz.client.comm
         return new JiraResponseException(code, body);
     }
 
+    @Override
+    public ResponseException responseException(String method, String url, int code, String body) {
+        return new JiraResponseException(method, url, code, body);
+    }
+
 }

@@ -26,4 +26,9 @@ public abstract class AbstractOkHttpClient extends com.chavaillaz.client.common.
         return new JiraResponseException(code, body);
     }
 
+    @Override
+    public ResponseException responseException(String method, String url, int code, String body) {
+        return new JiraResponseException(method, url, code, body);
+    }
+
 }
