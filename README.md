@@ -146,6 +146,8 @@ It requires the following dependency:
 - **[SearchApi](src/main/java/com/chavaillaz/client/jira/api/SearchApi.java) -
   Everything for searches, including filters**
   - Searches
+    - `getIssues(Set<String> issuesKey)`
+    - `getIssues(Set<String> issuesKey, Set<String> fields)`
     - `searchIssues(String jql)`
     - `searchIssues(String jql, Integer startAt, Integer maxResults)`
     - `searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand)`

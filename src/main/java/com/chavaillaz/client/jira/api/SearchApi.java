@@ -3,6 +3,8 @@ package com.chavaillaz.client.jira.api;
 import static com.chavaillaz.client.jira.api.IssueApi.ALL_FIELDS;
 import static java.util.Collections.emptySet;
 import static java.util.Optional.empty;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.join;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +22,31 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
     String URL_FILTERS = "filter";
     String URL_FILTER = "filter/{0}";
     String URL_FILTER_FAVOURITE = "filter/favourite";
+
+    /**
+     * Gets the issues corresponding to the given keys.
+     *
+     * @param issuesKey The list of issues key
+     * @return The corresponding list of issues
+     */
+    default CompletableFuture<T> getIssues(Set<String> issuesKey) {
+        return getIssues(issuesKey, ALL_FIELDS);
+    }
+
+    /**
+     * Gets the issues corresponding to the given keys.
+     *
+     * @param issuesKey The list of issues key
+     * @param fields    The list of fields to retrieve for those issues
+     * @return The corresponding list of issues
+     */
+    default CompletableFuture<T> getIssues(Set<String> issuesKey, Set<String> fields) {
+        // Sending an empty list would make the query fails so the whole query is replaced by an empty one
+        // Note that an empty list cannot be returned directly as we don't know the class of the generic T
+        String jql = (issuesKey == null || issuesKey.isEmpty()) ? EMPTY : "issue in (" + join(issuesKey, ",") + ")";
+        Integer size = issuesKey == null ? 0 : issuesKey.size();
+        return searchIssues(jql, 0, size, emptySet(), fields);
+    }
 
     /**
      * Performs a search for issues.
