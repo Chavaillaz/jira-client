@@ -1,6 +1,6 @@
 # Jira Client
 
-[Jira]: https://docs.atlassian.com/software/jira/docs/api/REST/8.20.0/
+[Jira]: https://docs.atlassian.com/software/jira/docs/api/REST/9.12.7/
 [CompletableFuture]: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html
 [Jackson]: https://github.com/FasterXML/jackson
 [JavaHttp]: https://openjdk.org/groups/net/httpclient/intro.html
@@ -24,7 +24,7 @@ Presently, it supports the following HTTP clients:
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
-Note that this library has been tested with a [Jira instance version 8.20][Jira].
+Note that this library has been tested with a [Jira instance version 9.12][Jira].
 
 ## Installation
 
