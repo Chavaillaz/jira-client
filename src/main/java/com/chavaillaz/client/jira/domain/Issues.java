@@ -26,6 +26,12 @@ public class Issues<T extends Issue> extends Result implements List<T> {
 
     private String expand;
 
+    private Integer startAt;
+
+    private Integer maxResults;
+
+    private Integer total;
+
     /**
      * Creates a new list of issues.
      *
