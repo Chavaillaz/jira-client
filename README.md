@@ -4,7 +4,7 @@
 [CompletableFuture]: https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/CompletableFuture.html
 [Jackson]: https://github.com/FasterXML/jackson
 [JavaHttp]: https://openjdk.org/groups/net/httpclient/intro.html
-[ApacheHttp]: https://hc.apache.org/httpcomponents-client-5.2.x/
+[ApacheHttp]: https://hc.apache.org/httpcomponents-client-5.4.x/
 [OkHttp]: https://square.github.io/okhttp/
 [Vertx]: https://vertx.io/docs/vertx-web-client/java/
 
@@ -20,7 +20,7 @@ using [Jackson][Jackson].
 Presently, it supports the following HTTP clients:
 
 - [Java HTTP client][JavaHttp] (included since Java 11)
-- [Apache HTTP client][ApacheHttp] 5.3
+- [Apache HTTP client][ApacheHttp] 5.4
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
@@ -52,7 +52,7 @@ It requires the following dependency:
 <dependency>
     <groupId>org.apache.httpcomponents.client5</groupId>
     <artifactId>httpclient5</artifactId>
-    <version>5.3.x</version>
+    <version>5.4.x</version>
 </dependency>
 ```
 
