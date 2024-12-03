@@ -7,6 +7,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class IssueTransition {
 
+    private Fields fields;
+
     private Transition transition;
 
     /**
@@ -28,6 +30,7 @@ public class IssueTransition {
     public static IssueTransition from(Transition transition) {
         IssueTransition issueTransition = new IssueTransition();
         issueTransition.setTransition(transition);
+        issueTransition.setFields(new Fields());
         return issueTransition;
     }
 
