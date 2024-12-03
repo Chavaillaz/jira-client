@@ -86,7 +86,7 @@ public class JavaHttpIssueApi<T extends Issue> extends AbstractJavaHttpClient im
     }
 
     @Override
-    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition) {
+    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition<?> transition) {
         return sendAsync(requestBuilder(URL_ISSUE_TRANSITIONS, issueKey).POST(body(transition)), Void.class);
     }
 

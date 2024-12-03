@@ -80,7 +80,7 @@ public class OkHttpIssueApi<T extends Issue> extends AbstractOkHttpClient implem
     }
 
     @Override
-    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition) {
+    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition<?> transition) {
         return sendAsync(requestBuilder(URL_ISSUE_TRANSITIONS, issueKey).post(body(transition)), Void.class);
     }
 

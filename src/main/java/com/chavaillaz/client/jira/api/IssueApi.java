@@ -191,7 +191,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * @param transition The transition to perform
      * @return A {@link CompletableFuture} without content
      */
-    CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition);
+    CompletableFuture<Void> doTransition(String issueKey, IssueTransition<?> transition);
 
     /**
      * Gets the comments of an issue.

@@ -5,9 +5,9 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class IssueTransition {
+public class IssueTransition<F extends Fields> {
 
-    private Fields fields;
+    private F fields;
 
     private Transition transition;
 
@@ -17,7 +17,7 @@ public class IssueTransition {
      * @param transitionId The transition identifier
      * @return The corresponding transition
      */
-    public static IssueTransition fromId(String transitionId) {
+    public static IssueTransition<Fields> fromId(String transitionId) {
         return from(Transition.fromId(transitionId));
     }
 
@@ -27,8 +27,8 @@ public class IssueTransition {
      * @param transition The transition
      * @return The corresponding transition
      */
-    public static IssueTransition from(Transition transition) {
-        IssueTransition issueTransition = new IssueTransition();
+    public static IssueTransition<Fields> from(Transition transition) {
+        IssueTransition<Fields> issueTransition = new IssueTransition<>();
         issueTransition.setTransition(transition);
         issueTransition.setFields(new Fields());
         return issueTransition;

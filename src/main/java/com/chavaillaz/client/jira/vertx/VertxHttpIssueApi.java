@@ -84,7 +84,7 @@ public class VertxHttpIssueApi<T extends Issue> extends AbstractVertxHttpClient 
     }
 
     @Override
-    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition transition) {
+    public CompletableFuture<Void> doTransition(String issueKey, IssueTransition<?> transition) {
         return handleAsync(requestBuilder(POST, URL_ISSUE_TRANSITIONS, issueKey).sendBuffer(body(transition)), Void.class);
     }
 
