@@ -10,6 +10,7 @@ import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
 import com.chavaillaz.client.jira.domain.ProjectChange;
 import com.chavaillaz.client.jira.domain.Projects;
+import com.chavaillaz.client.jira.domain.Role;
 import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
@@ -23,6 +24,7 @@ public interface ProjectApi extends AutoCloseable {
     String URL_PROJECT_COMPONENTS = "project/{0}/components";
     String URL_PROJECT_STATUSES = "project/{0}/statuses";
     String URL_PROJECT_ROLES = "project/{0}/role";
+    String URL_PROJECT_ROLE = "project/{0}/role/{1}";
 
     /**
      * Creates a new project.
@@ -102,6 +104,15 @@ public interface ProjectApi extends AutoCloseable {
      * @return A {@link CompletableFuture} with the roles
      */
     CompletableFuture<Roles> getProjectRoles(String projectKey);
+
+    /**
+     * Gets a specific role in a project.
+     *
+     * @param projectKey The project key
+     * @param roleId The role identifier
+     * @return A {@link CompletableFuture} with the role
+     */
+    CompletableFuture<Role> getProjectRole(String projectKey, String roleId);
 
     /**
      * Updates a project.

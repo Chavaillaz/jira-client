@@ -170,6 +170,7 @@ It requires the following dependency:
   - `getProjectComponents(String projectKey)`
   - `getProjectStatuses(String projectKey)`
   - `getProjectRoles(String projectKey)`
+  - `getProjectRole(String projectKey, String roleId)`
   - `updateProject(String projectKey, ProjectChange project)`
   - `deleteProject(String projectKey)`
 - **[UserApi](src/main/java/com/chavaillaz/client/jira/api/UserApi.java) -
