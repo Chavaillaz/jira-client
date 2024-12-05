@@ -15,6 +15,7 @@ import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
 import com.chavaillaz.client.jira.domain.ProjectChange;
 import com.chavaillaz.client.jira.domain.Projects;
+import com.chavaillaz.client.jira.domain.Role;
 import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
@@ -67,6 +68,11 @@ public class ApacheHttpProjectApi extends AbstractApacheHttpClient implements Pr
     @Override
     public CompletableFuture<Roles> getProjectRoles(String projectKey) {
         return sendAsync(requestBuilder(get(), URL_PROJECT_ROLES, projectKey), Roles.class);
+    }
+
+    @Override
+    public CompletableFuture<Role> getProjectRole(String projectKey, String roleId) {
+        return sendAsync(requestBuilder(get(), URL_PROJECT_ROLE, projectKey, roleId), Role.class);
     }
 
     @Override

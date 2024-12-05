@@ -14,6 +14,7 @@ import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
 import com.chavaillaz.client.jira.domain.ProjectChange;
 import com.chavaillaz.client.jira.domain.Projects;
+import com.chavaillaz.client.jira.domain.Role;
 import com.chavaillaz.client.jira.domain.Roles;
 import com.chavaillaz.client.jira.domain.Statuses;
 import com.chavaillaz.client.jira.domain.Versions;
@@ -65,6 +66,11 @@ public class VertxHttpProjectApi extends AbstractVertxHttpClient implements Proj
     @Override
     public CompletableFuture<Roles> getProjectRoles(String projectKey) {
         return handleAsync(requestBuilder(GET, URL_PROJECT_ROLES, projectKey).send(), Roles.class);
+    }
+
+    @Override
+    public CompletableFuture<Role> getProjectRole(String projectKey, String roleId) {
+        return handleAsync(requestBuilder(GET, URL_PROJECT_ROLE, projectKey, roleId).send(), Role.class);
     }
 
     @Override
