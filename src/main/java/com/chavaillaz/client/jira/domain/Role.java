@@ -9,7 +9,6 @@ import com.fasterxml.jackson.annotation.JsonMerge;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import lombok.experimental.Delegate;
 
 @Data
 @ToString(callSuper = true)
@@ -17,7 +16,6 @@ import lombok.experimental.Delegate;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Role extends Identity {
 
-    @Delegate
     @JsonMerge
     private final List<Actor> actors = new ArrayList<>();
 
