@@ -1,7 +1,5 @@
 package com.chavaillaz.client.jira;
 
-import static io.vertx.core.Vertx.vertx;
-
 import com.chavaillaz.client.common.Client;
 import com.chavaillaz.client.jira.apache.ApacheHttpJiraClient;
 import com.chavaillaz.client.jira.api.IssueApi;
@@ -49,7 +47,7 @@ public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
      * @param jiraUrl The Jira URL
      */
     static VertxHttpJiraClient<Issue> vertxClient(String jiraUrl) {
-        return new VertxHttpJiraClient<>(vertx(), jiraUrl, Issue.class);
+        return new VertxHttpJiraClient<>(jiraUrl, Issue.class);
     }
 
     /**

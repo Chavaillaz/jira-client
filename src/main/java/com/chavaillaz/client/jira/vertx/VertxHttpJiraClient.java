@@ -30,6 +30,16 @@ public class VertxHttpJiraClient<I extends Issue> extends AbstractJiraClient<Web
         this.vertx = vertx;
     }
 
+    /**
+     * Creates a new {@link JiraClient} using Vert.x HTTP client with the given issue type.
+     *
+     * @param jiraUrl   The Jira URL
+     * @param issueType The issue class type
+     */
+    public VertxHttpJiraClient(String jiraUrl, Class<I> issueType) {
+        this(Vertx.vertx(), jiraUrl, issueType);
+    }
+
     @Override
     public WebClient newHttpClient() {
         return WebClient.create(vertx, defaultWebClientOptions(proxy));
