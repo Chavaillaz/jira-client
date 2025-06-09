@@ -24,7 +24,7 @@ Presently, it supports the following HTTP clients:
 - [OkHttp client][OkHttp] 4.12
 - [Vert.x client][Vertx] 4.5
 
-Note that this library has been tested with a [Jira instance version 9.12][Jira].
+Note that this library requires at least **Java 17** and has been tested with a [Jira instance version 9.12][Jira].
 
 ## Installation
 

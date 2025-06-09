@@ -39,7 +39,7 @@ public interface StatusDefinition<T extends Enum<T>> {
      */
     default String getTransitionId() {
         if (getTransitions().size() == 1) {
-            return getTransitions().getFirst().getTransitionId();
+            return getTransitions().get(0).getTransitionId();
         } else {
             return null;
         }
