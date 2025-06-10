@@ -36,7 +36,7 @@
     </licenses>
 
     <properties>
-        <common-client.version>2.1.3</common-client.version>
+        <common-client.version>2.1.4</common-client.version>
         <httpclient5.version>5.5</httpclient5.version>
         <junit-bom.version>5.13.1</junit-bom.version>
         <log4j-bom.version>2.24.3</log4j-bom.version>
