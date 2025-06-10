@@ -7,7 +7,7 @@ import static com.chavaillaz.client.jira.JiraConstants.HEADER_ATLASSIAN_TOKEN_DI
 import static java.lang.String.join;
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.apache.commons.lang3.RandomStringUtils.randomAlphanumeric;
+import static org.apache.commons.lang3.RandomStringUtils.secure;
 
 import java.io.File;
 import java.io.InputStream;
@@ -178,7 +178,7 @@ public class JavaHttpIssueApi<T extends Issue> extends AbstractJavaHttpClient im
     @Override
     @SneakyThrows
     public CompletableFuture<Attachments> addAttachment(String issueKey, File... files) {
-        String boundary = randomAlphanumeric(16);
+        String boundary = secure().nextAlphanumeric(16);
         HttpRequest.Builder request = requestBuilder(URL_ISSUE_ATTACHMENTS, issueKey)
                 .setHeader(HEADER_CONTENT_TYPE, "multipart/form-data; boundary=" + boundary)
                 .setHeader(HEADER_ATLASSIAN_TOKEN, HEADER_ATLASSIAN_TOKEN_DISABLED)
