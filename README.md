@@ -85,7 +85,7 @@ It requires the following dependency:
 ### Features
 
 - **[IssueApi](src/main/java/com/chavaillaz/client/jira/api/IssueApi.java) -
-  Everything for issues, including comments, links, transitions, attachments and work logs**
+  Everything for issues, including comments, links, transitions, attachments, properties and work logs**
   - Issues
     - `addIssue(Issue issue)`
     - `getIssue(String issueKey)`
@@ -143,6 +143,11 @@ It requires the following dependency:
     - `getIssueLinkOptional(String id)`
     - `addIssueLink(Link link)`
     - `deleteIssueLink(String id)`
+  - Issue Properties
+    - `getPropertyKeys(String issueKey)`
+    - `deleteProperty(String issueKey, String propertyKey)`
+    - `getProperty(String issueKey, String propertyKey)`
+    - `setProperty(String issueKey, String propertyKey, PropertyValue propertyValue)`
 - **[SearchApi](src/main/java/com/chavaillaz/client/jira/api/SearchApi.java) -
   Everything for searches, including filters**
   - Searches
