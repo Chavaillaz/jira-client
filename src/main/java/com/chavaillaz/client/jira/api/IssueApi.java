@@ -17,10 +17,13 @@ import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
 import com.chavaillaz.client.jira.domain.Comments;
+import com.chavaillaz.client.jira.domain.EntityProperty;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.IssueTransition;
 import com.chavaillaz.client.jira.domain.Link;
+import com.chavaillaz.client.jira.domain.PropertyKeys;
+import com.chavaillaz.client.jira.domain.PropertyValue;
 import com.chavaillaz.client.jira.domain.RemoteLink;
 import com.chavaillaz.client.jira.domain.RemoteLinks;
 import com.chavaillaz.client.jira.domain.Transitions;
@@ -49,6 +52,8 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     String URL_ISSUE_REMOTE_LINKS = "issue/{0}/remotelink";
     String URL_ISSUE_REMOTE_LINK = "issue/{0}/remotelink/{1}";
     String URL_ISSUE_ATTACHMENTS = "issue/{0}/attachments";
+    String URL_ISSUE_PROPERTIES = "issue/{0}/properties";
+    String URL_ISSUE_PROPERTY = "issue/{0}/properties/{1}";
     String URL_ATTACHMENT = "attachment/{0}";
     String URL_ISSUE_LINKS = "issueLink/";
     String URL_ISSUE_LINK = "issueLink/{0}";
@@ -542,5 +547,41 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> deleteIssueLink(String id);
+
+    /**
+     * Gets the keys of all properties of an issue.
+     * 
+     * @param issueKey The key identifying the issue
+     * @return A {@link CompletableFuture} with the property keys
+     */
+    CompletableFuture<PropertyKeys> getPropertyKeys(String issueKey);
+
+    /**
+     * Deletes a property from an issue.
+     * 
+     * @param issueKey    The key identifying the issue
+     * @param propertyKey The key identifying the property
+     * @return A {@link CompletableFuture} without content
+     */
+    CompletableFuture<Void> deleteProperty(String issueKey, String propertyKey);
+
+    /**
+     * Gets a property of an issue.
+     * 
+     * @param issueKey    The key identifying the issue
+     * @param propertyKey The key identifying the property
+     * @return  A {@link CompletableFuture} with the property
+     */
+    CompletableFuture<EntityProperty> getProperty(String issueKey, String propertyKey);
+
+    /**
+     * Sets the value of a property of an issue. Any existing value is removed.
+     * 
+     * @param issueKey      The key identifying the issue
+     * @param propertyKey   The key identifying the property
+     * @param propertyValue The value of the property
+     * @return
+     */
+    CompletableFuture<Void> setProperty(String issueKey, String propertyKey, PropertyValue propertyValue);
 
 }
