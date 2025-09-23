@@ -18,10 +18,13 @@ import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
 import com.chavaillaz.client.jira.domain.Comments;
+import com.chavaillaz.client.jira.domain.EntityProperty;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.IssueTransition;
 import com.chavaillaz.client.jira.domain.Link;
+import com.chavaillaz.client.jira.domain.PropertyKeys;
+import com.chavaillaz.client.jira.domain.PropertyValue;
 import com.chavaillaz.client.jira.domain.RemoteLink;
 import com.chavaillaz.client.jira.domain.RemoteLinks;
 import com.chavaillaz.client.jira.domain.Transitions;
@@ -220,6 +223,26 @@ public class OkHttpIssueApi<T extends Issue> extends AbstractOkHttpClient implem
     @Override
     public CompletableFuture<Void> deleteIssueLink(String id) {
         return sendAsync(requestBuilder(URL_ISSUE_LINK, id).delete(), Void.class);
+    }
+
+    @Override
+    public CompletableFuture<PropertyKeys> getPropertyKeys(String issueKey) {
+        return sendAsync(requestBuilder(URL_ISSUE_PROPERTIES, issueKey).get(), PropertyKeys.class);
+    }
+
+    @Override
+    public CompletableFuture<Void> deleteProperty(String issueKey, String propertyKey) {
+        return sendAsync(requestBuilder(URL_ISSUE_PROPERTY, issueKey, propertyKey).delete(), Void.class);
+    }
+
+    @Override
+    public CompletableFuture<EntityProperty> getProperty(String issueKey, String propertyKey) {
+        return sendAsync(requestBuilder(URL_ISSUE_PROPERTY, issueKey, propertyKey).get(), EntityProperty.class);
+    }
+
+    @Override
+    public CompletableFuture<Void> setProperty(String issueKey, String propertyKey, PropertyValue propertyValue) {
+        return sendAsync(requestBuilder(URL_ISSUE_PROPERTY, issueKey, propertyKey).put(body(propertyValue)), Void.class);
     }
 
 }
