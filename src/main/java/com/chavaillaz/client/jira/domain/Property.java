@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class EntityProperty {
+public class Property {
 
-  private String key;
+    private String key;
 
-  private PropertyValue value;
+    private PropertyValue value;
+
 }

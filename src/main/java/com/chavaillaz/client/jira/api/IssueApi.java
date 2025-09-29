@@ -17,11 +17,11 @@ import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
 import com.chavaillaz.client.jira.domain.Comments;
-import com.chavaillaz.client.jira.domain.EntityProperty;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.IssueTransition;
 import com.chavaillaz.client.jira.domain.Link;
+import com.chavaillaz.client.jira.domain.Property;
 import com.chavaillaz.client.jira.domain.PropertyKeys;
 import com.chavaillaz.client.jira.domain.PropertyValue;
 import com.chavaillaz.client.jira.domain.RemoteLink;
@@ -550,7 +550,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
 
     /**
      * Gets the keys of all properties of an issue.
-     * 
+     *
      * @param issueKey The key identifying the issue
      * @return A {@link CompletableFuture} with the property keys
      */
@@ -558,7 +558,7 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
 
     /**
      * Deletes a property from an issue.
-     * 
+     *
      * @param issueKey    The key identifying the issue
      * @param propertyKey The key identifying the property
      * @return A {@link CompletableFuture} without content
@@ -567,20 +567,20 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
 
     /**
      * Gets a property of an issue.
-     * 
+     *
      * @param issueKey    The key identifying the issue
      * @param propertyKey The key identifying the property
-     * @return  A {@link CompletableFuture} with the property
+     * @return A {@link CompletableFuture} with the property
      */
-    CompletableFuture<EntityProperty> getProperty(String issueKey, String propertyKey);
+    CompletableFuture<Property> getProperty(String issueKey, String propertyKey);
 
     /**
      * Sets the value of a property of an issue. Any existing value is removed.
-     * 
+     *
      * @param issueKey      The key identifying the issue
      * @param propertyKey   The key identifying the property
      * @param propertyValue The value of the property
-     * @return
+     * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> setProperty(String issueKey, String propertyKey, PropertyValue propertyValue);
 

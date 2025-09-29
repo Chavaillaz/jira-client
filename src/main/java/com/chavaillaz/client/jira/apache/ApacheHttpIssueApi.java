@@ -21,11 +21,11 @@ import com.chavaillaz.client.jira.domain.Attachment;
 import com.chavaillaz.client.jira.domain.Attachments;
 import com.chavaillaz.client.jira.domain.Comment;
 import com.chavaillaz.client.jira.domain.Comments;
-import com.chavaillaz.client.jira.domain.EntityProperty;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Issue;
 import com.chavaillaz.client.jira.domain.IssueTransition;
 import com.chavaillaz.client.jira.domain.Link;
+import com.chavaillaz.client.jira.domain.Property;
 import com.chavaillaz.client.jira.domain.PropertyKeys;
 import com.chavaillaz.client.jira.domain.PropertyValue;
 import com.chavaillaz.client.jira.domain.RemoteLink;
@@ -248,8 +248,8 @@ public class ApacheHttpIssueApi<T extends Issue> extends AbstractApacheHttpClien
     }
 
     @Override
-    public CompletableFuture<EntityProperty> getProperty(String issueKey, String propertyKey) {
-        return sendAsync(requestBuilder(get(), URL_ISSUE_PROPERTY, issueKey, propertyKey), EntityProperty.class);
+    public CompletableFuture<Property> getProperty(String issueKey, String propertyKey) {
+        return sendAsync(requestBuilder(get(), URL_ISSUE_PROPERTY, issueKey, propertyKey), Property.class);
     }
 
     @Override

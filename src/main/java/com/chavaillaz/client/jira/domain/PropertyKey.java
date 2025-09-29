@@ -7,7 +7,8 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class PropertyKey {
 
-  private String key;
+    private String key;
 
-  private String self;
+    private String self;
+
 }
