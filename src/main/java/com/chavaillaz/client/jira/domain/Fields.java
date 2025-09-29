@@ -54,6 +54,7 @@ public class Fields extends CommonFields {
 
     private String description;
 
+    @JsonProperty("duedate")
     private String dueDate;
 
     private String environment;
