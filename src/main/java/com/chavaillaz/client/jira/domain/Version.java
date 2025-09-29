@@ -23,11 +23,11 @@ public class Version extends Identity {
 
     private Integer projectId;
 
-    private LocalDate startDate;
-
     private LocalDate releaseDate;
 
     private Boolean released;
+
+    private LocalDate startDate;
 
     /**
      * Creates a new version.
