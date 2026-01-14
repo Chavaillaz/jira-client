@@ -3,17 +3,11 @@ package com.chavaillaz.client.jira.okhttp;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.ProjectApi;
-import com.chavaillaz.client.jira.domain.Components;
-import com.chavaillaz.client.jira.domain.Identity;
-import com.chavaillaz.client.jira.domain.Project;
-import com.chavaillaz.client.jira.domain.ProjectChange;
-import com.chavaillaz.client.jira.domain.Projects;
-import com.chavaillaz.client.jira.domain.Role;
-import com.chavaillaz.client.jira.domain.Roles;
-import com.chavaillaz.client.jira.domain.Statuses;
-import com.chavaillaz.client.jira.domain.Versions;
+import com.chavaillaz.client.jira.domain.*;
 import okhttp3.OkHttpClient;
+
 
 public class OkHttpProjectApi extends AbstractOkHttpClient implements ProjectApi {
 
@@ -21,14 +15,15 @@ public class OkHttpProjectApi extends AbstractOkHttpClient implements ProjectApi
      * Creates a new {@link ProjectApi} using OkHttp client.
      *
      * @param client         The OkHttp client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
+     * @param apiVersion     The API version to use
      */
-    public OkHttpProjectApi(OkHttpClient client, String baseUrl, Authentication authentication) {
-        super(client, baseUrl, authentication);
+    public OkHttpProjectApi(OkHttpClient client, String baseUrl, Authentication authentication, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
     }
 
-    @Override
+    // ...existing code...
     public CompletableFuture<Identity> addProject(ProjectChange project) {
         return sendAsync(requestBuilder(URL_PROJECTS).post(body(project)), Identity.class);
     }

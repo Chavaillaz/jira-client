@@ -157,6 +157,9 @@ It requires the following dependency:
     - `searchIssues(String jql, Integer startAt, Integer maxResults)`
     - `searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand)`
     - `searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand, Set<String> fields)`
+    - `searchIssues(String jql, String nextPageToken)` - v3 pagination
+    - `searchIssues(String jql, String nextPageToken, Integer maxResults, Set<IssueExpand> expand)` - v3 pagination
+    - `searchIssues(String jql, String nextPageToken, Integer maxResults, Set<IssueExpand> expand, Set<String> fields)` - v3 pagination
   - Filters
     - `addFilter(Filter filter)`
     - `getFilter(String id)`
@@ -246,6 +249,55 @@ Consumer<Filter> deleteFilter = filter -> client.getSearchClient().deleteFilter(
 client.getSearchClient().getFavoriteFilters()
     .thenAccept(filters -> filters.forEach(deleteFilter));
 ```
+
+### API v3 Pagination
+
+When using JIRA API v3, pagination works differently than v2. Instead of using `startAt` and `total`, v3 uses 
+token-based pagination with `nextPageToken` and `isLast` fields.
+
+#### Checking for more pages
+
+```java
+Issues<Issue> issues = client.getSearchApi()
+    .searchIssues("project = TEST")
+    .join();
+
+// Check if there are more results
+if (issues.getIsLast() != null && !issues.getIsLast()) {
+    String nextToken = issues.getNextPageToken();
+    // Fetch next page using the token
+    Issues<Issue> nextPage = client.getSearchApi()
+        .searchIssues("project = TEST", nextToken)
+        .join();
+}
+```
+
+#### Fetching all pages automatically
+
+The library provides a `PaginationHelper` utility to fetch all pages automatically for both v2 and v3:
+
+```java
+import com.chavaillaz.client.jira.domain.PaginationHelper;
+
+// For v3 API (token-based pagination)
+CompletableFuture<List<Issue>> allIssues = PaginationHelper.fetchAllPages(
+    "project = TEST",
+    token -> client.getSearchApi().searchIssues("project = TEST", token)
+);
+
+// For v2 API (offset-based pagination)
+CompletableFuture<List<Issue>> allIssues = PaginationHelper.fetchAllPagesV2(
+    "project = TEST",
+    50, // page size
+    (startAt, maxResults) -> client.getSearchApi().searchIssues("project = TEST", startAt, maxResults)
+);
+
+allIssues.thenAccept(issues -> {
+    System.out.println("Total issues: " + issues.size());
+});
+```
+
+For more details on pagination (both v2 and v3), see the [Pagination Guide](PAGINATION-GUIDE.md).
 
 ### Issue custom fields
 

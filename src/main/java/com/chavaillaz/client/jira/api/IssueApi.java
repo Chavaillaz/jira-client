@@ -11,6 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.expand.CommentExpand;
 import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Attachment;
@@ -33,7 +34,22 @@ import com.chavaillaz.client.jira.domain.Watchers;
 import com.chavaillaz.client.jira.domain.WorkLog;
 import com.chavaillaz.client.jira.domain.WorkLogs;
 
+/**
+ * JIRA Issue API interface.
+ * Supports both JIRA REST API v2 and v3.
+ *
+ * <p><b>Key Differences Between v2 and v3:</b></p>
+ * <ul>
+ *   <li><b>Base Path</b>: v2 uses {@code /rest/api/2/}, v3 uses {@code /rest/api/3/}</li>
+ *   <li><b>User Identification</b>: v2 uses {@code username}, v3 uses {@code accountId}</li>
+ *   <li><b>Watcher Operations</b>: v2 parameter is {@code username}, v3 parameter is {@code accountId}</li>
+ * </ul>
+ *
+ * @param <T> The issue type
+ */
 public interface IssueApi<T extends Issue> extends AutoCloseable {
+
+    // ========== URL Constants - Common to both v2 and v3 ==========
 
     String URL_ISSUE_CREATION = "issue/";
     String URL_ISSUE_ACTION = "issue/{0}";
@@ -46,7 +62,6 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     String URL_ISSUE_COMMENT_SELECTION = "issue/{0}/comment/{1}?expand={2}";
     String URL_ISSUE_VOTES = "issue/{0}/votes";
     String URL_ISSUE_WATCHERS = "issue/{0}/watchers";
-    String URL_ISSUE_WATCHER = "issue/{0}/watchers?username={1}";
     String URL_ISSUE_WORK_LOGS = "issue/{0}/worklog";
     String URL_ISSUE_WORK_LOG = "issue/{0}/worklog/{1}";
     String URL_ISSUE_REMOTE_LINKS = "issue/{0}/remotelink";
@@ -58,7 +73,37 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     String URL_ISSUE_LINKS = "issueLink/";
     String URL_ISSUE_LINK = "issueLink/{0}";
 
+    // ========== URL Constants - Version-Specific ==========
+
+    /**
+     * URL for watcher operations in API v2.
+     * Uses 'username' parameter.
+     */
+    String URL_ISSUE_WATCHER_V2 = "issue/{0}/watchers?username={1}";
+
+    /**
+     * URL for watcher operations in API v3.
+     * Uses 'accountId' parameter instead of 'username'.
+     */
+    String URL_ISSUE_WATCHER_V3 = "issue/{0}/watchers?accountId={1}";
+
     Set<String> ALL_FIELDS = Set.of("*all");
+
+    /**
+     * Returns the appropriate watcher URL based on the API version.
+     *
+     * <p><b>Version Differences:</b></p>
+     * <ul>
+     *   <li><b>v2</b>: Uses {@code username} parameter - {@code issue/{0}/watchers?username={1}}</li>
+     *   <li><b>v3</b>: Uses {@code accountId} parameter - {@code issue/{0}/watchers?accountId={1}}</li>
+     * </ul>
+     *
+     * @param apiVersion The API version being used
+     * @return The appropriate watcher URL pattern for the API version
+     */
+    static String getWatcherUrl(ApiVersion apiVersion) {
+        return apiVersion == ApiVersion.V3 ? URL_ISSUE_WATCHER_V3 : URL_ISSUE_WATCHER_V2;
+    }
 
     /**
      * Creates an issue.
@@ -334,8 +379,17 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Adds a user to the watchers of an issue.
      *
+     * <p><b>API Version Differences:</b></p>
+     * <ul>
+     *   <li><b>v2</b>: The {@code username} parameter should contain the user's username</li>
+     *   <li><b>v3</b>: The {@code username} parameter should contain the user's accountId</li>
+     * </ul>
+     *
+     * <p><b>Migration Note:</b> When migrating from v2 to v3, you must replace username values
+     * with accountId values. The User object's {@code accountId} field contains the value needed for v3.</p>
+     *
      * @param issueKey The key identifying the issue
-     * @param username The username
+     * @param username The username (v2) or accountId (v3) of the user to add as watcher
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> addWatcher(String issueKey, String username);
@@ -343,8 +397,17 @@ public interface IssueApi<T extends Issue> extends AutoCloseable {
     /**
      * Deletes a user from the watchers of an issue.
      *
+     * <p><b>API Version Differences:</b></p>
+     * <ul>
+     *   <li><b>v2</b>: The {@code username} parameter should contain the user's username</li>
+     *   <li><b>v3</b>: The {@code username} parameter should contain the user's accountId</li>
+     * </ul>
+     *
+     * <p><b>Migration Note:</b> When migrating from v2 to v3, you must replace username values
+     * with accountId values. The User object's {@code accountId} field contains the value needed for v3.</p>
+     *
      * @param issueKey The key identifying the issue
-     * @param username The username
+     * @param username The username (v2) or accountId (v3) of the user to remove from watchers
      * @return A {@link CompletableFuture} without content
      */
     CompletableFuture<Void> deleteWatcher(String issueKey, String username);

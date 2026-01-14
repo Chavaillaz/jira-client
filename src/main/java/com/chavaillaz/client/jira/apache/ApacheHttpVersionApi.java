@@ -10,6 +10,7 @@ import static org.apache.hc.core5.http.ContentType.APPLICATION_JSON;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.VersionApi;
 import com.chavaillaz.client.jira.domain.Version;
 import org.apache.hc.client5.http.impl.async.CloseableHttpAsyncClient;
@@ -20,14 +21,15 @@ public class ApacheHttpVersionApi extends AbstractApacheHttpClient implements Ve
      * Creates a new {@link VersionApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
+     * @param apiVersion     The API version to use
      */
-    public ApacheHttpVersionApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
-        super(client, baseUrl, authentication);
+    public ApacheHttpVersionApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
     }
 
-    @Override
+    // ...existing code...
     public CompletableFuture<Version> addVersion(Version version) {
         return sendAsync(requestBuilder(post(), URL_VERSION, EMPTY)
                 .setBody(serialize(version), APPLICATION_JSON), Version.class);

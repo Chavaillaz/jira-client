@@ -6,7 +6,7 @@
 
     <groupId>com.chavaillaz</groupId>
     <artifactId>jira-client</artifactId>
-    <version>2.2-SNAPSHOT</version>
+    <version>3.0-ALPHA01</version>
     <packaging>jar</packaging>
 
     <name>${project.groupId}.${project.artifactId}</name>
@@ -24,6 +24,10 @@
         <developer>
             <id>Chavjoh</id>
             <name>Johan Chavaillaz</name>
+        </developer>
+        <developer>
+            <id>marko-p</id>
+            <name>Marko Pra</name>
         </developer>
     </developers>
 

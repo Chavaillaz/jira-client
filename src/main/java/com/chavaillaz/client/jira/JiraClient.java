@@ -52,6 +52,35 @@ public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
     }
 
     /**
+     * Sets the JIRA REST API version to use for this client.
+     * <p>
+     * By default, the client uses API v2 for backward compatibility.
+     * You can switch to API v3 by calling this method with version 3.
+     * <p>
+     * <b>Important:</b> API v3 has breaking changes, particularly in user identification
+     * (uses accountId instead of username). Ensure you understand the differences before
+     * switching to v3. See the API v3 migration guide for details.
+     * <p>
+     * Example usage:
+     * <pre>{@code
+     * // Use API v2 (default)
+     * JiraClient<Issue> clientV2 = JiraClient.apacheClient("https://jira.mycompany.com")
+     *     .withUserAuthentication("myUsername", "myPassword");
+     *
+     * // Use API v3
+     * JiraClient<Issue> clientV3 = JiraClient.apacheClient("https://jira.mycompany.com")
+     *     .withApiVersion(3)
+     *     .withUserAuthentication("myUsername", "myPassword");
+     * }</pre>
+     *
+     * @param version The API version to use (2 or 3)
+     * @return This client instance for method chaining
+     * @throws IllegalArgumentException if version is not 2 or 3
+     * @since 3.0
+     */
+    JiraClient<I> withApiVersion(int version);
+
+    /**
      * Gets the issue API with the default issue type.
      *
      * @return The issue client
@@ -85,5 +114,28 @@ public interface JiraClient<I extends Issue> extends Client<JiraClient<I>> {
      * @return The version client
      */
     VersionApi getVersionApi();
+
+    /**
+     * Gets the current API version being used by this client.
+     *
+     * @return The API version (2 or 3)
+     * @since 3.0
+     */
+    int getApiVersion();
+
+    /**
+     * Gets the full base URL including the API version path.
+     * This can be useful for debugging to see which API endpoint is being used.
+     * <p>
+     * For example:
+     * <ul>
+     *   <li>API v2: https://jira.mycompany.com/rest/api/2/</li>
+     *   <li>API v3: https://jira.mycompany.com/rest/api/3/</li>
+     * </ul>
+     *
+     * @return The full base URL with API version path
+     * @since 3.0
+     */
+    String getFullBaseUrl();
 
 }
