@@ -11,17 +11,60 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.expand.IssueExpand;
 import com.chavaillaz.client.jira.domain.Filter;
 import com.chavaillaz.client.jira.domain.Filters;
 import com.chavaillaz.client.jira.domain.Issue;
 
+/**
+ * JIRA Search API interface.
+ * Supports both JIRA REST API v2 and v3.
+ *
+ * <p><b>Key Differences Between v2 and v3:</b></p>
+ * <ul>
+ *   <li><b>Search Endpoint</b>: v2 uses {@code /rest/api/2/search}, v3 uses {@code /rest/api/3/search/jql}</li>
+ * </ul>
+ *
+ * @param <T> The issues list type
+ */
 public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseable {
 
-    String URL_SEARCH = "search";
+    // ========== URL Constants - Version-Specific ==========
+
+    /**
+     * URL for search operations in API v2.
+     */
+    String URL_SEARCH_V2 = "search";
+
+    /**
+     * URL for search operations in API v3.
+     * In v3, the /rest/api/3/search endpoint has been removed and replaced with /rest/api/3/search/jql
+     * as per https://developer.atlassian.com/changelog/#CHANGE-2046
+     */
+    String URL_SEARCH_V3 = "search/jql";
+
+    // ========== URL Constants - Common to both v2 and v3 ==========
+
     String URL_FILTERS = "filter";
     String URL_FILTER = "filter/{0}";
     String URL_FILTER_FAVOURITE = "filter/favourite";
+
+    /**
+     * Returns the appropriate search URL based on the API version.
+     *
+     * <p><b>Version Differences:</b></p>
+     * <ul>
+     *   <li><b>v2</b>: Uses {@code search}</li>
+     *   <li><b>v3</b>: Uses {@code search/jql} (endpoint changed as per CHANGE-2046)</li>
+     * </ul>
+     *
+     * @param apiVersion The API version being used
+     * @return The appropriate search URL pattern for the API version
+     */
+    static String getSearchUrl(ApiVersion apiVersion) {
+        return apiVersion == ApiVersion.V3 ? URL_SEARCH_V3 : URL_SEARCH_V2;
+    }
 
     /**
      * Gets the issues corresponding to the given keys.
@@ -61,6 +104,22 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
     }
 
     /**
+     * Performs a search for issues using v3 pagination token.
+     * The number of results returned per page is 50.
+     * No parameter is expanded and all navigable fields in the issues are returned.
+     * <p>
+     * This method is designed for v3 API pagination. For v2 API, use {@link #searchIssues(String, Integer, Integer)} instead.
+     * </p>
+     *
+     * @param jql           The query in Jira Query Language
+     * @param nextPageToken The token for the next page (from previous response's nextPageToken field), null for first page
+     * @return A {@link CompletableFuture} with the issues found
+     */
+    default CompletableFuture<T> searchIssues(String jql, String nextPageToken) {
+        return searchIssues(jql, nextPageToken, 50, emptySet(), ALL_FIELDS);
+    }
+
+    /**
      * Performs a search for issues.
      * No parameter is expanded and all fields in the issues are returned.
      *
@@ -71,6 +130,23 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
      */
     default CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults) {
         return searchIssues(jql, startAt, maxResults, emptySet());
+    }
+
+    /**
+     * Performs a search for issues using v3 pagination token.
+     * All navigable fields in the issues are returned.
+     * <p>
+     * This method is designed for v3 API pagination. For v2 API, use {@link #searchIssues(String, Integer, Integer, Set)} instead.
+     * </p>
+     *
+     * @param jql           The query in Jira Query Language
+     * @param nextPageToken The token for the next page (from previous response's nextPageToken field), null for first page
+     * @param maxResults    The number of results per page
+     * @param expand        The list of parameters to expand
+     * @return A {@link CompletableFuture} with the issues found
+     */
+    default CompletableFuture<T> searchIssues(String jql, String nextPageToken, Integer maxResults, Set<IssueExpand> expand) {
+        return searchIssues(jql, nextPageToken, maxResults, expand, ALL_FIELDS);
     }
 
     /**
@@ -98,6 +174,21 @@ public interface SearchApi<T extends List<? extends Issue>> extends AutoCloseabl
      * @return A {@link CompletableFuture} with the issues found
      */
     CompletableFuture<T> searchIssues(String jql, Integer startAt, Integer maxResults, Set<IssueExpand> expand, Set<String> fields);
+
+    /**
+     * Performs a search for issues using v3 pagination token.
+     * <p>
+     * This method is designed for v3 API pagination. For v2 API, use {@link #searchIssues(String, Integer, Integer, Set, Set)} instead.
+     * </p>
+     *
+     * @param jql           The query in Jira Query Language
+     * @param nextPageToken The token for the next page (from previous response's nextPageToken field), null for first page
+     * @param maxResults    The number of results per page
+     * @param expand        The list of parameters to expand
+     * @param fields        The list of fields to be present in the issues retrieved
+     * @return A {@link CompletableFuture} with the issues found
+     */
+    CompletableFuture<T> searchIssues(String jql, String nextPageToken, Integer maxResults, Set<IssueExpand> expand, Set<String> fields);
 
     /**
      * Creates a new search filter for the logged-in user.

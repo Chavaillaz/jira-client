@@ -15,6 +15,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.IssueApi;
 import com.chavaillaz.client.jira.api.expand.CommentExpand;
 import com.chavaillaz.client.jira.api.expand.IssueExpand;
@@ -47,12 +48,13 @@ public class VertxHttpIssueApi<T extends Issue> extends AbstractVertxHttpClient 
      * Creates a new {@link IssueApi} using Vert.x client.
      *
      * @param client         The Vert.x client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
      * @param issueType      The issue class type
+     * @param apiVersion     The API version to use
      */
-    public VertxHttpIssueApi(WebClient client, String baseUrl, Authentication authentication, Class<T> issueType) {
-        super(client, baseUrl, authentication);
+    public VertxHttpIssueApi(WebClient client, String baseUrl, Authentication authentication, Class<T> issueType, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
         this.issueType = issueType;
     }
 
@@ -138,7 +140,9 @@ public class VertxHttpIssueApi<T extends Issue> extends AbstractVertxHttpClient 
 
     @Override
     public CompletableFuture<Void> deleteWatcher(String issueKey, String username) {
-        return handleAsync(requestBuilder(DELETE, URL_ISSUE_WATCHER, issueKey, username).send(), Void.class);
+        // Use version-aware URL: v2 uses 'username' parameter, v3 uses 'accountId' parameter
+        String watcherUrl = IssueApi.getWatcherUrl(apiVersion);
+        return handleAsync(requestBuilder(DELETE, watcherUrl, issueKey, username).send(), Void.class);
     }
 
     @Override

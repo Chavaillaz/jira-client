@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.VersionApi;
 import com.chavaillaz.client.jira.domain.Version;
 
@@ -15,14 +16,15 @@ public class JavaHttpVersionApi extends AbstractJavaHttpClient implements Versio
      * Creates a new {@link VersionApi} using Java HTTP client.
      *
      * @param client         The Java HTTP client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
+     * @param apiVersion     The API version to use
      */
-    public JavaHttpVersionApi(HttpClient client, String baseUrl, Authentication authentication) {
-        super(client, baseUrl, authentication);
+    public JavaHttpVersionApi(HttpClient client, String baseUrl, Authentication authentication, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
     }
 
-    @Override
+    // ...existing code...
     public CompletableFuture<Version> addVersion(Version version) {
         return sendAsync(requestBuilder(URL_VERSION, EMPTY).POST(body(version)), Version.class);
     }

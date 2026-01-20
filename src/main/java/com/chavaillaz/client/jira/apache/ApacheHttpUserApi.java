@@ -5,6 +5,7 @@ import static org.apache.hc.client5.http.async.methods.SimpleRequestBuilder.get;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.UserApi;
 import com.chavaillaz.client.jira.domain.User;
 import com.chavaillaz.client.jira.domain.Users;
@@ -16,14 +17,15 @@ public class ApacheHttpUserApi extends AbstractApacheHttpClient implements UserA
      * Creates a new {@link UserApi} using Apache HTTP client.
      *
      * @param client         The Apache HTTP client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
+     * @param apiVersion     The API version to use
      */
-    public ApacheHttpUserApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication) {
-        super(client, baseUrl, authentication);
+    public ApacheHttpUserApi(CloseableHttpAsyncClient client, String baseUrl, Authentication authentication, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
     }
 
-    @Override
+    // ...existing code...
     public CompletableFuture<Users> getUsers(String search, Integer startAt, Integer maxResults, Boolean includeInactive) {
         return sendAsync(requestBuilder(get(), URL_USERS_SEARCH, search, startAt, maxResults, includeInactive), Users.class);
     }

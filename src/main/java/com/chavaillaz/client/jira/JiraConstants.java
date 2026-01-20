@@ -31,7 +31,91 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class JiraConstants {
 
-    public static final String BASE_API = "/rest/api/2/";
+    /**
+     * Base API path for JIRA REST API v2.
+     * This is the default API version for backward compatibility.
+     */
+    public static final String BASE_API_V2 = "/rest/api/2/";
+
+    /**
+     * Base API path for JIRA REST API v3.
+     */
+    public static final String BASE_API_V3 = "/rest/api/3/";
+
+    /**
+     * Default base API path (points to v2 for backward compatibility).
+     * @deprecated Use {@link #BASE_API_V2} or {@link #BASE_API_V3} explicitly, or use {@link #getBaseApiPath(ApiVersion)}
+     */
+    @Deprecated
+    public static final String BASE_API = BASE_API_V2;
+
+    /**
+     * Enumeration of supported JIRA REST API versions.
+     */
+    public enum ApiVersion {
+        /**
+         * JIRA REST API version 2 (default).
+         */
+        V2(2, BASE_API_V2),
+
+        /**
+         * JIRA REST API version 3.
+         * Note: v3 has breaking changes, particularly in user identification (uses accountId instead of username).
+         */
+        V3(3, BASE_API_V3);
+
+        private final int versionNumber;
+        private final String basePath;
+
+        ApiVersion(int versionNumber, String basePath) {
+            this.versionNumber = versionNumber;
+            this.basePath = basePath;
+        }
+
+        /**
+         * Gets the version number.
+         *
+         * @return The version number (2 or 3)
+         */
+        public int getVersionNumber() {
+            return versionNumber;
+        }
+
+        /**
+         * Gets the base API path for this version.
+         *
+         * @return The base path (e.g., "/rest/api/2/" or "/rest/api/3/")
+         */
+        public String getBasePath() {
+            return basePath;
+        }
+
+        /**
+         * Gets the ApiVersion from an integer version number.
+         *
+         * @param version The version number (2 or 3)
+         * @return The corresponding ApiVersion
+         * @throws IllegalArgumentException if the version is not supported
+         */
+        public static ApiVersion fromInt(int version) {
+            return switch (version) {
+                case 2 -> V2;
+                case 3 -> V3;
+                default -> throw new IllegalArgumentException(
+                        "Unsupported API version: " + version + ". Supported versions are 2 and 3.");
+            };
+        }
+    }
+
+    /**
+     * Gets the base API path for the specified API version.
+     *
+     * @param version The API version
+     * @return The base path for the specified version
+     */
+    public static String getBaseApiPath(ApiVersion version) {
+        return version.getBasePath();
+    }
 
     public static final String HEADER_ATLASSIAN_TOKEN = "X-Atlassian-Token";
 

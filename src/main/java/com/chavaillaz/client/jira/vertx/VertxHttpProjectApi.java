@@ -8,7 +8,9 @@ import static io.vertx.core.http.HttpMethod.PUT;
 import java.util.concurrent.CompletableFuture;
 
 import com.chavaillaz.client.common.security.Authentication;
+import com.chavaillaz.client.jira.JiraConstants.ApiVersion;
 import com.chavaillaz.client.jira.api.ProjectApi;
+import com.chavaillaz.client.jira.domain.Component;
 import com.chavaillaz.client.jira.domain.Components;
 import com.chavaillaz.client.jira.domain.Identity;
 import com.chavaillaz.client.jira.domain.Project;
@@ -26,11 +28,12 @@ public class VertxHttpProjectApi extends AbstractVertxHttpClient implements Proj
      * Creates a new {@link ProjectApi} using Vert.x client.
      *
      * @param client         The Vert.x client to use
-     * @param baseUrl        The URL of Jira
+     * @param baseUrl        The URL of Jira (including API version path)
      * @param authentication The authentication information
+     * @param apiVersion     The API version to use
      */
-    public VertxHttpProjectApi(WebClient client, String baseUrl, Authentication authentication) {
-        super(client, baseUrl, authentication);
+    public VertxHttpProjectApi(WebClient client, String baseUrl, Authentication authentication, ApiVersion apiVersion) {
+        super(client, baseUrl, authentication, apiVersion);
     }
 
     @Override

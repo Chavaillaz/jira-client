@@ -1,7 +1,6 @@
 package com.chavaillaz.client.jira.vertx;
 
 import static com.chavaillaz.client.common.vertx.VertxUtils.defaultWebClientOptions;
-import static com.chavaillaz.client.jira.JiraConstants.BASE_API;
 
 import com.chavaillaz.client.jira.AbstractJiraClient;
 import com.chavaillaz.client.jira.JiraClient;
@@ -15,6 +14,12 @@ import com.chavaillaz.client.jira.domain.Issues;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.client.WebClient;
 
+/**
+ * Implementation of {@link JiraClient} using Vert.x HTTP client.
+ * Supports both JIRA REST API v2 and v3 through the {@link #withApiVersion(int)} method.
+ *
+ * @param <I> The issue type
+ */
 public class VertxHttpJiraClient<I extends Issue> extends AbstractJiraClient<WebClient, I> {
 
     private final Vertx vertx;
@@ -48,27 +53,27 @@ public class VertxHttpJiraClient<I extends Issue> extends AbstractJiraClient<Web
 
     @Override
     public IssueApi<I> getIssueApi() {
-        return issueApi.get(() -> new VertxHttpIssueApi<>(newHttpClient(), baseUrl + BASE_API, authentication, issueType));
+        return issueApi.get(() -> new VertxHttpIssueApi<>(newHttpClient(), baseUrl + getBaseApiPath(), authentication, issueType, apiVersion));
     }
 
     @Override
     public ProjectApi getProjectApi() {
-        return projectApi.get(() -> new VertxHttpProjectApi(newHttpClient(), baseUrl + BASE_API, authentication));
+        return projectApi.get(() -> new VertxHttpProjectApi(newHttpClient(), baseUrl + getBaseApiPath(), authentication, apiVersion));
     }
 
     @Override
     public UserApi getUserApi() {
-        return userApi.get(() -> new VertxHttpUserApi(newHttpClient(), baseUrl + BASE_API, authentication));
+        return userApi.get(() -> new VertxHttpUserApi(newHttpClient(), baseUrl + getBaseApiPath(), authentication, apiVersion));
     }
 
     @Override
     public SearchApi<Issues<I>> getSearchApi() {
-        return searchApi.get(() -> new VertxHttpSearchApi<>(newHttpClient(), baseUrl + BASE_API, authentication, issuesListType));
+        return searchApi.get(() -> new VertxHttpSearchApi<>(newHttpClient(), baseUrl + getBaseApiPath(), authentication, issuesListType, apiVersion));
     }
 
     @Override
     public VersionApi getVersionApi() {
-        return versionApi.get(() -> new VertxHttpVersionApi(newHttpClient(), baseUrl + BASE_API, authentication));
+        return versionApi.get(() -> new VertxHttpVersionApi(newHttpClient(), baseUrl + getBaseApiPath(), authentication, apiVersion));
     }
 
 
